@@ -26,16 +26,18 @@
 
         <BCardBody v-else> 
           <div class="py-2 d-flex justify-content-center align-items-center flex-wrap">
-            <div class="carde">
+            <div class="carde" v-for="partenaire in paginatedItems" :key="partenaire.id">
           <div class="carde-img">
       
-          <img src="../../assets/img/partenariat/part2.png" alt="">
+            <img v-if="partenaire.logo === null" src="@/assets/img/ninba1.png" alt="">
+          
+          <img v-else :src="partenaire.logo" alt="">
      
     </div>
-    <div class="carde-title">Direction Générale des Impots</div>
+    <div class="carde-title">{{ partenaire.NomPartenaire }}</div>
     <div class="carde-subtitle">
-      <p class="texte-content">Url: <span>https://www.afdb.org/fr/pays-afrique-de-louest/guinee</span></p>
-      <p class="texte-content">Direction: <span>Conakry</span></p>
+      <p class="texte-content">Url: <span>{{ partenaire.SiteWeb }}</span></p>
+      <p class="texte-content">Direction: <span>{{ partenaire.Direction }}</span></p>
     </div>
     <hr class="carde-divider">
     <div class="carde-footer">
@@ -227,6 +229,7 @@ this.partenairesOptions = [...this.$store.getters['getPartenaires']];
   font-size: 14px;
   font-weight: 400;
   color: #323232;
+  width: 100%;
 }
 
 .carde-divider {
