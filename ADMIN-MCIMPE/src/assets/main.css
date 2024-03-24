@@ -1,0 +1,54 @@
+@import './base.css';
+
+:root {
+  --color-default: #222222;
+  --color-primary: #007676;
+  --color-secondary: #017f5a;
+}
+
+
+.boutton button {
+  max-width: 150px;
+  width: 100%;
+  background: var(--color-primary);
+  color: #f9f9f9;
+  border: none;
+  padding: 10px;
+  /* text-transform: uppercase; */
+  border-radius: 2px;
+  cursor:pointer;
+  margin-top: 20px;
+}
+
+.boutton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.boutton button:hover {
+ color: var(--color-primary);
+ background-color: #fff;
+ border: 1px solid var(--color-primary);
+}
+small {
+  color: #f8001b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalheader{
+
+  background: linear-gradient(135deg, #0000 18.75%, #f3f3f3 0 31.25%, #0000 0), repeating-linear-gradient(45deg, #f3f3f3 -6.25% 6.25%, #ffffff 0 18.75%);
+    background-size: 60px 60px;
+    background-position: 0 0, 0 0;
+    background-color: #f0f0f0;
+}
+
+.modalheader h5{
+
+  font-size: 20px;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: bolder;
+}
