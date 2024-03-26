@@ -57,7 +57,7 @@ export const menuItems = [
             {
                 id: 39,
                 label: "menuitems.projects.list.projectlist",
-                link: "/projects/list",
+                link: "/localite/regions",
                 parentId: 37
             },
             {

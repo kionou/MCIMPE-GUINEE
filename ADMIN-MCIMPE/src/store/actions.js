@@ -79,13 +79,9 @@ async fetchDataFromAPI({ commit }) {
       const prefecturesFromAPI = response.data.data;
 
       // Formater les données de l'API en options pour MazSelect
-      const options = prefecturesFromAPI.map(prefecture => ({
-        label: prefecture.NomPrefecture,
-        value: prefecture.CodePrefecture,
-        code:  prefecture.CodeRegion
-      }));
       
-      commit('SET_PREFECTURE_OPTIONS', options); // Appeler la mutation pour mettre à jour les options de régions
+      
+      commit('SET_PREFECTURE_OPTIONS', prefecturesFromAPI); // Appeler la mutation pour mettre à jour les options de régions
     } catch (error) {
       console.error('Erreur lors de la récupération des prefectures:', error);
     }
@@ -98,13 +94,9 @@ async fetchDataFromAPI({ commit }) {
       const sousprefecturesFromAPI = response.data.data;
 
       // Formater les données de l'API en options pour MazSelect
-      const options = sousprefecturesFromAPI.map(sousprefecture => ({
-        label: sousprefecture.NomSousPrefecture,
-        value: sousprefecture.CodeSousPrefecture,
-        code:sousprefecture.CodePrefecture
-      }));
       
-      commit('SET_SOUS_PREFECTURE_OPTIONS', options); // Appeler la mutation pour mettre à jour les options de régions
+      
+      commit('SET_SOUS_PREFECTURE_OPTIONS', sousprefecturesFromAPI); // Appeler la mutation pour mettre à jour les options de régions
     } catch (error) {
       console.error('Erreur lors de la récupération des sousprefectures:', error);
     }
@@ -121,7 +113,7 @@ async fetchDataFromAPI({ commit }) {
         value: quartier.CodeQuartier
       }));
       
-      commit('SET_QUARTIER_OPTIONS', options); // Appeler la mutation pour mettre à jour les options de régions
+      commit('SET_QUARTIER_OPTIONS', quartierFromAPI); // Appeler la mutation pour mettre à jour les options de régions
     } catch (error) {
       console.error('Erreur lors de la récupération des quartier:', error);
     }

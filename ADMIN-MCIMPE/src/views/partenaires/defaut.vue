@@ -11,7 +11,7 @@
               <BCardTitle class="mb-0 flex-grow-1">Liste des Partenaires</BCardTitle>
 
               <div class="flex-shrink-0 d-flex">
-                <BLink href="#!" @click="$router.push({ path: '/partenaires/ajouter' })"  class="btn btn-primary me-1">Ajouter</BLink>
+                <BLink href="#" @click="$router.push({ path: '/partenaires/ajouter' })"  class="btn btn-primary me-1">Ajouter</BLink>
                 <BCol xxl="4" lg="6">
                 <MazInput v-model="searchQuery"  no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
               </BCol>
@@ -44,10 +44,10 @@
       <ul class="list-unstyled hstack gap-1 mb-0">
                        
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                         <Blink href="#" @click="$router.push({ path: `/partenaires/update/${partenaire.CodePartenaire}` })" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#jobDelete" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                         <Blink href="#" @click="confirmDelete(partenaire.CodePartenaire)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
                          <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
@@ -105,6 +105,9 @@ paginatedItems() {
   const endIndex = startIndex + this.itemsPerPage;
   return this.partenairesOptions.slice(startIndex, endIndex);
 },
+loggedInUser() {
+      return this.$store.getters['auth/myAuthenticatedUser'];
+    },
 },
 
 data() {
@@ -136,23 +139,84 @@ methods: {
       behavior: 'smooth', // Utilisez 'auto' pour un défilement instantané
     });
   },
+  successmsg:successmsg,
   updatePaginatedItems() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     return this.partenairesOptions.slice(startIndex, endIndex);
   },
   async fetchPartenaires() {
-try {
-  await this.$store.dispatch('fetchPartenairesData');
-   this.partenairesOptions = JSON.parse(JSON.stringify(this.$store.getters['getPartenaires']));
-   this.loading = false
-  console.log('Partenaires récupérés :', this.partenairesOptions);
-
-  // Continuez avec le reste de votre code pour traiter les partenaires
-} catch (error) {
-  console.error('Erreur lors de la récupération des partenaires :', error.message);
-}
+    try {
+              const response = await axios.get('/partenaires', {
+              headers: {
+                Authorization: `Bearer ${this.loggedInUser.token}`,
+                
+              },
+    
+            });
+               console.log(response.data.data);
+               this.partenairesOptions = response.data.data.data;
+               this.loading = false;
+            
+            } catch (error) {
+              console.error('errorqqqqq',error);
+            
+              if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+            }
 },
+async confirmDelete(id) {
+      // Affichez une boîte de dialogue Sweet Alert pour confirmer la suppression
+      const result = await Swal.fire({
+        title: 'Êtes-vous sûr?',
+        text: 'Vous ne pourrez pas revenir en arrière!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Oui, supprimez-le!',
+        cancelButtonText: 'Non, annulez!',
+        reverseButtons: true
+      });
+
+      // Si l'utilisateur confirme la suppression
+      if (result.isConfirmed) {
+        console.log(id);
+        this.DeletePartenaire(id);
+      }
+          },
+          async DeletePartenaire(id) {
+           this.loading = true
+          
+          try {
+            // Faites une requête pour supprimer l'élément avec l'ID itemId
+               const response = await axios.delete(`/partenaires/${id}`, {
+              headers: {
+                Authorization: `Bearer ${this.loggedInUser.token}`,
+              },
+    
+    
+            });
+            console.log('Réponse de suppression:', response);
+            if (response.data.status === 'success') {
+              this.loading = false
+             this.successmsg('Supprimé!', 'Votre partenaire a été supprimé.')
+            await this.fetchPartenaires()
+    
+            } else {
+              console.log('error', response.data)
+              this.loading = false
+            }
+          } catch (error) {
+            console.error('Erreur lors de la suppression:', error);
+            if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+            await this.$store.dispatch('user/clearLoggedInUser');
+          this.$router.push("/");  //a revoir
+        }
+            
+          }
+    
+        },
 
 
   filterByName() {

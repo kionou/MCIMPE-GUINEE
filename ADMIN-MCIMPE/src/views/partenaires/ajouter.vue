@@ -1,5 +1,6 @@
 <template >
      <Layout>
+      <Loading v-if="loading" style="z-index: 99999;"></Loading>
     <PageHeader title="Partenaires" pageTitle="Tableau de bord" />
     <BRow>
       <BCol lg="12">
@@ -43,16 +44,18 @@
                       <BCol md="6">
                       <div class="mb-3 position-relative">
                         <label for="userpassword">Code partenaire</label>
-                      <MazInput v-model="code"  no-radius type="text"  color="info" placeholder="exemple@gmail.com" />
-                       <!-- <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small>  -->
+                      <MazInput v-model="code"  no-radius type="text"  color="info" placeholder="mcimpe" />
+                       <small v-if="v$.code.$error">{{v$.code.$errors[0].$message}}</small> 
+                       <small v-if="resultError['CodePartenaire']"> {{ resultError["CodePartenaire"] }} </small>
                       </div>
                    </BCol>
 
                    <BCol md="6">
                       <div class="mb-3 position-relative">
                         <label for="userpassword">Nom partenaire</label>
-                      <MazInput v-model="nom"  no-radius type="text"  color="info" placeholder="exemple@gmail.com" />
-                       <!-- <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small>  -->
+                      <MazInput v-model="nom"  no-radius type="text"  color="info" placeholder="exemple" />
+                       <small v-if="v$.nom.$error">{{v$.nom.$errors[0].$message}}</small> 
+                       <small v-if="resultError['NomPartenaire']"> {{ resultError["NomPartenaire"] }} </small>
                       </div>
                    </BCol>
                     </BRow>
@@ -61,43 +64,43 @@
                       <BCol md="6">
                       <div class="mb-3 position-relative">
                         <label for="userpassword">Site web</label>
-                      <MazInput v-model="url"  no-radius type="url"  color="info" placeholder="exemple@gmail.com" />
-                       <!-- <small v-if="v$.step2.url.$error">{{v$.step2.url.$errors[0].$message}}</small>  -->
+                      <MazInput v-model="url"  no-radius type="url"  color="info" placeholder="www.exemple.com" />
+                       <small v-if="v$.url.$error">{{v$.url.$errors[0].$message}}</small> 
+                       <small v-if="resultError['SiteWeb']"> {{ resultError["SiteWeb"] }} </small>
                       </div>
                    </BCol>
 
                    <BCol md="6">
+                    <label for="userpassword">Logo partenaire</label>
                       <div class="mb-3 position-relative">
-                        <label for="userpassword">Logo partenaire</label>
-                      <MazInput v-model="prenom"  no-radius type="text"  color="info" placeholder="exemple@gmail.com" />
-                       <!-- <small v-if="v$.step2.prenom.$error">{{v$.step2.prenom.$errors[0].$message}}</small>  -->
+                        <input type="file" name="file" id="file" class="inputfile"  ref="fileInput"
+                        accept="image/*"
+                        @change="handleFileChange" />
+                      <label for="file">
+                        <i class="dripicons-cloud-download"></i>
+                      Joindre une pièce
+                      </label>
                       </div>
+                      <small v-if="resultError['image']"> {{ resultError["image"] }} </small>
                    </BCol>
                     </BRow>
 
                     <BRow>
                       <BCol md="12">
                       <div class="mb-3 position-relative">
-                        <label for="userpassword">Mot de passe </label>
+                        <label for="userpassword">Description </label>
                         <div class="form-ckeditor">
-                        <ckeditor v-model="editorData" :editor="editor"></ckeditor>
+                        <ckeditor v-model="description" :editor="editor"></ckeditor>
 
                       </div>
                       </div>
+                      <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
                    </BCol>
-
-                   
                     </BRow>
-
-                   
-
-
-
-
                     <BRow class="mb-0">
                       <BCol cols="12" class="text-end">
                         <div class="boutton">
-                        <button class="" @click="PasswordOtp()">Réinitialiser</button>
+                        <button class="" @click="SubmitPartenaire()">Valider</button>
                        </div>
                       </BCol>
                     </BRow>
@@ -130,7 +133,12 @@
 <script>
  import Layout from "../../layouts/main.vue";
  import PageHeader from "@/components/page-header.vue";
- import Pagination from "@/components/common/pagination.vue"
+ import Pag from '@/components/others/pagination.vue'
+import axios from '@/lib/axiosConfig.js'
+import Loading from '@/components/others/loading.vue';
+import useVuelidate from '@vuelidate/core';
+import { require, lgmin, lgmax , ValidEmail } from '@/functions/rules';
+import {successmsg} from "@/lib/modal.js"
  import CKEditor from "@ckeditor/ckeditor5-vue";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
@@ -138,11 +146,24 @@ export default {
     components: {
     Layout,
     PageHeader,
-    Pagination , ckeditor: CKEditor.component
+    Loading ,
+    Pag, ckeditor: CKEditor.component
   },
   data() {
     return { 
+     
+        loading:false,
+        v$: useVuelidate(),
+        resultError: {},
+      v$: useVuelidate(),
+        error:'',
+        code:'',
+        nom:'',
+        url:'',
+        selectedFile:'',
+        description:'',
        editor: ClassicEditor,
+      
        
 
       plugins: [
@@ -167,6 +188,119 @@ export default {
       AddPartenaire:false
     }
   },
+  validations: {
+      code: {
+      require,
+      lgmin: lgmin(2),
+      lgmax: lgmax(20),
+    },
+    nom: {
+      require,
+      lgmin: lgmin(2),
+      lgmax: lgmax(20),
+    },
+    url: {
+      require,
+    },
+    selectedFile: {
+      require,
+      
+    },
+    description: {
+     
+      
+    },
+   
+     
+  },
+  computed:{
+    loggedInUser() {
+      return this.$store.getters['auth/myAuthenticatedUser'];
+    },
+    
+  },
+  mounted() {
+    console.log("uusers",this.loggedInUser);
+  },
+ 
+   methods: {
+    successmsg:successmsg,
+    handleFileChange(event) {
+      console.log("File input change");
+      const file = event.target.files[0];
+      console.log("Selected file:", file);
+      this.selectedFile = file;
+    },
+    async SubmitPartenaire() {
+      this.v$.$touch();
+      console.log("bonjour");
+
+      if (this.v$.$errors.length == 0) {
+        console.log("bonjour");
+         this.loading = true;
+        const formData = new FormData();
+        formData.append("NomPartenaire", this.nom);
+        formData.append("Description", this.description);
+        formData.append("image", this.selectedFile);
+        formData.append("StatutPartenaire", 1);
+        formData.append("CodePartenaire", this.code);
+        formData.append("SiteWeb", this.url);
+        formData.append( "Direction",this.loggedInUser.direction )
+         
+        console.log(formData);
+        console.log(
+          this.nom,
+          this.description, 
+          this.selectedFile, this.code , this.url
+        );
+
+        try {
+          const response = await axios.post("/nouveau-partenaire", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${this.loggedInUser.token}`,
+            },
+          });
+          console.log("Réponse du téléversement :", response);
+          if (response.data.status === "success") {
+            this.loading = false
+            this.successmsg("Création d'un partenaire",'Votre partenaire a été crée avec succès !')
+            this.$router.push({ path: '/partenaires' })
+            
+          } 
+        } catch (error) {
+          console.error("Erreur lors du téléversement :", error);
+          if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+            await this.$store.dispatch('user/clearLoggedInUser');
+          this.$router.push("/");  //a revoir
+        }else {
+      this.formatValidationErrors(error.response.data.errors);
+    }
+        }
+      } else {
+        console.log("cest pas bon ", this.v$.$errors);
+      }
+    },
+
+    async formatValidationErrors(errors) {
+      const formattedErrors = {};
+
+      for (const field in errors) {
+        const errorMessages = errors[field]; // Liste complète des messages d'erreur
+        console.log(" errorMessages", errorMessages, typeof errorMessages);
+
+        const concatenatedError = errorMessages.join(", "); // Concaténer les messages d'erreur
+        console.log(" concatenatedError", concatenatedError, typeof concatenatedError);
+
+        formattedErrors[field] = concatenatedError; // Utilisez le nom du champ comme clé
+      }
+
+      this.resultError = formattedErrors; // Stockez les erreurs dans un objet
+
+      // Maintenant, this.resultError est un objet où les clés sont les noms des champs
+      console.log("resultError", this.resultError);
+    },
+   },
 }
 </script>
 <style lang="css" scoped>
