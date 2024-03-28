@@ -28,7 +28,7 @@ router.beforeEach((to, from, next) => {
   } else if ((to.name === 'login' ) && isAuthenticated) {
     // Si l'utilisateur est connecté et essaie d'accéder aux pages d'inscription ou de connexion,
     // redirigez-le vers la page mon_espace
-    next('/index');
+    next('/');
   }
   else {
     next();

@@ -115,10 +115,10 @@
             }
         },
         "invoices": {
-            "text": "Gestion PME",
+            "text": "Unites Industrielles",
             "list": {
-                "invoicelist": "Liste des PME",
-                "invoicedetail": "Créer une nouvelle"
+                "invoicelist": "Liste des industries"
+               
             }
         },
         "projects": {
@@ -127,11 +127,16 @@
                 "grid": "Documents",
                 "projectlist": "Localités",
                 "overview": "Partenaires",
-                "create": "Secteurs & Sous-secteurs"
+                "create": "Secteurs & Sous-secteurs",
+                "demande": "Types de demandes",
+                "categorie": "types Produits",
+                "zone": " Zones Industrielles",
+                "indicateur": "Indicateurs",
+                "juridique": "Statuts Juridiques"
             }
         },
         "tasks": {
-            "text": "Gestion Autorisation",
+            "text": "Gestion des demandes",
             "list": {
                 "tasklist": "Liste de tâches",
                 "kanban": "Tableau Kanban",

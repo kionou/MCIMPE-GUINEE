@@ -1,5 +1,6 @@
 <script>
 import simplebar from "simplebar-vue";
+import { mapGetters } from 'vuex';
 
 
 /**
@@ -29,7 +30,7 @@ export default {
     };
   },
   mounted() {
-   
+    console.log("index",this.loggedInUser);
   },
   methods: {
     toggleRightSidebar() {
@@ -82,6 +83,9 @@ export default {
   
   },
   watch: {
+    isAuthenticated(newValue) {
+      console.log('User is logged in:', newValue);
+    },
     type: {
       immediate: true,
       handler(newVal, oldVal) {
@@ -152,6 +156,21 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters('auth', ['isAuthenticated']),
+   shouldShowNavbar() {
+    this.$store.dispatch('auth/loadMyAuthenticatedUser')
+    
+      return (
+        this.isAuthenticated &&
+        this.$route.path !== '/'
+       
+      );
+    },
+    loggedInUser() {
+      return this.$store.getters['auth/myAuthenticatedUser'];
+    },
+  },
 };
 </script>
 
@@ -172,39 +191,42 @@ export default {
 
           <router-link to="/" class="logo logo-light">
             <span class="logo-sm">
-              <img src="@/assets/images/logo-light.svg" alt height="22" />
+              <img src="@/assets/img/armoirie.png" alt height="52" width="55"/>
             </span>
             <span class="logo-lg">
-              <img src="@/assets/images/logo-light.png" alt height="19" />
+              <img src="../assets/img/armoirie.png" alt  />
+              <span class="texte">MCIPME</span>
             </span>
           </router-link>
         </div>
 
         <BButton variant="white" id="toggle" type="button" class="btn btn-sm me-2 font-size-16 d-lg-none header-item" @click="toggleMenu">
-          <i class="fa fa-fw fa-bars"></i>
+          <img src="../assets/img/bars.png" alt="" width="35" height="35">
         </BButton>
       </div>
-
       <div class="d-flex">
-        
-        <BDropdown right variant="black" toggle-class="header-item">
+        <BDropdown right variant="black" toggle-class="header-item" menu-class="dropdown-menu-end">
           <template v-slot:button-content>
-            <img class="rounded-circle header-profile-user" src="@/assets/images/users/avatar-1.jpg" alt="Header Avatar" />
-            <span class="d-none d-xl-inline-block ms-1">{{
-              $t("navbar.dropdown.henry.text")
-            }}</span>
+            <img class="rounded-circle header-profile-user" v-if="loggedInUser.profile === null" src="@/assets/img/guinea.png" alt="Header Avatar" />
+            <img class="rounded-circle header-profile-user" v-else :src="loggedInUser.profile" alt="Header Avatar" />
+            <span class="d-none d-xl-inline-block ms-1">
+              <div v-if="currentUser">
+                {{ loggedInUser.nom  }}
+              </div>
+              <div v-else>{{ loggedInUser.nom  }}</div>
+            </span>
             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
           </template>
           <BDropdownItem>
-            <router-link to="/contacts/profile" v-slot="{ navigate }" custom>
-              <span @click="navigate" @keypress.enter="navigate">
+            <router-link to="/contacts/profile" v-slot="{ navigate }">
+              <span @click="navigate" @keypress.enter="navigate" class="text-body">
                 <i class="bx bx-user font-size-16 align-middle me-1"></i>
-                {{ $t("navbar.dropdown.henry.list.profile") }}
+                Profil
               </span>
             </router-link>
           </BDropdownItem>
          
-        
+       
           <BDropdownDivider></BDropdownDivider>
           <a href="#" @click="logout" class="dropdown-item text-danger">
             <i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i>
@@ -221,3 +243,28 @@ export default {
     </div>
   </header>
 </template>
+
+<style scoped>
+.logo-lg{
+
+
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: space-around;
+}
+
+.logo-lg img{
+width: 45px;
+height: 45px;
+
+}
+
+.logo-lg .texte{
+
+color: #fff !important;
+font-size: 30px;
+font-weight: bolder;
+font-family: 'Material Design Icons';
+}
+</style>

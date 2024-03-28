@@ -533,7 +533,7 @@ async mounted() {
             this.step2.code = user.CodePrefecture,
             this.step2.nom = user.NomPrefecture,
             this.step2.region = user.CodeRegion,
-            this.ToId = user.CodeRegion
+            this.ToId = user.CodePrefecture
              } else {
                  console.log('Utilisateur non trouvé avec l\'ID', id);
              }
@@ -572,11 +572,10 @@ async mounted() {
           });
           console.log("Réponse du téléversement :", response);
           if (response.data.status === "success") {
-           
+            await this.fetchPrefectureOptions()
             this.UpdateUser1 = false
            this.loading = false
            this.successmsg("Modification de",'Votre region a été modifiée avec succès !')
-           await this.fetchRegionOptions()
             
           } 
         } catch (error) {

@@ -1,5 +1,7 @@
 // axiosConfig.js
 import axios from 'axios';
+import qs from 'qs';
+
 
 
 // Créez une instance d'Axios avec la configuration souhaitée
@@ -13,6 +15,9 @@ const axiosInstance = axios.create({
     // Type de contenu des requêtes
     // Vous pouvez ajouter d'autres en-têtes ici si nécessaire
   },
+  paramsSerializer: (params) => {
+    return qs.stringify(params, {arrayFormat: 'repeat'});
+},
 });
 
 

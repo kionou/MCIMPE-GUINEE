@@ -29,6 +29,7 @@ const actions = {
       prenom: user.user.Prenoms,
       email: user.user.email,
       whatsapp: user.user.Whatsapp,
+      profile:user.user.profile,
       token: user.access_token,
       tokenExpiration: tokenExpiration,
     };

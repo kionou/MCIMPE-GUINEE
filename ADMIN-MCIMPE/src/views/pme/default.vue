@@ -1,5 +1,6 @@
 <template >
     <Layout>
+      <Loading v-if="loading" style="z-index: 99999;"></Loading>
    <PageHeader title="Pme" pageTitle="Tableau de bord" />
    <BRow>
      <BCol lg="12">
@@ -17,23 +18,28 @@
            </div>
          </BCardBody>
         
-
-          <BRow class="justify-content-center">
-      <div class="parent">
-       <div class="carde">
+         <BCardBody v-if="paginatedItems.length === 0" class="noresul">
+            <div >
+          <span> Vous n'avez pas encore de pme, vous pouvez également en ajouter un !! </span>
+           </div>
+          </BCardBody>
+          <BCardBody v-else>
+            <BRow class="justify-content-center">
+      <div class="parent" v-for="pme in paginatedItems" :key="pme.id">
+       <div class="carde" >
       <div class="content-box">
-          <span class="carde-title">3D Card</span>
+          <span class="carde-title">{{ pme.NomMpme }}</span>
           <!-- <p class="carde-content">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
           </p> -->
-          <p class="texte-content carde-content">Date creation: <span>1900</span></p>
+          <p class="texte-content carde-content">Date creation: <span>{{ pme.AnneeCreation }}</span></p>
           <div class="texte">
-          <p class="texte-content">Region: <span>Conakry</span></p>
-          <p class="texte-content">Ville: <span>Conakry</span></p>
-          <p class="texte-content">Secteur Activité: <span>Conakry</span></p>
-          <p class="texte-content">Taille: <span>Conakry</span></p>
-          <p class="texte-content">Email: <span>kionou.00@gmail.com</span></p>
-          <p class="texte-content">Contact: <span> +227 0757408303</span></p>
+          <p class="texte-content">Region: <span>{{ pme.Region }}</span></p>
+          <p class="texte-content">Ville: <span>{{ pme.Ville }}</span></p>
+          <p class="texte-content">Secteur Activité: <span>{{ pme.PrincipalSecteurActivite }}</span></p>
+          <p class="texte-content">Taille: <span>{{ pme.SigleMpme }}</span></p>
+          <p class="texte-content">Email: <span>{{ pme.AdresseEmail }}</span></p>
+          <p class="texte-content">Contact: <span> {{ pme.NumeroWhatsApp }}</span></p>
           <div class="w-100 d-flex justify-content-center" style="border: 3px solid #eff2f7; background-color: white; padding: 5px;">
             <ul class="list-unstyled hstack gap-1 mb-0">
                        
@@ -68,178 +74,22 @@
       </div>
   </div>
 </div>
-     </div>
-
-     <div class="parent">
-       <div class="carde">
-      <div class="content-box">
-          <span class="carde-title">3D Card</span>
-          <!-- <p class="carde-content">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-          </p> -->
-          <p class="texte-content carde-content">Date creation: <span>1900</span></p>
-          <div class="texte">
-          <p class="texte-content">Region: <span>Conakry</span></p>
-          <p class="texte-content">Ville: <span>Conakry</span></p>
-          <p class="texte-content">Secteur Activité: <span>Conakry</span></p>
-          <p class="texte-content">Taille: <span>Conakry</span></p>
-          <p class="texte-content">Email: <span>kionou.00@gmail.com</span></p>
-          <p class="texte-content">Contact: <span> +227 0757408303</span></p>
-          <div class="w-100 d-flex justify-content-end">
-          
-
-          </div>
-      </div>
-      <div class="date-box">
-          <span class="month">JUNE</span>
-          <span class="date">29</span>
-      </div>
-  </div>
-</div>
-     </div>
-
-     <div class="parent">
-       <div class="carde">
-      <div class="content-box">
-          <span class="carde-title">3D Card</span>
-          <!-- <p class="carde-content">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-          </p> -->
-          <p class="texte-content carde-content">Date creation: <span>1900</span></p>
-          <div class="texte">
-          <p class="texte-content">Region: <span>Conakry</span></p>
-          <p class="texte-content">Ville: <span>Conakry</span></p>
-          <p class="texte-content">Secteur Activité: <span>Conakry</span></p>
-          <p class="texte-content">Taille: <span>Conakry</span></p>
-          <p class="texte-content">Email: <span>kionou.00@gmail.com</span></p>
-          <p class="texte-content">Contact: <span> +227 0757408303</span></p>
-          <div class="w-100 d-flex justify-content-end">
-          <span class="see-more">
-            <i class="bx bx-show"></i>
-          </span>
-
-          </div>
-      </div>
-      <div class="date-box">
-          <span class="month">JUNE</span>
-          <span class="date">29</span>
-      </div>
-  </div>
-</div>
-     </div>
-      
+     </div>   
     </BRow>
-         
+          </BCardBody>
+        
+          <BRow>
+              <BCol lg="12">
+                <div class="container_pagination">
+                  <Pag :current-page="currentPage" :total-pages="totalPages" @page-change="updateCurrentPage" />
+                </div>
+              </BCol>
+            </BRow>
        </BCard>
      </BCol>
    </BRow>
 
 
-   <BModal v-model="AddPartenaire" hide-footer centered header-class="border-0" title-class="font-18" size="lg">
-     <div>
-   
-   <div class="account-pages " style="width:100%;">
-     <BContainer>
-       <BRow >
-         <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
-            border: 1px solid #c9d1d9 !important;">
-             <div class="bg-primary-subtle">
-               <BRow>
-                 <BCol cols="12 text-center">
-                   <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter un partenaire</h5>
-                     
-                   </div>
-                 </BCol>
-                 
-               </BRow>
-             </div>
-             <BCardBody class="pt-0">
-               <div>
-                 <router-link to="#">
-                   <div class="avatar-md profile-user-wid ">
-                 <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
-                   <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
-                 </span>
-               </div>
-                 </router-link>
-               </div>
-               <div class="p-2">
-                 <BForm class="form-horizontal">
-                   <BRow>
-                     <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Code partenaire</label>
-                     <MazInput v-model="code"  no-radius type="text"  color="info" placeholder="exemple@gmail.com" />
-                      <!-- <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small>  -->
-                     </div>
-                  </BCol>
-
-                  <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom partenaire</label>
-                     <MazInput v-model="nom"  no-radius type="text"  color="info" placeholder="exemple@gmail.com" />
-                      <!-- <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small>  -->
-                     </div>
-                  </BCol>
-                   </BRow>
-
-                   <BRow>
-                     <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Site web</label>
-                     <MazInput v-model="url"  no-radius type="url"  color="info" placeholder="exemple@gmail.com" />
-                      <!-- <small v-if="v$.step2.url.$error">{{v$.step2.url.$errors[0].$message}}</small>  -->
-                     </div>
-                  </BCol>
-
-                  <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Logo partenaire</label>
-                     <MazInput v-model="prenom"  no-radius type="text"  color="info" placeholder="exemple@gmail.com" />
-                      <!-- <small v-if="v$.step2.prenom.$error">{{v$.step2.prenom.$errors[0].$message}}</small>  -->
-                     </div>
-                  </BCol>
-                   </BRow>
-
-                   <BRow>
-                     <BCol md="12">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Mot de passe </label>
-                       <div class="form-ckeditor">
-                       <ckeditor v-model="editorData" :editor="editor"></ckeditor>
-
-                     </div>
-                     </div>
-                  </BCol>
-
-                  
-                   </BRow>
-
-                  
-
-
-
-
-                   <BRow class="mb-0">
-                     <BCol cols="12" class="text-end">
-                       <div class="boutton">
-                       <button class="" @click="PasswordOtp()">Réinitialiser</button>
-                      </div>
-                     </BCol>
-                   </BRow>
-                 </BForm>
-               </div>
-             </BCardBody>
-           </BCard>
-           
-         </BCol>
-       </BRow>
-     </BContainer>
-   </div>
- </div>
-   </BModal>
    
 
  </Layout>
@@ -247,42 +97,69 @@
 <script>
 import Layout from "../../layouts/main.vue";
 import PageHeader from "@/components/page-header.vue";
-import Pagination from "@/components/common/pagination.vue"
-import CKEditor from "@ckeditor/ckeditor5-vue";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import Pag from '@/components/others/pagination.vue'
+import axios from '@/lib/axiosConfig.js'
+import Loading from '@/components/others/loading.vue';
+
 
 export default {
    components: {
    Layout,
    PageHeader,
-   Pagination , ckeditor: CKEditor.component
+   Loading ,
+   Pag,
+  
  },
  data() {
    return { 
-      editor: ClassicEditor,
       
-
-     plugins: [
-       "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
-       "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-       "save table contextmenu directionality emoticons template paste textcolor",
-     ],
-     toolbar:
-       "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons",
-     options: {
-       height: 300,
-       style_formats: [
-         { title: "Bold text", inline: "b" },
-         { title: "Red text", inline: "span", styles: { color: "#ff0000" } },
-         { title: "Red header", block: "h1", styles: { color: "#ff0000" } },
-         { title: "Example 1", inline: "span", classes: "example1" },
-         { title: "Example 2", inline: "span", classes: "example2" },
-         { title: "Table styles" },
-         { title: "Table row 1", selector: "tr", classes: "tablerow1" },
-       ],
-     },
-     AddPartenaire:false
+    loading:true,
+    pmeOptions:[],
+    currentPage: 1,
+     itemsPerPage: 8,
+     totalPageArray: [],
    }
+ },
+ computed:{
+   loggedInUser() {
+     return this.$store.getters['auth/myAuthenticatedUser'];
+   },
+   totalPages() {
+   return Math.ceil(this.pmeOptions.length / this.itemsPerPage);
+   },
+   paginatedItems() {
+     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+     const endIndex = startIndex + this.itemsPerPage;
+     return this.pmeOptions.slice(startIndex, endIndex);
+   },
+ },
+async  mounted() {
+  console.log("uusers",this.loggedInUser);
+   await this.fetchPmes()
+ },
+ methods: {
+  async fetchPmes() {
+            try {
+              const response = await axios.get('/mcipme', {
+              headers: {
+                Authorization: `Bearer ${this.loggedInUser.token}`,
+                
+              },
+    
+            });
+               console.log(response.data.data);
+                this.pmeOptions = response.data.data;
+               this.loading = false;
+            
+            } catch (error) {
+              console.error('errorqqqqq',error);
+            
+              if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+            }
+          },
  },
 }
 </script>
@@ -355,7 +232,7 @@ margin-bottom: 10px !important;
     color: #f2f2f2;
     position: absolute;
     right: 33px;
-    top: 80px;
+    top: 11px;
 }
 
 .content-box .carde-content:hover {

@@ -3,6 +3,7 @@
 import simplebar from "simplebar-vue";
 import { avatar3, avatar4, avatar1 } from "@/assets/images/users/data"
 import { mapGetters } from 'vuex';
+import { icons } from "@/lib/data-fontawesome";
 
 export default {
   data() {
@@ -100,7 +101,7 @@ export default {
         <div class="navbar-brand-box">
           <router-link to="/" class="logo logo-dark">
             <span class="logo-sm">
-              <img src="@/assets/images/logo.svg" alt height="22" />
+              <img src="@/assets/images/logomcipme.png" alt height="22" />
             </span>
             <span class="logo-lg">
               <img src="@/assets/images/logo-dark.png" alt height="17" />
@@ -109,28 +110,30 @@ export default {
 
           <router-link to="/" class="logo logo-light">
             <span class="logo-sm">
-              <img src="@/assets/images/logo-light.svg" alt height="22" />
+              <img src="@/assets/img/armoirie.png" alt height="52" width="55"/>
             </span>
             <span class="logo-lg">
-              <img src="@/assets/images/logo-light.png" alt height="19" />
+              <img src="../assets/img/armoirie.png" alt  />
+              <span class="texte">MCIPME</span>
             </span>
           </router-link>
         </div>
 
         <BButton variant="white" id="vertical-menu-btn" type="button" class="btn btn-sm px-3 font-size-16 header-item" @click="toggleMenu">
-          <i class="fa fa-fw fa-bars"></i>
+          <img src="../assets/img/bars.png" alt="" width="35" height="35">
         </BButton>
       </div>
 
       <div class="d-flex">
         <BDropdown right variant="black" toggle-class="header-item" menu-class="dropdown-menu-end">
           <template v-slot:button-content>
-            <img class="rounded-circle header-profile-user" :src="avatar1" alt="Header Avatar" />
+            <img class="rounded-circle header-profile-user" v-if="loggedInUser.profile === null" src="@/assets/img/guinea.png" alt="Header Avatar" />
+            <img class="rounded-circle header-profile-user" v-else :src="loggedInUser.profile" alt="Header Avatar" />
             <span class="d-none d-xl-inline-block ms-1">
               <div v-if="currentUser">
-                {{ currentUser.displayName }}
+                {{ loggedInUser.nom  }}
               </div>
-              <div v-else>Henry</div>
+              <div v-else>{{ loggedInUser.nom  }}</div>
             </span>
             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
           </template>
@@ -138,7 +141,7 @@ export default {
             <router-link to="/contacts/profile" v-slot="{ navigate }">
               <span @click="navigate" @keypress.enter="navigate" class="text-body">
                 <i class="bx bx-user font-size-16 align-middle me-1"></i>
-                {{ $t("navbar.dropdown.henry.list.profile") }}
+                Profil
               </span>
             </router-link>
           </BDropdownItem>
@@ -160,3 +163,28 @@ export default {
     </div>
   </header>
 </template>
+
+<style scoped>
+.logo-lg{
+
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.logo-lg img{
+width: 45px;
+height: 45px;
+
+}
+
+.logo-lg .texte{
+
+  color: #fff !important;
+  font-size: 30px;
+  font-weight: bolder;
+  font-family: 'Material Design Icons';
+}
+</style>

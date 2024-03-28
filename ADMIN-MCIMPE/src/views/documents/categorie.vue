@@ -1,19 +1,19 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-     <PageHeader title="Localités" pageTitle="Tableau de bord" />
+   <PageHeader title="Documents" pageTitle="Tableau de bord" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
          <BCardBody class="border-bottom">
            <div class="d-flex align-items-center justify-content-between">
-             <BCardTitle class="mb-0 ">Liste des sous Prefectures</BCardTitle>
+             <BCardTitle class="mb-0 ">Liste des Ctégories</BCardTitle>
 
              <div class="d-flex justify-content-evenly" style="width: 400px;">
                 
-                <BLink href="#!" @click="$router.push({ path: '/localite/regions' })"  class="btn btn-primary">Region</BLink>
-               <BLink href="#!" @click="$router.push({ path: '/localite/prefectures' })"  class="btn btn-primary">Prefecture</BLink>
-               <BLink href="#!" @click="$router.push({ path: '/localite/quartiers' })"  class="btn btn-primary">Quartier</BLink>
+               <BLink href="#!" @click="$router.push({ path: '/documents/sous-categories' })"  class="btn btn-primary">Sous categorie</BLink>
+               <BLink href="#!" @click="$router.push({ path: '/documents/fichier' })"  class="btn btn-primary">Fichier</BLink>
+             
                
              </div>
 
@@ -43,8 +43,6 @@
                    <BTh scope="col" ></BTh>
                    <BTh scope="col">Code</BTh>
                    <BTh scope="col">Nom</BTh>
-                   <BTh scope="col">Prefecture</BTh>
-                   <BTh scope="col">Region</BTh>
                    <BTh scope="col">Action</BTh>
                  </BTr>
                </BThead>
@@ -54,7 +52,7 @@
                      <div  class="avatar-xs">
 
                        <span class="avatar-title rounded-circle">
-                         <img src="../../assets/img/local.png" alt="" class="w-100 h-100 rounded-circle">
+                         <img src="../../assets/img/fichier.png" alt="" class="w-50 h-50 rounded-circle">
                          
                        </span>
                      </div>
@@ -62,11 +60,12 @@
                    </BTd>
                    <BTd>
                     
-                    {{ region.CodeSousPrefecture }}
+                    {{ region.CodeRegion }}
                    </BTd>
-                   <BTd>{{ region.NomSousPrefecture }}</BTd>
-                   <BTd>{{ NamePrefecture(region.CodePrefecture)  }}</BTd>
-                   <BTd>{{  NameRegion(region.CodePrefecture.slice(0, 2)) }}</BTd>
+                   <BTd>{{ region.NomRegion }}</BTd>
+                   
+                  
+                  
                    <BTd>
                      <ul class="list-unstyled hstack gap-1 mb-0">
                       
@@ -74,7 +73,7 @@
                          <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(region.CodeSousPrefecture)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                         <Blink href="#" @click="confirmDelete(region.CodeRegion)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
                          <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
@@ -111,7 +110,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter une sous prefecture</h5>
+                     <h5 class="text-primary">Ajouter une categorie</h5>
                      
                    </div>
                  </BCol>
@@ -133,10 +132,10 @@
                    <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">code</label>
-                     <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="0001" />
+                       <label for="userpassword">Code Categorie</label>
+                     <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
                       <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeSousPrefecture']"> {{ resultError["CodeSousPrefecture"] }} </small>
+                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
                   </BCol>
@@ -144,26 +143,17 @@
                 <BRow>
                   <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom</label>
+                       <label for="userpassword">Nom Categorie</label>
                      <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
                       <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['NoSousPrefecture']"> {{ resultError["NomSousPrefecture"] }} </small>
+                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
                   </BCol>
                    </BRow>
+                  
 
-                   <BRow>
-                  <BCol md="12">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Prefecture</label>
-                      <MazSelect label="Sélectionner la prefecture" v-model="step1.prefecture" color="info" :options="SelectPrefecture" search />
-                      <small v-if="v$.step1.prefecture.$error">{{v$.step1.prefecture.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodePrefecture']"> {{ resultError["CodePrefecture"] }} </small>
 
-                     </div>
-                  </BCol>
-                   </BRow>
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
                        <div class="boutton">
@@ -196,7 +186,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier une sous prefecture</h5>
+                     <h5 class="text-primary">Modifier une categorie</h5>
                      
                    </div>
                  </BCol>
@@ -215,39 +205,30 @@
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                    <BRow>
+                   <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">code</label>
-                     <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="0001" />
+                       <label for="userpassword">Code</label>
+                     <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
                       <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeSousPrefecture']"> {{ resultError["CodeSousPrefecture"] }} </small>
+                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
                   </BCol>
-                </BRow>
-                <BRow>
-                  <BCol md="12">
+
+                 
+                   </BRow>
+                   <BCol md="12">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Nom</label>
-                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
+                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="Conakry" />
                       <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['NomSousPrefecture']"> {{ resultError["NomSousPrefecture"] }} </small>
+                      <small v-if="resultError['NomRegion']"> {{ resultError["NomRegion"] }} </small>
 
                      </div>
                   </BCol>
-                   </BRow>
-
                    <BRow>
-                  <BCol md="12">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Prefecture</label>
-                      <MazSelect label="Sélectionner la préfecture" v-model="step2.prefecture" color="info" :options="SelectPrefecture" search />
-                      <small v-if="v$.step2.prefecture.$error">{{v$.step2.prefecture.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodePrefecture']"> {{ resultError["CodePrefecture"] }} </small>
-
-                     </div>
-                  </BCol>
+                    
                    </BRow>
 
                    <BRow class="mb-0">
@@ -299,26 +280,21 @@ export default {
      UpdateUser1:false,
      ToId:'',
      regionOptions:[],
-     prefectureOptions:[],
-     SelectPrefecture:[],
-     sous_prefectureOptions:[],
      currentPage: 1,
-     itemsPerPage: 30,
+     itemsPerPage: 8,
      totalPageArray: [],
       resultError: {},
      v$: useVuelidate(),
-     IdLocalite:'',
        error:'',
      step1:{
             code:'',
             nom:'',
-            prefecture:'',
+  
           },
 
             step2:{
              code:'',
             nom:'',
-            prefecture:'',
            
        },
    }
@@ -334,10 +310,6 @@ export default {
      lgmin: lgmin(2),
      lgmax: lgmax(20),
    },
-   prefecture: {
-     require
-     
-   }
   
    },
    step2:{
@@ -350,31 +322,29 @@ export default {
      lgmin: lgmin(2),
      lgmax: lgmax(20),
    },
-   prefecture: {
-     require
+  
+           
+       },
      
-   }    
-       },   
+
+   
  },
  computed:{
    loggedInUser() {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
    totalPages() {
-   return Math.ceil(this.sous_prefectureOptions.length / this.itemsPerPage);
+   return Math.ceil(this.regionOptions.length / this.itemsPerPage);
    },
    paginatedItems() {
      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
      const endIndex = startIndex + this.itemsPerPage;
-     return this.sous_prefectureOptions.slice(startIndex, endIndex);
+     return this.regionOptions.slice(startIndex, endIndex);
    },
  },
 async mounted() {
    console.log("uusers",this.loggedInUser);
-   await this.fetchSousPrefectureOptions()
   await this.fetchRegionOptions()
-   await this.fetchPrefectureOptions()
- 
  },
  methods: {
    validatePasswordsMatch() {
@@ -390,8 +360,7 @@ async mounted() {
          
         ); // Accéder aux options des pays via le getter
         console.log(options);
-        this.regionOptions = options;
-        // Affecter les options à votre propriété sortedCountryOptions
+        this.regionOptions = options; // Affecter les options à votre propriété sortedCountryOptions
         this.loading = false
       } catch (error) {
         console.error(
@@ -400,44 +369,6 @@ async mounted() {
         );
       }
     },
-    async fetchPrefectureOptions() { // Renommez la méthode pour refléter qu'elle récupère les options de pays
-      try {
-        await this.$store.dispatch('fetchPrefectureOptions');
-        const options = JSON.parse(JSON.stringify(this.$store.getters['getprefectureOptions'])); // Accéder aux options des pays via le getter
-        console.log('Options des Prefecture:', options);
-         this.prefectureOptions = options; 
-         this.SelectPrefecture = this.prefectureOptions.map(prefecture => ({
-        label: prefecture.NomPrefecture,
-        value: prefecture.CodePrefecture,
-        code:  prefecture.CodePrefecture
-      }));
-        
-        // Affecter les options à votre propriété sortedCountryOptions
-      } catch (error) {
-        console.error('Erreur lors de la récupération des options des prefecture :', error);
-      }
-    },
-    async fetchSousPrefectureOptions() {
-  try {
-    await this.$store.dispatch("fetchSous_PrefectureOptions");
-    const options = JSON.parse(JSON.stringify(this.$store.getters["getSousprefectureOptions"]));
-    this.sous_prefectureOptions = options;
-     console.log('Sous-préfecture :', options);
-    //  const options = sousprefecturesFromAPI.map(sousprefecture => ({
-    //     label: sousprefecture.NomSousPrefecture,
-    //     value: sousprefecture.CodeSousPrefecture,
-    //     code:sousprefecture.CodePrefecture
-    //   }));
-
-    
-   
-  } catch (error) {
-    console.error(
-      "Erreur lors de la récupération des options des sous-préfectures :",
-      error.message
-    );
-  }
-},
    async HamdleAddUser(){
      this.error = '',
      this.resultError= '',
@@ -445,14 +376,13 @@ async mounted() {
     if (this.v$.$errors.length == 0 ) {
        this.loading = true
          let DataUser = {
-            CodeSousPrefecture:this.step1.code,
-            NomSousPrefecture:this.step1.nom,
-            CodePrefecture:this.step1.prefecture
+           CodeRegion:this.step1.code,
+           NomRegion:this.step1.nom,
          }
          console.log("eeeee",DataUser);
          try {
         
-         const response = await axios.post('/sous-prefectures' , DataUser, {
+         const response = await axios.post('/regions' , DataUser, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
              },
@@ -463,8 +393,8 @@ async mounted() {
          if (response.data.status === "success") { 
            this.AddUser = false
            this.loading = false
-           this.successmsg("Création de sous-prefecture",'Votre sous-prefecture a été crée avec succès !')
-          await this.fetchSousPrefectureOptions()
+           this.successmsg("Création de region",'Votre region a été crée avec succès !')
+           await this.fetchRegionOptions()
 
          } else {
 
@@ -511,7 +441,7 @@ async mounted() {
          
          try {
            // Faites une requête pour supprimer l'élément avec l'ID itemId
-           const response = await axios.delete(`/sous-prefectures/${id}`, {
+           const response = await axios.delete(`/regions/${id}`, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
                
@@ -522,10 +452,9 @@ async mounted() {
            });
            console.log('Réponse de suppression:', response);
            if (response.data.status === 'success') {
-            await this.fetchSousPrefectureOptions()
              this.loading = false
-            this.successmsg('Supprimé!', 'Votre sous-prefecture a été supprimée.')
-           
+            this.successmsg('Supprimé!', 'Votre region a été supprimée.')
+            await this.fetchRegionOptions()
    
            } else {
              console.log('error', response.data)
@@ -547,16 +476,15 @@ async mounted() {
 
          try {
              // Recherchez l'objet correspondant dans le tableau regionOptions en fonction de l'ID
-             const user = this.sous_prefectureOptions.find(user => user.id === id);
+             const user = this.regionOptions.find(user => user.id === id);
 
              if (user) {
                  // Utilisez les informations récupérées de l'objet user
                  console.log('Informations de l\'utilisateur:', user);
 
-            this.step2.code = user.CodeSousPrefecture,
-            this.step2.nom = user.NomSousPrefecture,
-            this.step2.prefecture = user.CodePrefecture,
-            this.ToId = user.CodeSousPrefecture
+            this.step2.code = user.CodeRegion,
+            this.step2.nom = user.NomRegion,
+            this.ToId = user.CodeRegion
              } else {
                  console.log('Utilisateur non trouvé avec l\'ID', id);
              }
@@ -579,15 +507,14 @@ async mounted() {
       
                const dataCath = {
    
-             CodePrefecture:this.step2.prefecture,
-             NomSousPrefecture:this.step2.nom,
-             CodeSousPrefecture:this.step2.code,
-             StatutSousPrefecture:1
+           CodeRegion:this.step2.code,
+           NomRegion:this.step2.nom,
+           Statut:1
              }
-     console.log('dataCath',dataCath);
+             console.log('dataCath',dataCath);
    
         try {
-          const response = await axios.put(`sous-prefectures/${this.ToId}`,dataCath, {
+          const response = await axios.put(`regions/${this.ToId}`,dataCath, {
             headers: {
              
               Authorization: `Bearer ${this.loggedInUser.token}`,
@@ -595,10 +522,11 @@ async mounted() {
           });
           console.log("Réponse du téléversement :", response);
           if (response.data.status === "success") {
-            await this.fetchSousPrefectureOptions()
+            await this.fetchRegionOptions()
             this.UpdateUser1 = false
            this.loading = false
            this.successmsg("Modification de",'Votre region a été modifiée avec succès !')
+           
             
           } 
         } catch (error) {
@@ -625,7 +553,7 @@ async mounted() {
          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         
          const endIndex = startIndex + this.itemsPerPage;
-         return  this.sous_prefectureOptions.slice(startIndex, endIndex);
+         return  this.regionOptions.slice(startIndex, endIndex);
        },
 
        async formatValidationErrors(errors) {
@@ -646,27 +574,6 @@ async mounted() {
      // Maintenant, this.resultError est un objet où les clés sont les noms des champs
      console.log("resultError", this.resultError);
    },
-
-   NameRegion(id){
-    const selectedRegion = this.regionOptions.find(region => region.CodeRegion === id);    
-            console.log('selectedRegion',selectedRegion);
-            if (selectedRegion) {
-            return  selectedRegion.NomRegion;         
-            } else {
-                console.error('Région non trouvée dans les options.');
-            }
-   },
-
-   NamePrefecture(id){
-    const selectedRegion = this.prefectureOptions.find(region => region.CodePrefecture === id);    
-            console.log('selectedRegion',selectedRegion);
-            if (selectedRegion) {
-            this.NameRegion(selectedRegion.CodeRegion) 
-            return  selectedRegion.NomPrefecture;         
-            } else {
-                console.error('Région non trouvée dans les options.');
-            }
-   }
  },
 }
 </script>

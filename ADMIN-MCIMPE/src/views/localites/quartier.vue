@@ -76,7 +76,7 @@
                          <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(region.CodeSousPrefecture)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                         <Blink href="#" @click="confirmDelete(region.CodeQuartier)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
                          <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
@@ -538,8 +538,8 @@ async fetchQuartierOptions() {
            console.log('Réponse de suppression:', response);
            if (response.data.status === 'success') {
              this.loading = false
-            this.successmsg('Supprimé!', 'Votre quartier a été supprimé.')
            await this.fetchQuartierOptions()
+            this.successmsg('Supprimé!', 'Votre quartier a été supprimé.')
    
            } else {
              console.log('error', response.data)
@@ -570,7 +570,7 @@ async fetchQuartierOptions() {
             this.step2.code = user.CodeQuartier,
             this.step2.nom = user.NomQuartier,
             this.step2.sousprefecture = user.CodeSousPrefecture,
-            this.ToId = user.CodeSousPrefecture
+            this.ToId = user.CodeQuartier
              } else {
                  console.log('Utilisateur non trouvé avec l\'ID', id);
              }
@@ -593,9 +593,9 @@ async fetchQuartierOptions() {
       
                const dataCath = {
    
-                CodeQuartier:this.step2.sousprefecture,
+                CodeQuartier:this.step2.code,
                 NomQuartier:this.step2.nom,
-                CodeSousPrefecture:this.step2.code,
+                CodeSousPrefecture:this.step2.sousprefecture,
                         //  CodeSousPrefecture:1
              }
      console.log('dataCath',dataCath);
@@ -609,11 +609,10 @@ async fetchQuartierOptions() {
           });
           console.log("Réponse du téléversement :", response);
           if (response.data.status === "success") {
-           
+            await this.fetchQuartierOptions()
             this.UpdateUser1 = false
            this.loading = false
            this.successmsg("Modification du quartier",'Votre quartier a été modifié avec succès !')
-           await this.fetchQuartierOptions()
             
           } 
         } catch (error) {

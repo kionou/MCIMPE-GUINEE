@@ -36,7 +36,7 @@ const actions = {
       email: user.user.email,
       whatsapp: user.user.Whatsapp,
       direction:user.user.Direction,
-      image:user.user.profile,
+      profile:user.user.profile,
       token: user.access_token,
       tokenExpiration: tokenExpiration,
     };

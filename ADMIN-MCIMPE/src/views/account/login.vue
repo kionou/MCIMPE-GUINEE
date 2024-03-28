@@ -310,9 +310,11 @@ if (response.data.status === "success") {
 this.InfoUser = response.data.data
 // this.dialogOtp = true
 this.loading = false
-// this.SendOtp()
- this.setMyAuthenticatedUser(this.InfoUser);
-this.$router.push('/index');
+this.setMyAuthenticatedUser(this.InfoUser);
+ if (this.InfoUser.user.Direction === 'DNI') {
+     this.$router.push('/dni'); 
+    } else {
+      this.$router.push('/dncic'); }
 
 } else {
 

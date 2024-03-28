@@ -19,8 +19,14 @@ export default [
     // To start dashboards
 
   {
-    path: "/index",
-    name: "Dashboard",
+    path: "/dncic",
+    name: "Dncic",
+    meta: { requiresAuth: true },
+    component: () => import("../views/dashboards/dncic.vue")
+  },
+  {
+    path: "/dni",
+    name: "Dni",
     meta: { requiresAuth: true },
     component: () => import("../views/dashboards/default.vue")
   },
@@ -63,8 +69,8 @@ export default [
  // To start pme
 
  {
-  path: "/pme",
-  name: "pme",
+  path: "/industrie",
+  name: "industrie",
   meta: { requiresAuth: true },
   component: () => import("../views/pme/default.vue")
 },
@@ -107,8 +113,60 @@ export default [
  // To finish localites
 
  
+ // To start secteur
 
+ {
+  path: "/secteurs",
+  name: "secteurs",
+  meta: { requiresAuth: true },
+  component: () => import("../views/secteurs/secteurs.vue")
+},
+{
+  path: "/sous-secteurs",
+  name: "sous-secteurs",
+  meta: { requiresAuth: true },
+  component: () => import("../views/secteurs/sousSecteur.vue")
+},
  
+
+ // To start archive
+
+ {
+  path: "/archive",
+  name: "archive",
+  meta: { requiresAuth: true },
+  component: () => import("../views/archives/default.vue")
+},
+{
+  path: "/archive/detail/:id",
+  name: "archive-detail",
+  meta: { requiresAuth: true },
+  props:true,
+  component: () => import("../views/archives/detail.vue")
+},
+
+// To start documents
+
+{
+  path: "/documents/categories",
+  name: "documents-categorie",
+  meta: { requiresAuth: true },
+  component: () => import("../views/documents/categorie.vue")
+},
+{
+  path: "/documents/sous-categories",
+  name: "documents-sous-categorie",
+  meta: { requiresAuth: true },
+  props:true,
+  component: () => import("../views/documents/souscategorie.vue")
+},
+{
+  path: "/documents/fichier",
+  name: "documents-fichier",
+  meta: { requiresAuth: true },
+  props:true,
+  component: () => import("../views/documents/fichier.vue")
+},
  
  
   

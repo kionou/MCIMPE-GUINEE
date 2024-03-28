@@ -32,15 +32,10 @@ export const menuItems = [
             {
                 id: 35,
                 label: "menuitems.invoices.list.invoicelist",
-                link: "/pme",
+                link: "/industrie",
                 parentId: 34
             },
-            {
-                id: 36,
-                label: "menuitems.invoices.list.invoicedetail",
-                link: "/invoices/detail",
-                parentId: 34
-            }
+            
         ]
     },
     {
@@ -51,7 +46,7 @@ export const menuItems = [
             {
                 id: 38,
                 label: "menuitems.projects.list.grid",
-                link: "/projects/grid",
+                link: "/documents/categories",
                 parentId: 37
             },
             {
@@ -69,16 +64,47 @@ export const menuItems = [
             {
                 id: 41,
                 label: "menuitems.projects.list.create",
-                link: "/projects/create",
+                link: "/secteurs",
                 parentId: 37
-            }
+            },
+            {
+                id: 50,
+                label: "menuitems.projects.list.demande",
+                link: "/demande",
+                parentId: 37
+            },
+            {
+                id: 51,
+                label: "menuitems.projects.list.categorie",
+                link: "/categorie",
+                parentId: 37
+            },
+            {
+                id: 53,
+                label: "menuitems.projects.list.zone",
+                link: "/zone",
+                parentId: 37
+            },
+            {
+                id: 54,
+                label: "menuitems.projects.list.indicateur",
+                link: "/indicateur",
+                parentId: 37
+            },
+            {
+                id: 55,
+                label: "menuitems.projects.list.juridique",
+                link: "/juridique",
+                parentId: 37
+            },
+
         ]
     },
     {
         id: 9,
         label: "menuitems.archive.text",
         icon: "bx-folder",
-        link: "/calendar"
+        link: "/archive"
     },
     {
         id: 42,

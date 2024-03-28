@@ -121,7 +121,12 @@ async fetchDataFromAPI({ commit }) {
 
   async fetchSecteurActiviteOptions({ commit }) {
     try {
-      const response = await axios.get('/secteurs-activites'); // Remplacez l'URL par l'URL de votre API
+      const response = await axios.get('/secteurs-activites', {
+        
+        headers: {
+          Authorization: `Bearer ${this.loggedInUser.token}`,
+        },
+      }); // Remplacez l'URL par l'URL de votre API
       console.log('activite',response.data.data.data);
 
       const secteurActiviteFromAPI = response.data.data.data;
