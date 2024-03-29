@@ -20,43 +20,36 @@
           <nav id="navbar" class="navbar">
             <ul>
               <li><router-link to="/">Accueil</router-link></li>
-              <li class="dropdown">
+              <!-- <li class="dropdown">
           <router-link to="#">DNPME-CL <i class="bi bi-chevron-down dropdown-indicator"></i></router-link>
           <ul  class="dropdown-menu">
                 <li><router-link to="#">A PROPOS</router-link></li>
-                
-  
-  
-              </ul>
+          </ul>
              </li>
               <li><router-link to="#">Actualités</router-link></li>
-             
-            
-              <li ><router-link to="#">Opportunités </router-link> </li>
+              <li ><router-link to="#">Opportunités </router-link> </li> -->
               <li ><router-link to="#">Contact </router-link> </li>
   
             </ul>
           </nav>
         <div class="second">
-        
-    
-          <!-- <div v-if="shouldShowNavbar" >
+          <div v-if="shouldShowNavbar" >
             <div class="btnCt "  role="button" data-bs-toggle="dropdown" aria-expanded="false" >
           <i class="bi bi-person-fill"></i>
             <span> Mon compte </span>
             
          </div>
                   <ul class="dropdown-menu menu"  >
-               <li><router-link to="/mon-espace"  class="dropdown-item d-flex justify-content-around" ><i class="bi bi-postcard pt-0"></i>Mon espace</router-link></li>
-               <li><router-link to="/profil"  class="dropdown-item d-flex justify-content-around" ><i class="bi bi-building"></i>Mon profil</router-link></li>            
+               <li><router-link to="#"  class="dropdown-item d-flex justify-content-around" ><i class="bi bi-postcard pt-0"></i>Mon espace</router-link></li>
+               <li><router-link to="#"  class="dropdown-item d-flex justify-content-around" ><i class="bi bi-building"></i>Mon profil</router-link></li>            
                <li><span class="dropdown-item d-flex justify-content-around " style="cursor:pointer;" @click="logout" ><i class="bi bi-box-arrow-in-right pt-0"></i>Déconnexion</span></li>
                
              </ul>
-                 </div> -->
-          <router-link to="/" class="btnCt" >
+                 </div>
+          <!-- <router-link to="/" class="btnCt" >
             <i class=" bi bi-person-fill-lock"></i>
             <span> Connexion </span>
-          </router-link>
+          </router-link> -->
         </div>
           <i class="mobile-nav-toggle mobile-nav-show bi bi-list">
             <span>Menu</span>
@@ -71,13 +64,33 @@
   </template>
   
   <script>
-
+  import { mapGetters } from 'vuex';
   
   
   export default {
     name: 'MpmeNavbar',
   
+      
+  computed: {
+    ...mapGetters('auth', ['isAuthenticated']),
+   shouldShowNavbar() {
+    this.$store.dispatch('auth/loadAuthenticatedUser')
     
+      return (
+        this.isAuthenticated &&
+        this.$route.path !== '/' 
+      );
+    },
+    loggedInUser() {
+      return this.$store.getters['auth/authenticatedUser'];
+    },
+  },
+  
+  watch: {
+    isLoggedIn(newValue) {
+      console.log('User is logged in:', newValue);
+    },
+  },
     
    
  
@@ -201,7 +214,16 @@
     },
   
     methods: {
-  
+      async logout() {
+    try {                
+      await this.$store.dispatch('auth/clearAuthenticatedUser'); // Appel de l'action pour déconnecter l'utilisateur
+      this.$router.push('/'); // Redirection vers la page de connexion
+               
+
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion :', error);
+    }
+  }
     },
   };
   </script>

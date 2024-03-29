@@ -46,11 +46,12 @@ app.component('MazAvatar', MazAvatar)
 app.component('MazTextarea', MazTextarea)
 
 
-try {
+
+
+store.dispatch('auth/loadAuthenticatedUser').then(() => {
   app.use(store);
   app.use(vuetify);
   app.use(router);
   app.mount('#app');
-} catch (error) {
-  console.error('Error in main.js:', error);
-}
+  
+  });

@@ -337,7 +337,7 @@ export default {
               } else {
 
               this.setAuthenticatedUser(this.InfoUser);
-              this.$router.push('/');
+              this.$router.push('/mon-espace');
               this.loading = false
               this.dialogOtp = false
 
