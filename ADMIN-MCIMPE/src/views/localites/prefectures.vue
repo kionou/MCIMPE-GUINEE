@@ -11,9 +11,9 @@
 
              <div class="d-flex justify-content-evenly" style="width: 400px;">
                 
-                <BLink href="#!" @click="$router.push({ path: '/localite/regions' })"  class="btn btn-primary">Region</BLink>
-               <BLink href="#!" @click="$router.push({ path: '/localite/sous-prefectures' })"  class="btn btn-primary">Sous Prefecture</BLink>
-               <BLink href="#!" @click="$router.push({ path: '/localite/quartiers' })"  class="btn btn-primary">Quartier</BLink>
+                <div @click="$router.push({ path: '/localite/regions' })"  class="btn btn-primary">Region</div>
+               <div @click="$router.push({ path: '/localite/sous-prefectures' })"  class="btn btn-primary">Sous Prefecture</div>
+               <div @click="$router.push({ path: '/localite/quartiers' })"  class="btn btn-primary">Quartier</div>
                
              </div>
 
@@ -21,7 +21,7 @@
                 <BCol xxl="4" lg="9" class=" me-3">
                <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
-               <BLink href="#!" @click="AddUser = true" class="btn btn-primary">Ajouter</BLink>
+               <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
                
              </div>
            </div>
@@ -69,10 +69,10 @@
                      <ul class="list-unstyled hstack gap-1 mb-0">
                       
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                         <div  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></div>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(region.CodePrefecture)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                         <div @click="confirmDelete(region.CodePrefecture)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
                          <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>

@@ -28,7 +28,63 @@
         <div class="parent">
          <div class="carde">
         <div class="content-box">
-            <span class="carde-title">3D Card</span>
+            <span class="carde-title">Cimenterie Guinee</span>
+            <!-- <p class="carde-content">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+            </p> -->
+            <p class="texte-content carde-content">Date creation: <span>1900</span></p>
+            <div class="texte">
+            <p class="texte-content">Region: <span>Conakry</span></p>
+            <p class="texte-content">Ville: <span>Conakry</span></p>
+            <p class="texte-content">Secteur Activité: <span>Conakry</span></p>
+            <p class="texte-content">Taille: <span>Conakry</span></p>
+            <p class="texte-content">Email: <span>kionou.00@gmail.com</span></p>
+            <p class="texte-content">Contact: <span> +227 0757408303</span></p>
+            <div class="w-100 d-flex justify-content-end">
+            <span class="see-more">
+              <i class="bx bx-show"></i>
+            </span>
+  
+            </div>
+        </div>
+        <div class="date-box">
+           <img src="../../assets/img/guinea.png" alt="">
+        </div>
+    </div>
+  </div>
+       </div>
+       <div class="parent">
+         <div class="carde">
+        <div class="content-box">
+            <span class="carde-title">Cimenterie Guinee</span>
+            <!-- <p class="carde-content">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+            </p> -->
+            <p class="texte-content carde-content">Date creation: <span>1900</span></p>
+            <div class="texte">
+            <p class="texte-content">Region: <span>Conakry</span></p>
+            <p class="texte-content">Ville: <span>Conakry</span></p>
+            <p class="texte-content">Secteur Activité: <span>Conakry</span></p>
+            <p class="texte-content">Taille: <span>Conakry</span></p>
+            <p class="texte-content">Email: <span>kionou.00@gmail.com</span></p>
+            <p class="texte-content">Contact: <span> +227 0757408303</span></p>
+            <div class="w-100 d-flex justify-content-end">
+            <span class="see-more">
+              <i class="bx bx-show"></i>
+            </span>
+  
+            </div>
+        </div>
+        <div class="date-box">
+           <img src="../../assets/img/guinea.png" alt="">
+        </div>
+    </div>
+  </div>
+       </div>
+       <div class="parent">
+         <div class="carde">
+        <div class="content-box">
+            <span class="carde-title">Cimenterie Guinee</span>
             <!-- <p class="carde-content">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
             </p> -->
@@ -54,65 +110,7 @@
   </div>
        </div>
   
-       <div class="parent">
-         <div class="carde">
-        <div class="content-box">
-            <span class="carde-title">3D Card</span>
-            <!-- <p class="carde-content">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-            </p> -->
-            <p class="texte-content carde-content">Date creation: <span>1900</span></p>
-            <div class="texte">
-            <p class="texte-content">Region: <span>Conakry</span></p>
-            <p class="texte-content">Ville: <span>Conakry</span></p>
-            <p class="texte-content">Secteur Activité: <span>Conakry</span></p>
-            <p class="texte-content">Taille: <span>Conakry</span></p>
-            <p class="texte-content">Email: <span>kionou.00@gmail.com</span></p>
-            <p class="texte-content">Contact: <span> +227 0757408303</span></p>
-            <div class="w-100 d-flex justify-content-end">
-            <span class="see-more">
-              <i class="bx bx-show"></i>
-            </span>
-  
-            </div>
-        </div>
-        <div class="date-box">
-            <span class="month">JUNE</span>
-            <span class="date">29</span>
-        </div>
-    </div>
-  </div>
-       </div>
-  
-       <div class="parent">
-         <div class="carde">
-        <div class="content-box">
-            <span class="carde-title">3D Card</span>
-            <!-- <p class="carde-content">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-            </p> -->
-            <p class="texte-content carde-content">Date creation: <span>1900</span></p>
-            <div class="texte">
-            <p class="texte-content">Region: <span>Conakry</span></p>
-            <p class="texte-content">Ville: <span>Conakry</span></p>
-            <p class="texte-content">Secteur Activité: <span>Conakry</span></p>
-            <p class="texte-content">Taille: <span>Conakry</span></p>
-            <p class="texte-content">Email: <span>kionou.00@gmail.com</span></p>
-            <p class="texte-content">Contact: <span> +227 0757408303</span></p>
-            <div class="w-100 d-flex justify-content-end">
-            <span class="see-more">
-              <i class="bx bx-show"></i>
-            </span>
-  
-            </div>
-        </div>
-        <div class="date-box">
-            <span class="month">JUNE</span>
-            <span class="date">29</span>
-        </div>
-    </div>
-  </div>
-       </div>
+     
         
       </BRow>
   
@@ -296,7 +294,7 @@ margin-bottom: 10px !important;
     color: #f2f2f2;
     position: absolute;
     right: 33px;
-    top: 80px;
+    top: 11px;
 }
 
 .content-box .carde-content:hover {

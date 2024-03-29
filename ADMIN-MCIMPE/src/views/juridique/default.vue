@@ -1,21 +1,15 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Documents" pageTitle="Tableau de bord" />
+   <PageHeader title="Status Juridique" pageTitle="Tableau de bord" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
          <BCardBody class="border-bottom">
            <div class="d-flex align-items-center justify-content-between">
-             <BCardTitle class="mb-0 ">Liste des Ctégories</BCardTitle>
+             <BCardTitle class="mb-0 ">Liste des status juridiques</BCardTitle>
 
-             <div class="d-flex justify-content-evenly" style="width: 400px;">
-                
-               <div @click="$router.push({ path: '/documents/sous-categories' })"  class="btn btn-primary">Sous categorie</div>
-               <div @click="$router.push({ path: '/documents/fichier' })"  class="btn btn-primary">Fichier</div>
-             
-               
-             </div>
+           
 
              <div class="flex-shrink-0 d-flex">
                 <BCol xxl="4" lg="9" class=" me-3">
@@ -43,6 +37,7 @@
                    <BTh scope="col" ></BTh>
                    <BTh scope="col">Code</BTh>
                    <BTh scope="col">Nom</BTh>
+                   <BTh scope="col">Sigle</BTh>
                    <BTh scope="col">Action</BTh>
                  </BTr>
                </BThead>
@@ -58,14 +53,9 @@
                      </div>
                      
                    </BTd>
-                   <BTd>
-                    
-                    {{ region.CodeRegion }}
-                   </BTd>
+                   <BTd> {{ region.CodeRegion }}</BTd>
                    <BTd>{{ region.NomRegion }}</BTd>
-                   
-                  
-                  
+                   <BTd>{{ region.NomRegion }}</BTd>
                    <BTd>
                      <ul class="list-unstyled hstack gap-1 mb-0">
                       
@@ -110,7 +100,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter une categorie</h5>
+                     <h5 class="text-primary">Ajouter un status juridique</h5>
                      
                    </div>
                  </BCol>
@@ -132,7 +122,7 @@
                    <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Code Categorie</label>
+                       <label for="userpassword">Code </label>
                      <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
                       <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
                       <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
@@ -143,9 +133,21 @@
                 <BRow>
                   <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom Categorie</label>
+                       <label for="userpassword">Nom </label>
                      <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
                       <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
+                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+
+                     </div>
+                  </BCol>
+                   </BRow>
+
+                   <BRow>
+                  <BCol md="12">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Sigle </label>
+                     <MazInput v-model="step1.sigle"  no-radius type="text" name="sigle"   color="info" placeholder="exemple" />
+                      <small v-if="v$.step1.sigle.$error">{{v$.step1.sigle.$errors[0].$message}}</small> 
                       <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
@@ -186,7 +188,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier une categorie</h5>
+                     <h5 class="text-primary">Modifier un status juridique</h5>
                      
                    </div>
                  </BCol>
@@ -216,9 +218,11 @@
                      </div>
                   </BCol>
 
-                 
                    </BRow>
-                   <BCol md="12">
+
+                  
+                   <BRow>
+                    <BCol md="12">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Nom</label>
                      <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="Conakry" />
@@ -227,8 +231,18 @@
 
                      </div>
                   </BCol>
+                   </BRow>
+
                    <BRow>
-                    
+                    <BCol md="12">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Sigle</label>
+                     <MazInput v-model="step2.sigle"  no-radius type="text" name="sigle"   color="info" placeholder="Conakry" />
+                      <small v-if="v$.step2.sigle.$error">{{v$.step2.sigle.$errors[0].$message}}</small> 
+                      <small v-if="resultError['NomRegion']"> {{ resultError["NomRegion"] }} </small>
+
+                     </div>
+                  </BCol>
                    </BRow>
 
                    <BRow class="mb-0">
@@ -289,12 +303,14 @@ export default {
      step1:{
             code:'',
             nom:'',
+            sigle:'',
   
           },
 
             step2:{
              code:'',
             nom:'',
+            sigle:'',
            
        },
    }
@@ -310,6 +326,9 @@ export default {
      lgmin: lgmin(2),
      lgmax: lgmax(20),
    },
+   sigle:{
+    require
+   }
   
    },
    step2:{
@@ -322,7 +341,10 @@ export default {
      lgmin: lgmin(2),
      lgmax: lgmax(20),
    },
-  
+   
+   sigle:{
+    require
+   }
            
        },
      
@@ -579,4 +601,4 @@ async mounted() {
 </script>
 <style lang="" scoped>
    
-</style>
+</style> 

@@ -11,7 +11,7 @@
               <BCardTitle class="mb-0 flex-grow-1">Liste des Partenaires</BCardTitle>
 
               <div class="flex-shrink-0 d-flex">
-                <BLink href="#" @click="$router.push({ path: '/partenaires/ajouter' })"  class="btn btn-primary me-1">Ajouter</BLink>
+                <div @click="$router.push({ path: '/partenaires/ajouter' })"  class="btn btn-primary me-1">Ajouter</div>
                 <BCol xxl="4" lg="6">
                 <MazInput v-model="searchQuery"  no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
               </BCol>
@@ -44,10 +44,10 @@
       <ul class="list-unstyled hstack gap-1 mb-0">
                        
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#" @click="$router.push({ path: `/partenaires/update/${partenaire.CodePartenaire}` })" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                         <div @click="$router.push({ path: `/partenaires/update/${partenaire.CodePartenaire}` })" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></div>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(partenaire.CodePartenaire)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                         <div @click="confirmDelete(partenaire.CodePartenaire)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
                          <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>

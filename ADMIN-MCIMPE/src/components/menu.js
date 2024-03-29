@@ -12,7 +12,7 @@ export const menuItems = [
             {
                 id: 30,
                 label: "menuitems.email.list.inbox",
-                link: "/utilisateurs",
+                link: "/personnels",
                 parentId: 29
             },
             {
@@ -82,19 +82,19 @@ export const menuItems = [
             {
                 id: 53,
                 label: "menuitems.projects.list.zone",
-                link: "/zone",
+                link: "/zone-industrielle",
                 parentId: 37
             },
             {
                 id: 54,
                 label: "menuitems.projects.list.indicateur",
-                link: "/indicateur",
+                link: "/indicateurs",
                 parentId: 37
             },
             {
                 id: 55,
                 label: "menuitems.projects.list.juridique",
-                link: "/juridique",
+                link: "/status-juridique",
                 parentId: 37
             },
 

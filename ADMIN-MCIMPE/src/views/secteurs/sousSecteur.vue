@@ -11,7 +11,7 @@
 
              <div class="d-flex justify-content-evenly" style="width: 400px;">
                 
-               <BLink href="#!" @click="$router.push({ path: '/secteurs' })"  class="btn btn-primary">Secteur d'activité</BLink>
+               <div @click="$router.push({ path: '/secteurs' })"  class="btn btn-primary">Secteur d'activité</div>
             
                
              </div>
@@ -20,7 +20,7 @@
                 <BCol xxl="4" lg="9" class=" me-3">
                <MazInput v-model="searchQuery"   no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
-               <BLink href="#!" @click="AddUser = true" class="btn btn-primary">Ajouter</BLink>
+               <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
                
              </div>
            </div>

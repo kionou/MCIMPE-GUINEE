@@ -20,7 +20,9 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.meta.requiresAuth;
   const isAuthenticated = store.getters['auth/isAuthenticated'];
+  const authenticatedUser = store.getters['auth/myAuthenticatedUser'];
     console.log('isAuthenticated',isAuthenticated);
+    console.log(authenticatedUser);
   if (requiresAuth && !isAuthenticated) {
     // Si la route nécessite une authentification et l'utilisateur n'est pas connecté,
     // redirigez-le vers la page de connexion
@@ -28,7 +30,13 @@ router.beforeEach((to, from, next) => {
   } else if ((to.name === 'login' ) && isAuthenticated) {
     // Si l'utilisateur est connecté et essaie d'accéder aux pages d'inscription ou de connexion,
     // redirigez-le vers la page mon_espace
-    next('/');
+      if(authenticatedUser.direction === 'DNI'){
+          next('/dni');
+
+      }else{
+        next('/dncic');
+
+      }
   }
   else {
     next();

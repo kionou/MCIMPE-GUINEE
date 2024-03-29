@@ -6,14 +6,22 @@
       <BCol lg="12">
         <BCard no-body>
           <BCardBody class="border-bottom">
-            <div class="d-flex align-items-center">
-              <BCardTitle class="mb-0 flex-grow-1">Liste des Utilisateurs</BCardTitle>
+            <div class="d-flex align-items-center justify-content-between">
+              <BCardTitle class="mb-0 ">Liste des Utilisateurs(Personnels)</BCardTitle>
 
+              <div class="d-flex justify-content-evenly" style="width: 400px;">
+                
+                <div @click="$router.push({ path: '/entreprises' })"  class="btn btn-primary">Entreprise</div>
+             
+                
+              </div>
+ 
               <div class="flex-shrink-0 d-flex">
-                <BLink href="#!" @click="AddUser = true" class="btn btn-primary me-1">Ajouter</BLink>
-                <BCol xxl="4" lg="6">
-                <MazInput v-model="searchQuery"  no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
+                 <BCol xxl="4" lg="9" class=" me-3">
+                <MazInput v-model="searchQuery"   no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
               </BCol>
+                <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
+                
               </div>
             </div>
           </BCardBody>
@@ -66,11 +74,7 @@
                         
                       </div>
                     </BTd>
-                    <BTd >
-                        <span v-if="user.Entreprises !== null">Personnel</span>
-                        <span v-else>Entreprise</span>
-                     
-                    </BTd>
+                    <BTd > Personnel</BTd>
                    
                     <BTd>
                       <ul class="list-unstyled hstack gap-1 mb-0">
@@ -474,13 +478,15 @@ export default {
             try {
               const response = await axios.get('/users', {
               headers: {
-                Authorization: `Bearer ${this.loggedInUser.token}`,
+                Authorization: `Bearer ${this.loggedInUser.token}`,},});
+
                 
-              },
-    
-            });
-               console.log(response.data.data);
-               this.UserOptions = response.data.data;
+                 console.log(response.data.data);
+                 // Filtrer les utilisateurs dont Identifiant est null
+                 const filteredUsers = response.data.data.filter(user => user.Identifiant === null);
+                 console.log(filteredUsers); // Affiche la liste des utilisateurs dont Identifiant est null
+                 this.UserOptions = filteredUsers;
+              
                this.loading = false;
             
             } catch (error) {

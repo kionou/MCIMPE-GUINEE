@@ -10,7 +10,7 @@
              <BCardTitle class="mb-0 flex-grow-1">Liste des Archives</BCardTitle>
 
              <div class="flex-shrink-0 d-flex">
-               <BLink href="#!" @click="AddUser = true" class="btn btn-primary me-1">Ajouter</BLink>
+               <div @click="AddUser = true" class="btn btn-primary me-1">Ajouter</div>
                <BCol xxl="4" lg="6">
                <MazInput v-model="searchQuery"  no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
@@ -264,7 +264,7 @@ export default {
  },
  data() {
    return {
-     loading:false,
+     loading:true,
      AddUser:false,
      UpdateUser1:false,
      ToId:'',

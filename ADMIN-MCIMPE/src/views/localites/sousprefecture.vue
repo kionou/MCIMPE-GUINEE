@@ -11,9 +11,9 @@
 
              <div class="d-flex justify-content-evenly" style="width: 400px;">
                 
-                <BLink href="#!" @click="$router.push({ path: '/localite/regions' })"  class="btn btn-primary">Region</BLink>
-               <BLink href="#!" @click="$router.push({ path: '/localite/prefectures' })"  class="btn btn-primary">Prefecture</BLink>
-               <BLink href="#!" @click="$router.push({ path: '/localite/quartiers' })"  class="btn btn-primary">Quartier</BLink>
+                <div @click="$router.push({ path: '/localite/regions' })"  class="btn btn-primary">Region</div>
+               <div @click="$router.push({ path: '/localite/prefectures' })"  class="btn btn-primary">Prefecture</div>
+               <div @click="$router.push({ path: '/localite/quartiers' })"  class="btn btn-primary">Quartier</div>
                
              </div>
 
@@ -21,7 +21,7 @@
                 <BCol xxl="4" lg="9" class=" me-3">
                <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
-               <BLink href="#!" @click="AddUser = true" class="btn btn-primary">Ajouter</BLink>
+               <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
                
              </div>
            </div>

@@ -11,8 +11,8 @@
 
              <div class="d-flex justify-content-evenly" style="width: 400px;">
                 
-                <BLink href="#!" @click="$router.push({ path: '/documents/categories' })"  class="btn btn-primary">Categorie</BLink>
-               <BLink href="#!" @click="$router.push({ path: '/documents/fichier' })"  class="btn btn-primary">Fichier</BLink>
+                <div @click="$router.push({ path: '/documents/categories' })"  class="btn btn-primary">Categorie</div>
+               <div @click="$router.push({ path: '/documents/fichier' })"  class="btn btn-primary">Fichier</div>
              
                
              </div>
@@ -21,7 +21,7 @@
                 <BCol xxl="4" lg="9" class=" me-3">
                <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
-               <BLink href="#!" @click="AddUser = true" class="btn btn-primary">Ajouter</BLink>
+               <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
                
              </div>
            </div>

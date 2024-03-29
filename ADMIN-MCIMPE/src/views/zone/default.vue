@@ -1,21 +1,14 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Documents" pageTitle="Tableau de bord" />
+   <PageHeader title="Zones Industrielles" pageTitle="Tableau de bord" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
          <BCardBody class="border-bottom">
            <div class="d-flex align-items-center justify-content-between">
-             <BCardTitle class="mb-0 ">Liste des Ctégories</BCardTitle>
+             <BCardTitle class="mb-0 ">Liste des zones industrielles</BCardTitle>
 
-             <div class="d-flex justify-content-evenly" style="width: 400px;">
-                
-               <div @click="$router.push({ path: '/documents/sous-categories' })"  class="btn btn-primary">Sous categorie</div>
-               <div @click="$router.push({ path: '/documents/fichier' })"  class="btn btn-primary">Fichier</div>
-             
-               
-             </div>
 
              <div class="flex-shrink-0 d-flex">
                 <BCol xxl="4" lg="9" class=" me-3">
@@ -36,54 +29,197 @@
          
          
          <BCardBody v-else>
-           <div class="table-responsive" >
-             <BTableSimple class="align-middle table-nowrap table-hover">
-               <BThead class="table-light" style="">
-                 <BTr>
-                   <BTh scope="col" ></BTh>
-                   <BTh scope="col">Code</BTh>
-                   <BTh scope="col">Nom</BTh>
-                   <BTh scope="col">Action</BTh>
-                 </BTr>
-               </BThead>
-               <BTbody>
-                 <BTr v-for="region in paginatedItems" :key="region.id">
-                   <BTd>
-                     <div  class="avatar-xs">
-
-                       <span class="avatar-title rounded-circle">
-                         <img src="../../assets/img/fichier.png" alt="" class="w-50 h-50 rounded-circle">
-                         
-                       </span>
-                     </div>
-                     
-                   </BTd>
-                   <BTd>
-                    
-                    {{ region.CodeRegion }}
-                   </BTd>
-                   <BTd>{{ region.NomRegion }}</BTd>
-                   
-                  
-                  
-                   <BTd>
-                     <ul class="list-unstyled hstack gap-1 mb-0">
+            <div class="py-2 d-flex justify-content-center align-items-center flex-wrap">
+        <div class="" style="width: 370px; border:1px solid #dedfe1; margin:0 10px 10px 0">
+          <BRow class="align-items-center">
+            <BCol xl="5">
+              <div class="text-center p-2 border-end">
+                <div class="avatar-sm mx-auto mb-3 mt-1" style="border:1px solid #dedfe1; width: 4rem; height: 4rem;  border-radius: 50%;">
+                  <span class="avatar-title rounded-circle   font-size-16">
+                    <img src="../../assets/img/local.png" alt="" class="w-100 h-100 rounded-circle">
+                  </span>
+                </div>
+                <h5 class="text-truncate pb-1">
+                    <ul class="list-unstyled hstack gap-1 mb-0 justify-content-center">
                       
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
-                       </li>
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(region.CodeRegion)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
-                       </li>
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                         <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
-                       </li>
-                     </ul>
-                   </BTd>
-                 </BTr>
-               </BTbody>
-             </BTableSimple>
-           </div>
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
+                        <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                      </li>
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                        <Blink href="#" @click="confirmDelete(region.CodePrefecture)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                      </li>
+                     
+                    </ul>
+                </h5>
+              </div>
+            </BCol>
+
+            <BCol xl="7">
+              <div class="p-2 text-center text-xl-start">
+                <BRow>
+                  <BCol cols="12">
+                    <div>
+                      <p class="text-muted mb-2 text-truncate">Nom </p>
+                      <h5>YULCOM Technologies</h5>
+                    </div>
+                  </BCol>
+                  
+                </BRow>
+                <BRow>
+                    <BCol cols="12">
+                    <div>
+                      <p class="text-muted mb-2 text-truncate">Superficie</p>
+                      <h5>40 ha</h5>
+                    </div>
+                  </BCol>
+                </BRow>
+              </div>
+            </BCol>
+          </BRow>
+        </div>    <div class="" style="width: 370px; border:1px solid #dedfe1; margin:0 10px 10px 0">
+          <BRow class="align-items-center">
+            <BCol xl="5">
+              <div class="text-center p-2 border-end">
+                <div class="avatar-sm mx-auto mb-3 mt-1" style="border:1px solid #dedfe1; width: 4rem; height: 4rem;  border-radius: 50%;">
+                  <span class="avatar-title rounded-circle   font-size-16">
+                    <img src="../../assets/img/local.png" alt="" class="w-100 h-100 rounded-circle">
+                  </span>
+                </div>
+                <h5 class="text-truncate pb-1">
+                    <ul class="list-unstyled hstack gap-1 mb-0 justify-content-center">
+                      
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
+                        <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                      </li>
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                        <Blink href="#" @click="confirmDelete(region.CodePrefecture)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                      </li>
+                     
+                    </ul>
+                </h5>
+              </div>
+            </BCol>
+
+            <BCol xl="7">
+              <div class="p-2 text-center text-xl-start">
+                <BRow>
+                  <BCol cols="12">
+                    <div>
+                      <p class="text-muted mb-2 text-truncate">Nom </p>
+                      <h5>YULCOM Technologies</h5>
+                    </div>
+                  </BCol>
+                  
+                </BRow>
+                <BRow>
+                    <BCol cols="12">
+                    <div>
+                      <p class="text-muted mb-2 text-truncate">Superficie</p>
+                      <h5>40 ha</h5>
+                    </div>
+                  </BCol>
+                </BRow>
+              </div>
+            </BCol>
+          </BRow>
+        </div>    <div class="" style="width: 370px; border:1px solid #dedfe1; margin:0 10px 10px 0">
+          <BRow class="align-items-center">
+            <BCol xl="5">
+              <div class="text-center p-2 border-end">
+                <div class="avatar-sm mx-auto mb-3 mt-1" style="border:1px solid #dedfe1; width: 4rem; height: 4rem;  border-radius: 50%;">
+                  <span class="avatar-title rounded-circle   font-size-16">
+                    <img src="../../assets/img/local.png" alt="" class="w-100 h-100 rounded-circle">
+                  </span>
+                </div>
+                <h5 class="text-truncate pb-1">
+                    <ul class="list-unstyled hstack gap-1 mb-0 justify-content-center">
+                      
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
+                        <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                      </li>
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                        <Blink href="#" @click="confirmDelete(region.CodePrefecture)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                      </li>
+                     
+                    </ul>
+                </h5>
+              </div>
+            </BCol>
+
+            <BCol xl="7">
+              <div class="p-2 text-center text-xl-start">
+                <BRow>
+                  <BCol cols="12">
+                    <div>
+                      <p class="text-muted mb-2 text-truncate">Nom </p>
+                      <h5>YULCOM Technologies</h5>
+                    </div>
+                  </BCol>
+                  
+                </BRow>
+                <BRow>
+                    <BCol cols="12">
+                    <div>
+                      <p class="text-muted mb-2 text-truncate">Superficie</p>
+                      <h5>40 ha</h5>
+                    </div>
+                  </BCol>
+                </BRow>
+              </div>
+            </BCol>
+          </BRow>
+        </div>    <div class="" style="width: 370px; border:1px solid #dedfe1; margin:0 10px 10px 0">
+          <BRow class="align-items-center">
+            <BCol xl="5">
+              <div class="text-center p-2 border-end">
+                <div class="avatar-sm mx-auto mb-3 mt-1" style="border:1px solid #dedfe1; width: 4rem; height: 4rem;  border-radius: 50%;">
+                  <span class="avatar-title rounded-circle   font-size-16">
+                    <img src="../../assets/img/local.png" alt="" class="w-100 h-100 rounded-circle">
+                  </span>
+                </div>
+                <h5 class="text-truncate pb-1">
+                    <ul class="list-unstyled hstack gap-1 mb-0 justify-content-center">
+                      
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
+                        <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                      </li>
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                        <Blink href="#" @click="confirmDelete(region.CodePrefecture)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                      </li>
+                     
+                    </ul>
+                </h5>
+              </div>
+            </BCol>
+
+            <BCol xl="7">
+              <div class="p-2 text-center text-xl-start">
+                <BRow>
+                  <BCol cols="12">
+                    <div>
+                      <p class="text-muted mb-2 text-truncate">Nom </p>
+                      <h5>YULCOM Technologies</h5>
+                    </div>
+                  </BCol>
+                  
+                </BRow>
+                <BRow>
+                    <BCol cols="12">
+                    <div>
+                      <p class="text-muted mb-2 text-truncate">Superficie</p>
+                      <h5>40 ha</h5>
+                    </div>
+                  </BCol>
+                </BRow>
+              </div>
+            </BCol>
+          </BRow>
+        </div> 
+       
+       
+        
+        
+            </div>
            <BRow>
              <BCol lg="12">
                <div class="container_pagination">
@@ -110,7 +246,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter une categorie</h5>
+                     <h5 class="text-primary">Ajouter une Zone Industrielle</h5>
                      
                    </div>
                  </BCol>
@@ -132,9 +268,9 @@
                    <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Code Categorie</label>
-                     <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
-                      <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
+                       <label for="userpassword">Nom</label>
+                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"  color="info" placeholder="exemple" />
+                      <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
                       <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
@@ -143,9 +279,9 @@
                 <BRow>
                   <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom Categorie</label>
-                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
-                      <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
+                       <label for="userpassword">Superficie</label>
+                     <MazInput v-model="step1.superficie"  no-radius type="text" name="superficie"   color="info" placeholder="400 ha" />
+                      <small v-if="v$.step1.superficie.$error">{{v$.step1.superficie.$errors[0].$message}}</small> 
                       <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
@@ -186,7 +322,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier une categorie</h5>
+                     <h5 class="text-primary">Modifier Zone Industrielle</h5>
                      
                    </div>
                  </BCol>
@@ -208,9 +344,9 @@
                    <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Code</label>
-                     <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
-                      <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
+                       <label for="userpassword">Nom</label>
+                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"  color="info" placeholder="001" />
+                      <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
                       <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
@@ -220,9 +356,9 @@
                    </BRow>
                    <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom</label>
-                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="Conakry" />
-                      <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
+                       <label for="userpassword">Superficie</label>
+                     <MazInput v-model="step2.superficie"  no-radius type="text" name="superficie"   color="info" placeholder="Conakry" />
+                      <small v-if="v$.step2.superficie.$error">{{v$.step2.superficie.$errors[0].$message}}</small> 
                       <small v-if="resultError['NomRegion']"> {{ resultError["NomRegion"] }} </small>
 
                      </div>
@@ -287,21 +423,23 @@ export default {
      v$: useVuelidate(),
        error:'',
      step1:{
-            code:'',
+           
             nom:'',
+            superficie:'',
   
           },
 
             step2:{
-             code:'',
+            
             nom:'',
+            superficie:'',
            
        },
    }
  },
  validations: {
    step1:{
-     code: {
+    superficie: {
      require
      
    },
@@ -313,7 +451,7 @@ export default {
   
    },
    step2:{
-     code: {
+    superficie: {
      require
      
    },

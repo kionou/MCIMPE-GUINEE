@@ -1,16 +1,16 @@
 <template >
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Pme" pageTitle="Tableau de bord" />
+   <PageHeader title="Unité Industrielle" pageTitle="Tableau de bord" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
          <BCardBody class="border-bottom">
            <div class="d-flex align-items-center">
-             <BCardTitle class="mb-0 flex-grow-1">Liste des PME</BCardTitle>
+             <BCardTitle class="mb-0 flex-grow-1">Liste des Unités industrielles</BCardTitle>
 
              <div class="flex-shrink-0 d-flex">
-               <BLink href="#!" @click="$router.push({ path: '/partenaires/ajouter' })"  class="btn btn-primary me-1">Ajouter</BLink>
+               <div @click="$router.push({ path: '/partenaires/ajouter' })"  class="btn btn-primary me-1">Ajouter</div>
                <BCol xxl="4" lg="6">
                <MazInput v-model="searchQuery"  no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
@@ -34,7 +34,7 @@
           </p> -->
           <p class="texte-content carde-content">Date creation: <span>{{ pme.AnneeCreation }}</span></p>
           <div class="texte">
-          <p class="texte-content">Region: <span>{{ pme.Region }}</span></p>
+          <p class="texte-content">Region: <span>{{ NameRegion(pme.Region) }}</span></p>
           <p class="texte-content">Ville: <span>{{ pme.Ville }}</span></p>
           <p class="texte-content">Secteur Activité: <span>{{ pme.PrincipalSecteurActivite }}</span></p>
           <p class="texte-content">Taille: <span>{{ pme.SigleMpme }}</span></p>
@@ -42,6 +42,9 @@
           <p class="texte-content">Contact: <span> {{ pme.NumeroWhatsApp }}</span></p>
           <div class="w-100 d-flex justify-content-center" style="border: 3px solid #eff2f7; background-color: white; padding: 5px;">
             <ul class="list-unstyled hstack gap-1 mb-0">
+              <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
+                         <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-eye-circle-outline"></i></router-link>
+                       </li>
                        
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
                          <Blink href="#" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
@@ -49,9 +52,7 @@
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
                          <Blink href="#jobDelete" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
                        </li>
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                         <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
-                       </li>
+                      
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
                         <BDropdown toggle-class="btn btn-sm btn-soft-primary" menu-class="dropdown-menu-end"
                               variant="white" right>
@@ -118,6 +119,7 @@ export default {
     currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
+     regionOptions:[]
    }
  },
  computed:{
@@ -136,6 +138,7 @@ export default {
 async  mounted() {
   console.log("uusers",this.loggedInUser);
    await this.fetchPmes()
+   await this.fetchRegionOptions()
  },
  methods: {
   async fetchPmes() {
@@ -160,6 +163,44 @@ async  mounted() {
             }
             }
           },
+          async fetchRegionOptions() {
+      // Renommez la méthode pour refléter qu'elle récupère les options de pays
+      try {
+        await this.$store.dispatch("fetchRegionOptions");
+        const options = JSON.parse(
+          JSON.stringify(this.$store.getters["getRegionOptions2"])
+         
+        ); // Accéder aux options des pays via le getter
+        console.log(options);
+        this.regionOptions = options;
+        // Affecter les options à votre propriété sortedCountryOptions
+        this.loading = false
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des options des pays :",
+          error.message
+        );
+      }
+    },
+          NameRegion(id){
+            try {
+            
+       
+           const selectedRegion = this.regionOptions.find(region => region.CodeRegion === id);    
+            console.log('selectedRegion',selectedRegion);
+            if (selectedRegion) {
+            return  selectedRegion.NomRegion;         
+            } else {
+                console.error('Région non trouvée dans les options.');
+            }
+            } catch (error) {
+              console.error(
+          "Erreur lors de la récupération des options des pays :",
+          error.message
+        );
+            }
+        
+   }
  },
 }
 </script>

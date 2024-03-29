@@ -19,7 +19,7 @@
                 <BCol xxl="4" lg="9" class=" me-3">
                <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
-               <BLink href="#!" @click="AddUser = true" class="btn btn-primary">Ajouter</BLink>
+               <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
                
              </div>
            </div>
@@ -58,21 +58,21 @@
                    </BTd>
                    <BTd>
                     
-                    {{ region.CodeRegion }}
+                    {{ region.Name }}
                    </BTd>
-                   <BTd>{{ region.NomRegion }}</BTd>
+                   <BTd>{{ region.Description  }}</BTd>
                    
                   
                   
                    <BTd>
                      <ul class="list-unstyled hstack gap-1 mb-0">
                         <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                         <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
+                         <a  :href="region.FichierUrl" download class="btn btn-sm btn-soft-primary"><i class="mdi mdi-download-outline"></i></a>
                        </li>
                       
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
-                       </li>
+                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                        <Blink href="#" @click="confirmDelete(region.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                      </li>
                        
                       
                      </ul>
@@ -142,7 +142,7 @@
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Fichier</label>
                        <input type="file" name="file" id="file" class="inputfile"  ref="fileInput"
-                        accept="image/*"
+                       accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
                         @change="handleFileChange" />
                       <label for="file">
                         <i class="dripicons-cloud-download"></i>
@@ -293,7 +293,7 @@ export default {
      AddUser:false,
      UpdateUser1:false,
      ToId:'',
-     regionOptions:[],
+     ArchiveOptions:[],
      currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
@@ -352,67 +352,83 @@ export default {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
    totalPages() {
-   return Math.ceil(this.regionOptions.length / this.itemsPerPage);
+   return Math.ceil(this.ArchiveOptions.length / this.itemsPerPage);
    },
    paginatedItems() {
      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
      const endIndex = startIndex + this.itemsPerPage;
-     return this.regionOptions.slice(startIndex, endIndex);
+     return this.ArchiveOptions.slice(startIndex, endIndex);
    },
  },
 async mounted() {
    console.log("uusers",this.loggedInUser);
-  await this.fetchRegionOptions()
+  await this.fetchAchive()
  },
  methods: {
-   validatePasswordsMatch() {
-    return this.step1.password === this.step1.confirm_password;
-   },
-   successmsg:successmsg,
-   async fetchRegionOptions() {
-      // Renommez la méthode pour refléter qu'elle récupère les options de pays
-      try {
-        await this.$store.dispatch("fetchRegionOptions");
-        const options = JSON.parse(
-          JSON.stringify(this.$store.getters["getRegionOptions2"])
-         
-        ); // Accéder aux options des pays via le getter
-        console.log(options);
-        this.regionOptions = options; // Affecter les options à votre propriété sortedCountryOptions
-        this.loading = false
-      } catch (error) {
-        console.error(
-          "Erreur lors de la récupération des options des pays :",
-          error.message
-        );
-      }
+  handleFileChange(event) {
+      console.log("File input change");
+      const file = event.target.files[0];
+      console.log("Selected file:", file);
+      this.step1.fichier = file;
     },
-   async HamdleAddUser(){
+  
+   successmsg:successmsg,
+   async fetchAchive() {
+           try {
+             const response = await axios.get(`/archives/detail/${this.id}`, {
+             headers: {
+               Authorization: `Bearer ${this.loggedInUser.token}`, },
+               params: {"children":true},
+   
+           });
+              console.log(response.data.data);
+              this.ArchiveOptions = response.data.data.children;
+              console.log(this.ArchiveOptions);
+
+              this.loading = false;
+           
+           } catch (error) {
+             console.error('errorqqqqq',error);
+           
+             if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+               await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+             this.$router.push("/");  //a revoir
+           }
+           }
+         },
+    async HamdleAddUser(){
      this.error = '',
      this.resultError= '',
     this.v$.step1.$touch()
     if (this.v$.$errors.length == 0 ) {
        this.loading = true
-         let DataUser = {
-           CodeRegion:this.step1.code,
-           NomRegion:this.step1.nom,
-         }
-         console.log("eeeee",DataUser);
+       const formData = new FormData();
+        formData.append("Name", this.step1.nom);
+        formData.append("Description", this.step1.description);
+        formData.append("IsFolderFile",1);
+        formData.append( "Fichier",this.step1.fichier )
+        formData.append( "ParentId",this.id )
+        formData.append( "Direction",this.loggedInUser.direction )
+       
+         
+        console.log(formData);
+        console.log(
+          this.step1.nom,
+          this.step1.description, 
+         
+        );
          try {
-        
-         const response = await axios.post('/regions' , DataUser, {
+         const response = await axios.post('/archives' , formData, {
              headers: {
-               Authorization: `Bearer ${this.loggedInUser.token}`,
-             },
-   
-   
-           });
+               Authorization: `Bearer ${this.loggedInUser.token}`, 
+              },
+             });
          console.log('response.login', response.data); 
          if (response.data.status === "success") { 
+          await this.fetchAchive()
            this.AddUser = false
            this.loading = false
-           this.successmsg("Création de region",'Votre region a été crée avec succès !')
-           await this.fetchRegionOptions()
+           this.successmsg("Création d'un dossier",'Votre dossier a été crée avec succès !')
 
          } else {
 
@@ -459,7 +475,7 @@ async mounted() {
          
          try {
            // Faites une requête pour supprimer l'élément avec l'ID itemId
-           const response = await axios.delete(`/regions/${id}`, {
+           const response = await axios.delete(`/archives/${id}`, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
                
@@ -471,8 +487,8 @@ async mounted() {
            console.log('Réponse de suppression:', response);
            if (response.data.status === 'success') {
              this.loading = false
-            this.successmsg('Supprimé!', 'Votre region a été supprimée.')
-            await this.fetchRegionOptions()
+            this.successmsg('Supprimé!', 'Votre fichier a été supprimée.')
+            await this.fetchAchive()
    
            } else {
              console.log('error', response.data)
@@ -540,7 +556,7 @@ async mounted() {
           });
           console.log("Réponse du téléversement :", response);
           if (response.data.status === "success") {
-            await this.fetchRegionOptions()
+            await this.fetchAchive()
             this.UpdateUser1 = false
            this.loading = false
            this.successmsg("Modification de",'Votre region a été modifiée avec succès !')
@@ -571,7 +587,7 @@ async mounted() {
          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         
          const endIndex = startIndex + this.itemsPerPage;
-         return  this.regionOptions.slice(startIndex, endIndex);
+         return  this.ArchiveOptions.slice(startIndex, endIndex);
        },
 
        async formatValidationErrors(errors) {

@@ -37,10 +37,16 @@ export default [
   // To start users
 
   {
-    path: "/utilisateurs",
-    name: "users",
+    path: "/personnels",
+    name: "users-personnels",
     meta: { requiresAuth: true },
     component: () => import("../views/users/defaut.vue")
+  },
+  {
+    path: "/entreprises",
+    name: "users-entreprises",
+    meta: { requiresAuth: true },
+    component: () => import("../views/users/entreprise.vue")
   },
 
  // To start partenaires
@@ -166,6 +172,34 @@ export default [
   meta: { requiresAuth: true },
   props:true,
   component: () => import("../views/documents/fichier.vue")
+},
+
+ // To start juridique
+
+ {
+  path: "/status-juridique",
+  name: "status-juridique",
+  meta: { requiresAuth: true },
+  component: () => import("../views/juridique/default.vue")
+},
+
+
+ // To start zone industrielle
+
+ {
+  path: "/zone-industrielle",
+  name: "zone-industrielle",
+  meta: { requiresAuth: true },
+  component: () => import("../views/zone/default.vue")
+},
+ 
+// To start zone indicateurs
+
+{
+  path: "/indicateurs",
+  name: "indicateurs",
+  meta: { requiresAuth: true },
+  component: () => import("../views/indicateurs/default.vue")
 },
  
  

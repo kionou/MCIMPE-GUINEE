@@ -1,21 +1,14 @@
 <template >
     <Layout>
      <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Documents" pageTitle="Tableau de bord" />
+   <PageHeader title="Indicateurs" pageTitle="Tableau de bord" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
          <BCardBody class="border-bottom">
            <div class="d-flex align-items-center justify-content-between">
-             <BCardTitle class="mb-0 ">Liste des Ctégories</BCardTitle>
+             <BCardTitle class="mb-0 ">Liste des indicateurs</BCardTitle>
 
-             <div class="d-flex justify-content-evenly" style="width: 400px;">
-                
-               <div @click="$router.push({ path: '/documents/sous-categories' })"  class="btn btn-primary">Sous categorie</div>
-               <div @click="$router.push({ path: '/documents/fichier' })"  class="btn btn-primary">Fichier</div>
-             
-               
-             </div>
 
              <div class="flex-shrink-0 d-flex">
                 <BCol xxl="4" lg="9" class=" me-3">
@@ -36,54 +29,182 @@
          
          
          <BCardBody v-else>
-           <div class="table-responsive" >
-             <BTableSimple class="align-middle table-nowrap table-hover">
-               <BThead class="table-light" style="">
-                 <BTr>
-                   <BTh scope="col" ></BTh>
-                   <BTh scope="col">Code</BTh>
-                   <BTh scope="col">Nom</BTh>
-                   <BTh scope="col">Action</BTh>
-                 </BTr>
-               </BThead>
-               <BTbody>
-                 <BTr v-for="region in paginatedItems" :key="region.id">
-                   <BTd>
-                     <div  class="avatar-xs">
+            <div class="py-2 d-flex justify-content-center align-items-center flex-wrap">
+        
+       
+                
+        <div class="" style="width: 370px; border:1px solid #dedfe1; margin:0 10px 10px 0">
+          <BCardBody>
+            <div class="d-flex">
+              <div class="avatar-md me-4" style="border:1px solid #dedfe1; width: 4.5rem; height: 3.5rem;  border-radius: 50%;">
+                <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
+                  <img src="@/assets/images/companies/img-1.png" alt height="30" />
+                </span>
+              </div>
 
-                       <span class="avatar-title rounded-circle">
-                         <img src="../../assets/img/fichier.png" alt="" class="w-50 h-50 rounded-circle">
-                         
-                       </span>
-                     </div>
-                     
-                   </BTd>
-                   <BTd>
-                    
-                    {{ region.CodeRegion }}
-                   </BTd>
-                   <BTd>{{ region.NomRegion }}</BTd>
-                   
+              <div class="flex-grow-1 overflow-hidden">
+                <h5 class="text-truncate font-size-15">
+                  <BLink href="javascript: void(0);" class="text-dark">Les indicateurs liés à la création</BLink>
+                </h5>
+                <p class="text-muted mb-4">It will be as simple as Occidental Lorem ipsum dolor sit amet.</p>
+                <div class="avatar-group">
+                 
+                 
                   
-                  
-                   <BTd>
-                     <ul class="list-unstyled hstack gap-1 mb-0">
+                </div>
+              </div>
+            </div>
+          </BCardBody>
+          <div class="px-4 py-3 border-top">
+            <ul class="list-inline mb-0 d-flex justify-content-around align-items-center">
+              
+              <li v-b-tooltip.hover.top class="list-inline-item me-3" >
+                code: 01
+              </li>
+              <ul class="list-unstyled hstack gap-1 mb-0">
                       
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
-                       </li>
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(region.CodeRegion)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
-                       </li>
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                         <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
-                       </li>
-                     </ul>
-                   </BTd>
-                 </BTr>
-               </BTbody>
-             </BTableSimple>
-           </div>
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
+                        <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                      </li>
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                        <Blink href="#" @click="confirmDelete(region.CodeSousecteur)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                      </li>
+                      
+                    </ul>
+
+            </ul>
+          </div>
+        </div>
+        <div class="" style="width: 370px; border:1px solid #dedfe1; margin:0 10px 10px 0">
+          <BCardBody>
+            <div class="d-flex">
+              <div class="avatar-md me-4" style="border:1px solid #dedfe1; width: 4.5rem; height: 3.5rem;  border-radius: 50%;">
+                <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
+                  <img src="@/assets/images/companies/img-1.png" alt height="30" />
+                </span>
+              </div>
+
+              <div class="flex-grow-1 overflow-hidden">
+                <h5 class="text-truncate font-size-15">
+                  <BLink href="javascript: void(0);" class="text-dark">Les indicateurs liés à la création</BLink>
+                </h5>
+                <p class="text-muted mb-4">It will be as simple as Occidental Lorem ipsum dolor sit amet.</p>
+                <div class="avatar-group">
+                 
+                 
+                  
+                </div>
+              </div>
+            </div>
+          </BCardBody>
+          <div class="px-4 py-3 border-top">
+            <ul class="list-inline mb-0 d-flex justify-content-around align-items-center">
+              
+              <li v-b-tooltip.hover.top class="list-inline-item me-3" >
+                code: 01
+              </li>
+              <ul class="list-unstyled hstack gap-1 mb-0">
+                      
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
+                        <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                      </li>
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                        <Blink href="#" @click="confirmDelete(region.CodeSousecteur)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                      </li>
+                      
+                    </ul>
+
+            </ul>
+          </div>
+        </div>
+        <div class="" style="width: 370px; border:1px solid #dedfe1; margin:0 10px 10px 0">
+          <BCardBody>
+            <div class="d-flex">
+              <div class="avatar-md me-4" style="border:1px solid #dedfe1; width: 4.5rem; height: 3.5rem;  border-radius: 50%;">
+                <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
+                  <img src="@/assets/images/companies/img-1.png" alt height="30" />
+                </span>
+              </div>
+
+              <div class="flex-grow-1 overflow-hidden">
+                <h5 class="text-truncate font-size-15">
+                  <BLink href="javascript: void(0);" class="text-dark">Les indicateurs liés à la création</BLink>
+                </h5>
+                <p class="text-muted mb-4">It will be as simple as Occidental Lorem ipsum dolor sit amet.</p>
+                <div class="avatar-group">
+                 
+                 
+                  
+                </div>
+              </div>
+            </div>
+          </BCardBody>
+          <div class="px-4 py-3 border-top">
+            <ul class="list-inline mb-0 d-flex justify-content-around align-items-center">
+              
+              <li v-b-tooltip.hover.top class="list-inline-item me-3" >
+                code: 01
+              </li>
+              <ul class="list-unstyled hstack gap-1 mb-0">
+                      
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
+                        <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                      </li>
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                        <Blink href="#" @click="confirmDelete(region.CodeSousecteur)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                      </li>
+                      
+                    </ul>
+
+            </ul>
+          </div>
+        </div>
+        <div class="" style="width: 370px; border:1px solid #dedfe1; margin:0 10px 10px 0">
+          <BCardBody>
+            <div class="d-flex">
+              <div class="avatar-md me-4" style="border:1px solid #dedfe1; width: 4.5rem; height: 3.5rem;  border-radius: 50%;">
+                <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
+                  <img src="@/assets/images/companies/img-1.png" alt height="30" />
+                </span>
+              </div>
+
+              <div class="flex-grow-1 overflow-hidden">
+                <h5 class="text-truncate font-size-15">
+                  <BLink href="javascript: void(0);" class="text-dark">Les indicateurs liés à la création</BLink>
+                </h5>
+                <p class="text-muted mb-4">It will be as simple as Occidental Lorem ipsum dolor sit amet.</p>
+                <div class="avatar-group">
+                 
+                 
+                  
+                </div>
+              </div>
+            </div>
+          </BCardBody>
+          <div class="px-4 py-3 border-top">
+            <ul class="list-inline mb-0 d-flex justify-content-around align-items-center">
+              
+              <li v-b-tooltip.hover.top class="list-inline-item me-3" >
+                code: 01
+              </li>
+              <ul class="list-unstyled hstack gap-1 mb-0">
+                      
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
+                        <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                      </li>
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                        <Blink href="#" @click="confirmDelete(region.CodeSousecteur)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                      </li>
+                      
+                    </ul>
+
+            </ul>
+          </div>
+        </div>
+      
+        
+        
+            </div>
            <BRow>
              <BCol lg="12">
                <div class="container_pagination">
@@ -110,7 +231,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter une categorie</h5>
+                     <h5 class="text-primary">Ajouter un indicateur</h5>
                      
                    </div>
                  </BCol>
@@ -129,12 +250,25 @@
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
+                  
+                <BRow>
+                  <BCol md="12">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Code</label>
+                     <MazInput v-model="step1.code"  no-radius type="text" name="code"   color="info" placeholder="001" />
+                      <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
+                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+
+                     </div>
+                  </BCol>
+                   </BRow>
+                  
                    <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Code Categorie</label>
-                     <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
-                      <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
+                       <label for="userpassword">Nom</label>
+                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"  color="info" placeholder="exemple" />
+                      <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
                       <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
@@ -143,16 +277,14 @@
                 <BRow>
                   <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom Categorie</label>
-                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
-                      <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+                       <label for="userpassword">Description</label>
+                       <MazTextarea v-model="step1.description"  no-radius type="text" name="description"   color="info" placeholder="exemple" />
+                      <small v-if="v$.step1.description.$error">{{v$.step1.description.$errors[0].$message}}</small> 
+                      <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
 
                      </div>
                   </BCol>
                    </BRow>
-                  
-
 
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
@@ -186,7 +318,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier une categorie</h5>
+                     <h5 class="text-primary">Modifier un indicateur</h5>
                      
                    </div>
                  </BCol>
@@ -205,38 +337,39 @@
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                   <BRow>
-                     <BCol md="12">
+                    <BRow>
+                  <BCol md="12">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Code</label>
-                     <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
+                     <MazInput v-model="step2.code"  no-radius type="text" name="code"   color="info" placeholder="001" />
                       <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
                       <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
                   </BCol>
-
-                 
                    </BRow>
-                   <BCol md="12">
+                  
+                   <BRow>
+                     <BCol md="12">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Nom</label>
-                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="Conakry" />
+                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"  color="info" placeholder="exemple" />
                       <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['NomRegion']"> {{ resultError["NomRegion"] }} </small>
+                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
 
                      </div>
                   </BCol>
-                   <BRow>
-                    
-                   </BRow>
+                </BRow>
+                <BRow>
+                  <BCol md="12">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Description</label>
+                       <MazTextarea v-model="step2.description"  no-radius type="text" name="description"   color="info" placeholder="exemple" />
+                      <small v-if="v$.step2.description.$error">{{v$.step2.description.$errors[0].$message}}</small> 
+                      <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
 
-                   <BRow class="mb-0">
-                     <BCol cols="12" class="text-end">
-                       <div class="boutton">
-                       <button class="" @click="submitUpdate()">Modifier</button>
-                      </div>
-                     </BCol>
+                     </div>
+                  </BCol>
                    </BRow>
                  </BForm>
                </div>
@@ -287,21 +420,25 @@ export default {
      v$: useVuelidate(),
        error:'',
      step1:{
-            code:'',
+           
             nom:'',
+            code:'',
+            description:'',
   
           },
 
             step2:{
-             code:'',
+            
             nom:'',
+            code:'',
+            description:'',
            
        },
    }
  },
  validations: {
    step1:{
-     code: {
+    code: {
      require
      
    },
@@ -310,10 +447,13 @@ export default {
      lgmin: lgmin(2),
      lgmax: lgmax(20),
    },
+   description:{
+    require
+   }
   
    },
    step2:{
-     code: {
+    code: {
      require
      
    },
@@ -322,6 +462,9 @@ export default {
      lgmin: lgmin(2),
      lgmax: lgmax(20),
    },
+   description:{
+    require
+   }
   
            
        },
