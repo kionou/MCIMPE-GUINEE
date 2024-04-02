@@ -1,11 +1,11 @@
 <template>
     <Layout>
         <Loading v-if="loading" style="z-index: 99999;"></Loading>
-      <PageHeader title="Accueil" pageTitle="Tableau de bord" />
+      <PageHeader title="Accueil" pageTitle="Tableau de bord"  :statistic="statistic"/>
       <BRow>
         <BCol class="d-flex justify-content-center">
-          <BRow style="width:700px">
-            <BCol md="6" v-for="stat of statData" :key="stat.icon">
+          <BRow style="width:1110px">
+            <BCol md="4" v-for="stat of statData" :key="stat.icon">
               <Stat :icon="stat.icon" :title="stat.title" :value="stat.value" />
             </BCol>
           </BRow>
@@ -156,6 +156,9 @@ export default {
     loggedInUser() {
       return this.$store.getters['auth/myAuthenticatedUser'];
     },
+    statistic() {
+      return `Bienvenue à l'accueil de la ${this.loggedInUser.direction}`;
+    }
   },
   data() {
     return {
@@ -203,9 +206,14 @@ async  mounted() {
         },
         {
           icon: "bx bx-archive-in",
-          title: " Total unités distributeurs",
+          title: " Total unités importatrices",
           value:  response.data.data[0].DistributorsCount || 0,
-        }
+        },
+        {
+          icon: "bx bx-archive-in",
+          title: " Total unités distributrices",
+          value:  response.data.data[0].DistributorsCount || 0,
+        },
         
        
       ],

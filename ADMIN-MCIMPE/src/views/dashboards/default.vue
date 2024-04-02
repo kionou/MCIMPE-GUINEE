@@ -36,6 +36,9 @@ export default {
     loggedInUser() {
       return this.$store.getters['auth/myAuthenticatedUser'];
     },
+    statistic() {
+      return `Bienvenue à l'accueil de la ${this.loggedInUser.direction}`;
+    }
   },
   data() {
     return {
@@ -117,7 +120,7 @@ async  mounted() {
 <template>
   <Layout>
     <Loading v-if="loading" style="z-index: 99999;"></Loading>
-    <PageHeader title="Accueil" pageTitle="Tableau de bord" />
+    <PageHeader title="Accueil" pageTitle="Tableau de bord"  :statistic="statistic" />
     <BRow>
       <BCol xl="12">
         <BRow>

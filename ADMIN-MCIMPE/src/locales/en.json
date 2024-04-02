@@ -121,6 +121,14 @@
                
             }
         },
+        "dncic": {
+            "text": "Entreprises",
+            "list": {
+                "importatrice": "Importatrices",
+                "distributrice": "Distributrices"
+               
+            }
+        },
         "projects": {
             "text": "Parametrages",
             "list": {

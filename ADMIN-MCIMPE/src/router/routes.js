@@ -35,19 +35,13 @@ export default [
 
 
   // To start users
-
   {
-    path: "/personnels",
-    name: "users-personnels",
+    path: "/utilisateurs",
+    name: "users",
     meta: { requiresAuth: true },
-    component: () => import("../views/users/defaut.vue")
+    component: () => import("../views/users/index.vue")
   },
-  {
-    path: "/entreprises",
-    name: "users-entreprises",
-    meta: { requiresAuth: true },
-    component: () => import("../views/users/entreprise.vue")
-  },
+  
 
  // To start partenaires
 
@@ -92,29 +86,12 @@ export default [
   // To start localites
 
   {
-    path: "/localite/regions",
-    name: "regions",
+    path: "/localites",
+    name: "localites",
     meta: { requiresAuth: true },
-    component: () => import("../views/localites/regions.vue")
+    component: () => import("../views/localites/default.vue")
   },
-  {
-    path: "/localite/prefectures",
-    name: "prefectures",
-    meta: { requiresAuth: true },
-    component: () => import("../views/localites/prefectures.vue")
-  },
-  {
-    path: "/localite/sous-prefectures",
-    name: "sous_prefectures",
-    meta: { requiresAuth: true },
-    component: () => import("../views/localites/sousprefecture.vue")
-  },
-  {
-    path: "/localite/quartiers",
-    name: "quartiers",
-    meta: { requiresAuth: true },
-    component: () => import("../views/localites/quartier.vue")
-  },
+ 
 
  // To finish localites
 
@@ -125,14 +102,10 @@ export default [
   path: "/secteurs",
   name: "secteurs",
   meta: { requiresAuth: true },
-  component: () => import("../views/secteurs/secteurs.vue")
+  component: () => import("../views/secteurs/default.vue")
 },
-{
-  path: "/sous-secteurs",
-  name: "sous-secteurs",
-  meta: { requiresAuth: true },
-  component: () => import("../views/secteurs/sousSecteur.vue")
-},
+
+
  
 
  // To start archive
@@ -154,25 +127,12 @@ export default [
 // To start documents
 
 {
-  path: "/documents/categories",
-  name: "documents-categorie",
+  path: "/documents",
+  name: "documents",
   meta: { requiresAuth: true },
-  component: () => import("../views/documents/categorie.vue")
+  component: () => import("../views/documents/default.vue")
 },
-{
-  path: "/documents/sous-categories",
-  name: "documents-sous-categorie",
-  meta: { requiresAuth: true },
-  props:true,
-  component: () => import("../views/documents/souscategorie.vue")
-},
-{
-  path: "/documents/fichier",
-  name: "documents-fichier",
-  meta: { requiresAuth: true },
-  props:true,
-  component: () => import("../views/documents/fichier.vue")
-},
+
 
  // To start juridique
 

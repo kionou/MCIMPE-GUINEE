@@ -1,21 +1,13 @@
 <template >
-    <Layout>
-     <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Localités" pageTitle="Tableau de bord" />
+  <div>
+    <Loading v-if="loading" style="z-index: 99999;"></Loading>
+   
    <BRow>
      <BCol lg="12">
        <BCard no-body>
          <BCardBody class="border-bottom">
            <div class="d-flex align-items-center justify-content-between">
-             <BCardTitle class="mb-0 ">Liste des Régions</BCardTitle>
-
-             <div class="d-flex justify-content-evenly" style="width: 400px;">
-                
-               <div @click="$router.push({ path: '/localite/prefectures' })"  class="btn btn-primary">Prefecture</div>
-               <div @click="$router.push({ path: '/localite/sous-prefectures' })"  class="btn btn-primary">Sous Prefecture</div>
-               <div @click="$router.push({ path: '/localite/quartiers' })"  class="btn btn-primary">Quartier</div>
-               
-             </div>
+             <BCardTitle class="mb-0 ">Liste des fichiers</BCardTitle>
 
              <div class="flex-shrink-0 d-flex">
                 <BCol xxl="4" lg="9" class=" me-3">
@@ -41,8 +33,10 @@
                <BThead class="table-light" style="">
                  <BTr>
                    <BTh scope="col" ></BTh>
-                   <BTh scope="col">Code</BTh>
                    <BTh scope="col">Nom</BTh>
+                   <BTh scope="col">Dossier</BTh>
+                   <BTh scope="col">Origine</BTh>
+                   <BTh scope="col">Effectue par</BTh>
                    <BTh scope="col">Action</BTh>
                  </BTr>
                </BThead>
@@ -52,19 +46,16 @@
                      <div  class="avatar-xs">
 
                        <span class="avatar-title rounded-circle">
-                         <img src="../../assets/img/local.png" alt="" class="w-100 h-100 rounded-circle">
+                        <img src="@/assets/img/fichier.png" alt="" class="w-50 h-50 rounded-circle">
                          
                        </span>
                      </div>
                      
                    </BTd>
-                   <BTd>
-                    
-                    {{ region.CodeRegion }}
-                   </BTd>
-                   <BTd>{{ region.NomRegion }}</BTd>
-                   
-                  
+                   <BTd>{{ region.NomQuartier }}</BTd>
+                   <BTd> {{ region.CodeQuartier }} </BTd>
+                   <BTd>{{ NameSousPrefecture(region.CodeSousPrefecture)  }}</BTd>
+                   <BTd>{{ NamePrefecture(region.CodeSousPrefecture.slice(0, 4))  }}</BTd>
                   
                    <BTd>
                      <ul class="list-unstyled hstack gap-1 mb-0">
@@ -73,11 +64,9 @@
                          <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(region.CodeRegion)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                         <Blink href="#" @click="confirmDelete(region.CodeQuartier)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
                        </li>
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                         <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
-                       </li>
+                       
                      </ul>
                    </BTd>
                  </BTr>
@@ -97,7 +86,7 @@
    </BRow>
 
 
-   <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" >
+   <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" size="lg">
      <div>
    
    <div class="account-pages " style="width:100%;">
@@ -110,7 +99,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter une Region</h5>
+                     <h5 class="text-primary">Ajouter un fichier</h5>
                      
                    </div>
                  </BCol>
@@ -129,31 +118,55 @@
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                   <BRow>
-                     <BCol md="12">
+                    <BRow>
+                  <BCol md="6">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">code</label>
-                     <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
-                      <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+                       <label for="userpassword">Nom dossier</label>
+                      <MazSelect label="Sélectionner le dossier" v-model="step1.dossier" color="info" :options="SelectPrefecture" search />
+                      <small v-if="v$.step1.dossier.$error">{{v$.step1.dossier.$errors[0].$message}}</small> 
+                      <small v-if="resultError['CodeSousPrefecture']"> {{ resultError["CodeSousPrefecture"] }} </small>
 
                      </div>
                   </BCol>
-                </BRow>
-                <BRow>
-                  <BCol md="12">
+
+                  <BCol md="6">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom</label>
-                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
+                       <label for="userpassword">Nom fichier</label>
+                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"  color="info" placeholder="0001" />
                       <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+                      <small v-if="resultError['CodeQuartier']"> {{ resultError["CodeQuartier"] }} </small>
+
+                     </div>
+                  </BCol>
+                   </BRow>
+                   
+                <BRow>
+                  <BCol md="6">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Origine</label>
+                     <MazInput v-model="step1.origine"  no-radius type="text" name="origine"   color="info" placeholder="exemple" />
+                      <small v-if="v$.step1.origine.$error">{{v$.step1.origine.$errors[0].$message}}</small> 
+                      <small v-if="resultError['NomQuartier']"> {{ resultError["NomQuartier"] }} </small>
+
+                     </div>
+                  </BCol>
+                  <BCol md="6">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Fichier</label>
+                       <input type="file" name="file" id="file" class="inputfile"  ref="fileInput"
+                        accept="image/*"
+                        @change="handleFileChange" />
+                      <label for="file">
+                        <i class="dripicons-cloud-download"></i>
+                      Joindre une pièce
+                      </label>
+                      <small v-if="v$.step1.fichier.$error">{{v$.step1.fichier.$errors[0].$message}}</small> 
+                      <small v-if="resultError['Fichier']"> {{ resultError["Fichier"] }} </small>
 
                      </div>
                   </BCol>
                    </BRow>
                   
-
-
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
                        <div class="boutton">
@@ -173,7 +186,7 @@
  </div>
    </BModal>
 
-   <BModal v-model="UpdateUser1" hide-footer centered header-class="border-0" title-class="font-18" >
+   <BModal v-model="UpdateUser1" hide-footer centered header-class="border-0" title-class="font-18" size="lg">
      <div>
    
    <div class="account-pages " style="width:100%;">
@@ -186,7 +199,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier un utilisateur</h5>
+                     <h5 class="text-primary">Modifier un fichier</h5>
                      
                    </div>
                  </BCol>
@@ -205,32 +218,55 @@
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                   <BRow>
-                     <BCol md="12">
+                  
+                    <BRow>
+                  <BCol md="6">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Code</label>
-                     <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
-                      <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+                       <label for="userpassword">Nom dossier</label>
+                      <MazSelect label="Sélectionner le dossier" v-model="step2.dossier" color="info" :options="SelectPrefecture" search />
+                      <small v-if="v$.step2.dossier.$error">{{v$.step2.dossier.$errors[0].$message}}</small> 
+                      <small v-if="resultError['CodeSousPrefecture']"> {{ resultError["CodeSousPrefecture"] }} </small>
 
                      </div>
                   </BCol>
 
-                 
-                   </BRow>
-                   <BCol md="12">
+                  <BCol md="6">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom</label>
-                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="Conakry" />
+                       <label for="userpassword">Nom fichier</label>
+                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"  color="info" placeholder="0001" />
                       <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['NomRegion']"> {{ resultError["NomRegion"] }} </small>
+                      <small v-if="resultError['CodeQuartier']"> {{ resultError["CodeQuartier"] }} </small>
 
                      </div>
                   </BCol>
-                   <BRow>
-                    
                    </BRow>
+                   
+                <BRow>
+                  <BCol md="6">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Origine</label>
+                     <MazInput v-model="step2.origine"  no-radius type="text" name="origine"   color="info" placeholder="exemple" />
+                      <small v-if="v$.step2.origine.$error">{{v$.step2.origine.$errors[0].$message}}</small> 
+                      <small v-if="resultError['NomQuartier']"> {{ resultError["NomQuartier"] }} </small>
 
+                     </div>
+                  </BCol>
+                  <BCol md="6">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Fichier</label>
+                       <input type="file" name="file" id="file" class="inputfile"  ref="fileInput"
+                        accept="image/*"
+                        @change="handleFileChange" />
+                      <label for="file">
+                        <i class="dripicons-cloud-download"></i>
+                      Joindre une pièce
+                      </label>
+                      <small v-if="v$.step2.fichier.$error">{{v$.step2.fichier.$errors[0].$message}}</small> 
+                      <small v-if="resultError['Fichier']"> {{ resultError["Fichier"] }} </small>
+
+                     </div>
+                  </BCol>
+                   </BRow>
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
                        <div class="boutton">
@@ -250,11 +286,13 @@
  </div>
    </BModal>
    
+  </div>
+    
 
- </Layout>
+ 
 </template>
 <script>
-import Layout from "../../layouts/main.vue";
+
 import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput';
 import PageHeader from "@/components/page-header.vue";
 import Pag from '@/components/others/pagination.vue'
@@ -267,7 +305,6 @@ import Swal from 'sweetalert2'
 
 export default {
    components: {
-   Layout,
    PageHeader,
    Loading ,
    Pag,
@@ -280,28 +317,36 @@ export default {
      UpdateUser1:false,
      ToId:'',
      regionOptions:[],
+     prefectureOptions:[],
+     SelectPrefecture:[],
+     sous_prefectureOptions:[],
+     QuartierOptions:[],
      currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
       resultError: {},
      v$: useVuelidate(),
+     IdLocalite:'',
        error:'',
      step1:{
-            code:'',
+            dossier:'',
             nom:'',
-  
+            origine:'',
+            fichier:'',
           },
 
             step2:{
-             code:'',
+            dossier:'',
             nom:'',
+            origine:'',
+            fichier:'',
            
        },
    }
  },
  validations: {
    step1:{
-     code: {
+    dossier: {
      require
      
    },
@@ -310,10 +355,17 @@ export default {
      lgmin: lgmin(2),
      lgmax: lgmax(20),
    },
+   origine: {
+     require
+     
+   },
+   fichier:{
+    require
+   }
   
    },
    step2:{
-     code: {
+    dossier: {
      require
      
    },
@@ -322,34 +374,38 @@ export default {
      lgmin: lgmin(2),
      lgmax: lgmax(20),
    },
-  
-           
-       },
+   origine: {
+     require
      
-
-   
+   },
+   fichier:{
+    require
+   }    
+       },   
  },
  computed:{
    loggedInUser() {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
    totalPages() {
-   return Math.ceil(this.regionOptions.length / this.itemsPerPage);
+   return Math.ceil(this.QuartierOptions.length / this.itemsPerPage);
    },
    paginatedItems() {
      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
      const endIndex = startIndex + this.itemsPerPage;
-     return this.regionOptions.slice(startIndex, endIndex);
+     return this.QuartierOptions.slice(startIndex, endIndex);
    },
  },
 async mounted() {
    console.log("uusers",this.loggedInUser);
+   await this.fetchSousPrefectureOptions()
   await this.fetchRegionOptions()
+   await this.fetchPrefectureOptions()
+   await this.fetchQuartierOptions()
+ 
  },
  methods: {
-   validatePasswordsMatch() {
-    return this.step1.password === this.step1.confirm_password;
-   },
+  
    successmsg:successmsg,
    async fetchRegionOptions() {
       // Renommez la méthode pour refléter qu'elle récupère les options de pays
@@ -360,11 +416,63 @@ async mounted() {
          
         ); // Accéder aux options des pays via le getter
         console.log(options);
-        this.regionOptions = options; // Affecter les options à votre propriété sortedCountryOptions
+        this.regionOptions = options;
+        // Affecter les options à votre propriété sortedCountryOptions
         this.loading = false
       } catch (error) {
         console.error(
           "Erreur lors de la récupération des options des pays :",
+          error.message
+        );
+      }
+    },
+    async fetchPrefectureOptions() { // Renommez la méthode pour refléter qu'elle récupère les options de pays
+      try {
+        await this.$store.dispatch('fetchPrefectureOptions');
+        const options = JSON.parse(JSON.stringify(this.$store.getters['getprefectureOptions'])); // Accéder aux options des pays via le getter
+        console.log('Options des Prefecture:', options);
+         this.prefectureOptions = options; 
+       
+        
+        // Affecter les options à votre propriété sortedCountryOptions
+      } catch (error) {
+        console.error('Erreur lors de la récupération des options des prefecture :', error);
+      }
+    },
+    async fetchSousPrefectureOptions() {
+  try {
+    await this.$store.dispatch("fetchSous_PrefectureOptions");
+    const options = JSON.parse(JSON.stringify(this.$store.getters["getSousprefectureOptions"]));
+    this.sous_prefectureOptions = options;
+    this.SelectPrefecture = this.sous_prefectureOptions.map(sousprefecture => ({
+        label: sousprefecture.NomSousPrefecture,
+        value: sousprefecture.CodeSousPrefecture,
+        code:sousprefecture.CodePrefecture
+      }));
+     console.log('Sous-préfecture :', options);
+   
+
+    
+   
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des options des sous-préfectures :",
+      error.message
+    );
+  }
+},
+async fetchQuartierOptions() {
+      // Renommez la méthode pour refléter qu'elle récupère les options de pays
+      try {
+        await this.$store.dispatch("fetchQuartierOptions");
+        const options = JSON.parse(
+          JSON.stringify(this.$store.getters["getQuartierOptions"])); // Accéder aux options des pays via le getter
+        this.QuartierOptions = options;
+       console.log('Sous-préfecture :', options);
+         // Affecter les options à votre propriété sortedCountryOptions
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des options des prefecture :",
           error.message
         );
       }
@@ -376,13 +484,14 @@ async mounted() {
     if (this.v$.$errors.length == 0 ) {
        this.loading = true
          let DataUser = {
-           CodeRegion:this.step1.code,
-           NomRegion:this.step1.nom,
+            CodeQuartier:this.step1.code,
+            NomQuartier:this.step1.nom,
+            CodeSousPrefecture:this.step1.sousprefecture
          }
          console.log("eeeee",DataUser);
          try {
         
-         const response = await axios.post('/regions' , DataUser, {
+         const response = await axios.post('/quartiers' , DataUser, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
              },
@@ -393,8 +502,8 @@ async mounted() {
          if (response.data.status === "success") { 
            this.AddUser = false
            this.loading = false
-           this.successmsg("Création de region",'Votre region a été crée avec succès !')
-           await this.fetchRegionOptions()
+           this.successmsg("Création du quartier",'Votre quartier a été crée avec succès !')
+          await this.fetchQuartierOptions()
 
          } else {
 
@@ -441,7 +550,7 @@ async mounted() {
          
          try {
            // Faites une requête pour supprimer l'élément avec l'ID itemId
-           const response = await axios.delete(`/regions/${id}`, {
+           const response = await axios.delete(`/quartiers/${id}`, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
                
@@ -453,8 +562,8 @@ async mounted() {
            console.log('Réponse de suppression:', response);
            if (response.data.status === 'success') {
              this.loading = false
-            this.successmsg('Supprimé!', 'Votre region a été supprimée.')
-            await this.fetchRegionOptions()
+           await this.fetchQuartierOptions()
+            this.successmsg('Supprimé!', 'Votre quartier a été supprimé.')
    
            } else {
              console.log('error', response.data)
@@ -476,15 +585,16 @@ async mounted() {
 
          try {
              // Recherchez l'objet correspondant dans le tableau regionOptions en fonction de l'ID
-             const user = this.regionOptions.find(user => user.id === id);
+             const user = this.QuartierOptions.find(user => user.id === id);
 
              if (user) {
                  // Utilisez les informations récupérées de l'objet user
                  console.log('Informations de l\'utilisateur:', user);
 
-            this.step2.code = user.CodeRegion,
-            this.step2.nom = user.NomRegion,
-            this.ToId = user.CodeRegion
+            this.step2.code = user.CodeQuartier,
+            this.step2.nom = user.NomQuartier,
+            this.step2.sousprefecture = user.CodeSousPrefecture,
+            this.ToId = user.CodeQuartier
              } else {
                  console.log('Utilisateur non trouvé avec l\'ID', id);
              }
@@ -507,14 +617,15 @@ async mounted() {
       
                const dataCath = {
    
-           CodeRegion:this.step2.code,
-           NomRegion:this.step2.nom,
-           Statut:1
+                CodeQuartier:this.step2.code,
+                NomQuartier:this.step2.nom,
+                CodeSousPrefecture:this.step2.sousprefecture,
+                        //  CodeSousPrefecture:1
              }
-             console.log('dataCath',dataCath);
+     console.log('dataCath',dataCath);
    
         try {
-          const response = await axios.put(`regions/${this.ToId}`,dataCath, {
+          const response = await axios.put(`quartiers/${this.ToId}`,dataCath, {
             headers: {
              
               Authorization: `Bearer ${this.loggedInUser.token}`,
@@ -522,11 +633,10 @@ async mounted() {
           });
           console.log("Réponse du téléversement :", response);
           if (response.data.status === "success") {
-            await this.fetchRegionOptions()
+            await this.fetchQuartierOptions()
             this.UpdateUser1 = false
            this.loading = false
-           this.successmsg("Modification de",'Votre region a été modifiée avec succès !')
-           
+           this.successmsg("Modification du quartier",'Votre quartier a été modifié avec succès !')
             
           } 
         } catch (error) {
@@ -553,7 +663,7 @@ async mounted() {
          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         
          const endIndex = startIndex + this.itemsPerPage;
-         return  this.regionOptions.slice(startIndex, endIndex);
+         return  this.QuartierOptions.slice(startIndex, endIndex);
        },
 
        async formatValidationErrors(errors) {
@@ -574,6 +684,42 @@ async mounted() {
      // Maintenant, this.resultError est un objet où les clés sont les noms des champs
      console.log("resultError", this.resultError);
    },
+
+   NameRegion(id){
+    const selectedRegion = this.regionOptions.find(region => region.CodeRegion === id);    
+            console.log('selectedRegion',selectedRegion);
+            if (selectedRegion) {
+            return  selectedRegion.NomRegion;         
+            } else {
+                console.error('Région non trouvée dans les options.');
+            }
+   },
+
+   NamePrefecture(id){
+    const selectedRegion = this.prefectureOptions.find(region => region.CodePrefecture === id);    
+            console.log('selectedRegion',selectedRegion);
+            if (selectedRegion) {
+            this.NameRegion(selectedRegion.CodeRegion) 
+            return  selectedRegion.NomPrefecture;         
+            } else {
+                console.error('Région non trouvée dans les options.');
+            }
+   },
+   NameSousPrefecture(id){
+    const selectedRegion = this.sous_prefectureOptions.find(region => region.CodeSousPrefecture === id);    
+            console.log('selectedRegion',selectedRegion);
+            if (selectedRegion) {
+    
+            return  selectedRegion.NomSousPrefecture;         
+            } else {
+                console.error('Région non trouvée dans les options.');
+            }
+   },
+   getNameRegion(codePrefecture) {
+      const regionCode = codePrefecture.slice(0, 2);
+      const region = this.regionOptions.find(r => r.CodeRegion === regionCode);
+      return region ? region.NomRegion : "Région inconnue";
+    }
  },
 }
 </script>

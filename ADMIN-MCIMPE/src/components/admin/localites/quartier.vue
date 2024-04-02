@@ -1,306 +1,271 @@
 <template >
-    <Layout>
-     <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Documents" pageTitle="Tableau de bord" />
-   <BRow>
-     <BCol lg="12">
-       <BCard no-body>
-         <BCardBody class="border-bottom">
-           <div class="d-flex align-items-center justify-content-between">
-             <BCardTitle class="mb-0 ">Liste des fichiers</BCardTitle>
+   <div>
+    <Loading v-if="loading" style="z-index: 99999;"></Loading>
+ 
+ <BRow>
+   <BCol lg="12">
+     <BCard no-body>
+       <BCardBody class="border-bottom">
+         <div class="d-flex align-items-center justify-content-between">
+           <BCardTitle class="mb-0 ">Liste des quartiers</BCardTitle>
 
-             <div class="d-flex justify-content-evenly" style="width: 400px;">
-               <div @click="$router.push({ path: '/documents/categories' })"  class="btn btn-primary">Categorie</div>
-                <div @click="$router.push({ path: '/documents/sous-categories' })"  class="btn btn-primary">Sous categorie</div>
-               
-             </div>
+          
 
-             <div class="flex-shrink-0 d-flex">
-                <BCol xxl="4" lg="9" class=" me-3">
-               <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
-             </BCol>
-               <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
-               
-             </div>
+           <div class="flex-shrink-0 d-flex">
+              <BCol xxl="4" lg="9" class=" me-3">
+             <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
+           </BCol>
+             <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
+             
            </div>
-         </BCardBody>
+         </div>
+       </BCardBody>
 
-         <BCardBody v-if="paginatedItems.length === 0" class="noresul">
-           <div >
-         <span> Vous n'avez pas encore de personnel, vous pouvez également en ajouter un !! </span>
-          </div>
-         </BCardBody>
-        
-         
-         
-         <BCardBody v-else>
-           <div class="table-responsive" >
-             <BTableSimple class="align-middle table-nowrap table-hover">
-               <BThead class="table-light" style="">
-                 <BTr>
-                   <BTh scope="col" ></BTh>
-                   <BTh scope="col">Nom</BTh>
-                   <BTh scope="col">Dossier</BTh>
-                   <BTh scope="col">Origine</BTh>
-                   <BTh scope="col">Effectue par</BTh>
-                   <BTh scope="col">Action</BTh>
-                 </BTr>
-               </BThead>
-               <BTbody>
-                 <BTr v-for="region in paginatedItems" :key="region.id">
-                   <BTd>
-                     <div  class="avatar-xs">
-
-                       <span class="avatar-title rounded-circle">
-                        <img src="../../assets/img/fichier.png" alt="" class="w-50 h-50 rounded-circle">
-                         
-                       </span>
-                     </div>
-                     
-                   </BTd>
-                   <BTd>{{ region.NomQuartier }}</BTd>
-                   <BTd> {{ region.CodeQuartier }} </BTd>
-                   <BTd>{{ NameSousPrefecture(region.CodeSousPrefecture)  }}</BTd>
-                   <BTd>{{ NamePrefecture(region.CodeSousPrefecture.slice(0, 4))  }}</BTd>
+       <BCardBody v-if="paginatedItems.length === 0" class="noresul">
+         <div >
+       <span> Vous n'avez pas encore de personnel, vous pouvez également en ajouter un !! </span>
+        </div>
+       </BCardBody>
+      
+       
+       
+       <BCardBody v-else>
+         <div class="table-responsive" >
+           <BTableSimple class="align-middle table-nowrap table-hover">
+             <BThead class="table-light" style="">
+               <BTr>
+                 <BTh scope="col" ></BTh>
+                 <BTh scope="col">Code</BTh>
+                 <BTh scope="col">Nom</BTh>
+                 <BTh scope="col">Sous Prefecture</BTh>
+                 <BTh scope="col">Prefecture</BTh>
+                 <BTh scope="col">Region</BTh>
+                 <BTh scope="col">Action</BTh>
+               </BTr>
+             </BThead>
+             <BTbody>
+               <BTr v-for="region in paginatedItems" :key="region.id">
+                 <BTd>
                   
-                   <BTd>
-                     <ul class="list-unstyled hstack gap-1 mb-0">
-                      
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
-                       </li>
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(region.CodeQuartier)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
-                       </li>
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                         <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
-                       </li>
-                     </ul>
-                   </BTd>
-                 </BTr>
-               </BTbody>
-             </BTableSimple>
+                   
+                 </BTd>
+                 <BTd>
+                  
+                  {{ region.CodeQuartier }}
+                 </BTd>
+                 <BTd>{{ region.NomQuartier }}</BTd>
+                 <BTd>{{ NameSousPrefecture(region.CodeSousPrefecture)  }}</BTd>
+                 <BTd>{{ NamePrefecture(region.CodeSousPrefecture.slice(0, 4))  }}</BTd>
+                 <BTd>{{  getNameRegion(region.CodeSousPrefecture.slice(0, 2)) }}</BTd>
+                 <BTd>
+                   <ul class="list-unstyled hstack gap-1 mb-0">
+                    
+                     <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
+                       <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                     </li>
+                     <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
+                       <Blink href="#" @click="confirmDelete(region.CodeQuartier)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                     </li>
+                     
+                   </ul>
+                 </BTd>
+               </BTr>
+             </BTbody>
+           </BTableSimple>
+         </div>
+         <BRow>
+           <BCol lg="12">
+             <div class="container_pagination">
+               <Pag :current-page="currentPage" :total-pages="totalPages" @page-change="updateCurrentPage" />
+             </div>
+           </BCol>
+         </BRow>
+       </BCardBody>
+     </BCard>
+   </BCol>
+ </BRow>
+
+
+ <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" >
+   <div>
+ 
+ <div class="account-pages " style="width:100%;">
+   <BContainer>
+     <BRow >
+       <BCol >
+         <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+          border: 1px solid #c9d1d9 !important;">
+           <div class="bg-primary-subtle">
+             <BRow>
+               <BCol cols="12 text-center">
+                 <div class="modalheader p-4">
+                   <h5 class="text-primary">Ajouter un quartier</h5>
+                   
+                 </div>
+               </BCol>
+               
+             </BRow>
            </div>
-           <BRow>
-             <BCol lg="12">
-               <div class="container_pagination">
-                 <Pag :current-page="currentPage" :total-pages="totalPages" @page-change="updateCurrentPage" />
-               </div>
-             </BCol>
-           </BRow>
-         </BCardBody>
-       </BCard>
-     </BCol>
-   </BRow>
-
-
-   <BModal v-model="AddUser" hide-footer centered header-class="border-0" title-class="font-18" size="lg">
-     <div>
-   
-   <div class="account-pages " style="width:100%;">
-     <BContainer>
-       <BRow >
-         <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
-            border: 1px solid #c9d1d9 !important;">
-             <div class="bg-primary-subtle">
-               <BRow>
-                 <BCol cols="12 text-center">
-                   <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter un fichier</h5>
-                     
-                   </div>
-                 </BCol>
-                 
-               </BRow>
+           <BCardBody class="pt-0">
+             <div>
+               <router-link to="#">
+                 <div class="avatar-md profile-user-wid ">
+               <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
+                 <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
+               </span>
              </div>
-             <BCardBody class="pt-0">
-               <div>
-                 <router-link to="#">
-                   <div class="avatar-md profile-user-wid ">
-                 <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
-                   <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
-                 </span>
-               </div>
-                 </router-link>
-               </div>
-               <div class="p-2">
-                 <BForm class="form-horizontal">
-                    <BRow>
-                  <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom dossier</label>
-                      <MazSelect label="Sélectionner le dossier" v-model="step1.dossier" color="info" :options="SelectPrefecture" search />
-                      <small v-if="v$.step1.dossier.$error">{{v$.step1.dossier.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeSousPrefecture']"> {{ resultError["CodeSousPrefecture"] }} </small>
-
-                     </div>
-                  </BCol>
-
-                  <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom fichier</label>
-                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"  color="info" placeholder="0001" />
-                      <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeQuartier']"> {{ resultError["CodeQuartier"] }} </small>
-
-                     </div>
-                  </BCol>
-                   </BRow>
-                   
-                <BRow>
-                  <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Origine</label>
-                     <MazInput v-model="step1.origine"  no-radius type="text" name="origine"   color="info" placeholder="exemple" />
-                      <small v-if="v$.step1.origine.$error">{{v$.step1.origine.$errors[0].$message}}</small> 
-                      <small v-if="resultError['NomQuartier']"> {{ resultError["NomQuartier"] }} </small>
-
-                     </div>
-                  </BCol>
-                  <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Fichier</label>
-                       <input type="file" name="file" id="file" class="inputfile"  ref="fileInput"
-                        accept="image/*"
-                        @change="handleFileChange" />
-                      <label for="file">
-                        <i class="dripicons-cloud-download"></i>
-                      Joindre une pièce
-                      </label>
-                      <small v-if="v$.step1.fichier.$error">{{v$.step1.fichier.$errors[0].$message}}</small> 
-                      <small v-if="resultError['Fichier']"> {{ resultError["Fichier"] }} </small>
-
-                     </div>
-                  </BCol>
-                   </BRow>
-                  
-                   <BRow class="mb-0">
-                     <BCol cols="12" class="text-end">
-                       <div class="boutton">
-                       <button class="" @click="HamdleAddUser()">Valider</button>
-                      </div>
-                     </BCol>
-                   </BRow>
-                 </BForm>
-               </div>
-             </BCardBody>
-           </BCard>
-           
-         </BCol>
-       </BRow>
-     </BContainer>
-   </div>
- </div>
-   </BModal>
-
-   <BModal v-model="UpdateUser1" hide-footer centered header-class="border-0" title-class="font-18" size="lg">
-     <div>
-   
-   <div class="account-pages " style="width:100%;">
-     <BContainer>
-       <BRow >
-         <BCol >
-           <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
-            border: 1px solid #c9d1d9 !important;">
-             <div class="bg-primary-subtle">
-               <BRow>
-                 <BCol cols="12 text-center">
-                   <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier un fichier</h5>
-                     
-                   </div>
-                 </BCol>
-                 
-               </BRow>
+               </router-link>
              </div>
-             <BCardBody class="pt-0">
-               <div>
-                 <router-link to="#">
-                   <div class="avatar-md profile-user-wid ">
-                 <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
-                   <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
-                 </span>
-               </div>
-                 </router-link>
-               </div>
-               <div class="p-2">
-                 <BForm class="form-horizontal">
-                  
-                    <BRow>
-                  <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom dossier</label>
-                      <MazSelect label="Sélectionner le dossier" v-model="step2.dossier" color="info" :options="SelectPrefecture" search />
-                      <small v-if="v$.step2.dossier.$error">{{v$.step2.dossier.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeSousPrefecture']"> {{ resultError["CodeSousPrefecture"] }} </small>
+             <div class="p-2">
+               <BForm class="form-horizontal">
+                 <BRow>
+                   <BCol md="12">
+                   <div class="mb-3 position-relative">
+                     <label for="userpassword">code</label>
+                   <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="0001" />
+                    <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
+                    <small v-if="resultError['CodeQuartier']"> {{ resultError["CodeQuartier"] }} </small>
 
-                     </div>
-                  </BCol>
+                   </div>
+                </BCol>
+              </BRow>
+              <BRow>
+                <BCol md="12">
+                   <div class="mb-3 position-relative">
+                     <label for="userpassword">Nom</label>
+                   <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
+                    <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
+                    <small v-if="resultError['NomQuartier']"> {{ resultError["NomQuartier"] }} </small>
 
-                  <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom fichier</label>
-                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"  color="info" placeholder="0001" />
-                      <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeQuartier']"> {{ resultError["CodeQuartier"] }} </small>
+                   </div>
+                </BCol>
+                 </BRow>
 
-                     </div>
-                  </BCol>
-                   </BRow>
-                   
-                <BRow>
-                  <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Origine</label>
-                     <MazInput v-model="step2.origine"  no-radius type="text" name="origine"   color="info" placeholder="exemple" />
-                      <small v-if="v$.step2.origine.$error">{{v$.step2.origine.$errors[0].$message}}</small> 
-                      <small v-if="resultError['NomQuartier']"> {{ resultError["NomQuartier"] }} </small>
+                 <BRow>
+                <BCol md="12">
+                   <div class="mb-3 position-relative">
+                     <label for="userpassword">Sous Prefecture</label>
+                    <MazSelect label="Sélectionner la sous-prefecture" v-model="step1.sousprefecture" color="info" :options="SelectPrefecture" search />
+                    <small v-if="v$.step1.sousprefecture.$error">{{v$.step1.sousprefecture.$errors[0].$message}}</small> 
+                    <small v-if="resultError['CodeSousPrefecture']"> {{ resultError["CodeSousPrefecture"] }} </small>
 
-                     </div>
-                  </BCol>
-                  <BCol md="6">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Fichier</label>
-                       <input type="file" name="file" id="file" class="inputfile"  ref="fileInput"
-                        accept="image/*"
-                        @change="handleFileChange" />
-                      <label for="file">
-                        <i class="dripicons-cloud-download"></i>
-                      Joindre une pièce
-                      </label>
-                      <small v-if="v$.step2.fichier.$error">{{v$.step2.fichier.$errors[0].$message}}</small> 
-                      <small v-if="resultError['Fichier']"> {{ resultError["Fichier"] }} </small>
-
-                     </div>
-                  </BCol>
-                   </BRow>
-                   <BRow class="mb-0">
-                     <BCol cols="12" class="text-end">
-                       <div class="boutton">
-                       <button class="" @click="submitUpdate()">Modifier</button>
-                      </div>
-                     </BCol>
-                   </BRow>
-                 </BForm>
-               </div>
-             </BCardBody>
-           </BCard>
-           
-         </BCol>
-       </BRow>
-     </BContainer>
-   </div>
+                   </div>
+                </BCol>
+                 </BRow>
+                 <BRow class="mb-0">
+                   <BCol cols="12" class="text-end">
+                     <div class="boutton">
+                     <button class="" @click="HamdleAddUser()">Valider</button>
+                    </div>
+                   </BCol>
+                 </BRow>
+               </BForm>
+             </div>
+           </BCardBody>
+         </BCard>
+         
+       </BCol>
+     </BRow>
+   </BContainer>
  </div>
-   </BModal>
+</div>
+ </BModal>
+
+ <BModal v-model="UpdateUser1" hide-footer centered header-class="border-0" title-class="font-18" >
+   <div>
+ 
+ <div class="account-pages " style="width:100%;">
+   <BContainer>
+     <BRow >
+       <BCol >
+         <BCard no-body class="overflow-hidden" style=" box-shadow:none !important;
+          border: 1px solid #c9d1d9 !important;">
+           <div class="bg-primary-subtle">
+             <BRow>
+               <BCol cols="12 text-center">
+                 <div class="modalheader p-4">
+                   <h5 class="text-primary">Modifier une sous prefecture</h5>
+                   
+                 </div>
+               </BCol>
+               
+             </BRow>
+           </div>
+           <BCardBody class="pt-0">
+             <div>
+               <router-link to="#">
+                 <div class="avatar-md profile-user-wid ">
+               <span class="avatar-title rounded-circle" style="position: relative; z-index: 33;">
+                 <img src="@/assets/img/armoirie.png" alt style="width: 75%; height: 75%; z-index: 33;"/>
+               </span>
+             </div>
+               </router-link>
+             </div>
+             <div class="p-2">
+               <BForm class="form-horizontal">
+                  <BRow>
+                   <BCol md="12">
+                   <div class="mb-3 position-relative">
+                     <label for="userpassword">code</label>
+                   <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="0001" />
+                    <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
+                    <small v-if="resultError['CodeQuartier']"> {{ resultError["CodeQuartier"] }} </small>
+
+                   </div>
+                </BCol>
+              </BRow>
+              <BRow>
+                <BCol md="12">
+                   <div class="mb-3 position-relative">
+                     <label for="userpassword">Nom</label>
+                   <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
+                    <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
+                    <small v-if="resultError['NomQuartier']"> {{ resultError["NomQuartier"] }} </small>
+
+                   </div>
+                </BCol>
+                 </BRow>
+
+                 <BRow>
+                <BCol md="12">
+                   <div class="mb-3 position-relative">
+                     <label for="userpassword">Sous Prefecture</label>
+                    <MazSelect label="Sélectionner la sous-prefecture" v-model="step2.sousprefecture" color="info" :options="SelectPrefecture" search />
+                    <small v-if="v$.step2.sousprefecture.$error">{{v$.step2.sousprefecture.$errors[0].$message}}</small> 
+                    <small v-if="resultError['CodeSousPrefecture']"> {{ resultError["CodeSousPrefecture"] }} </small>
+
+                   </div>
+                </BCol>
+                 </BRow>
+
+                 <BRow class="mb-0">
+                   <BCol cols="12" class="text-end">
+                     <div class="boutton">
+                     <button class="" @click="submitUpdate()">Modifier</button>
+                    </div>
+                   </BCol>
+                 </BRow>
+               </BForm>
+             </div>
+           </BCardBody>
+         </BCard>
+         
+       </BCol>
+     </BRow>
+   </BContainer>
+ </div>
+</div>
+ </BModal>
+   </div>
+    
    
 
- </Layout>
+
 </template>
 <script>
-import Layout from "../../layouts/main.vue";
+
 import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput';
-import PageHeader from "@/components/page-header.vue";
+
 import Pag from '@/components/others/pagination.vue'
 import axios from '@/lib/axiosConfig.js'
 import Loading from '@/components/others/loading.vue';
@@ -311,8 +276,7 @@ import Swal from 'sweetalert2'
 
 export default {
    components: {
-   Layout,
-   PageHeader,
+  
    Loading ,
    Pag,
    MazPhoneNumberInput,
@@ -336,24 +300,22 @@ export default {
      IdLocalite:'',
        error:'',
      step1:{
-            dossier:'',
+            code:'',
             nom:'',
-            origine:'',
-            fichier:'',
+            sousprefecture:'',
           },
 
             step2:{
-            dossier:'',
+             code:'',
             nom:'',
-            origine:'',
-            fichier:'',
+            sousprefecture:'',
            
        },
    }
  },
  validations: {
    step1:{
-    dossier: {
+     code: {
      require
      
    },
@@ -362,17 +324,14 @@ export default {
      lgmin: lgmin(2),
      lgmax: lgmax(20),
    },
-   origine: {
+   sousprefecture: {
      require
      
-   },
-   fichier:{
-    require
    }
   
    },
    step2:{
-    dossier: {
+     code: {
      require
      
    },
@@ -381,12 +340,9 @@ export default {
      lgmin: lgmin(2),
      lgmax: lgmax(20),
    },
-   origine: {
+   sousprefecture: {
      require
      
-   },
-   fichier:{
-    require
    }    
        },   
  },

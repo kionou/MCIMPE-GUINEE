@@ -123,7 +123,8 @@ export default {
           <img src="../assets/img/bars.png" alt="" width="35" height="35">
         </BButton>
       </div>
-
+      <div style="font-weight: bolder;" v-if="loggedInUser.direction === 'DNI'">Direction Nationale de l'Industrie (DNI)</div>
+        <div style="font-weight: bolder;" v-else>Direction Nationale du Commerce Intérieur et de la Concurrence (DNCIC)</div>
       <div class="d-flex">
         <BDropdown right variant="black" toggle-class="header-item" menu-class="dropdown-menu-end">
           <template v-slot:button-content>

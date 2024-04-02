@@ -33,10 +33,10 @@
         
        
                 
-        <div class="" style="width: 370px; border:1px solid #dedfe1; margin:0 10px 10px 0">
+        <div class="" style="width: 260px; border:1px solid #dedfe1; margin:0 10px 10px 0" v-for="indicateur in paginatedItems" :key="indicateur.id">
           <BCardBody>
             <div class="d-flex">
-              <div class="avatar-md me-4" style="border:1px solid #dedfe1; width: 4.5rem; height: 3.5rem;  border-radius: 50%;">
+              <div class="avatar-md me-4" style="border:1px solid #dedfe1; width: 3rem; height: 3rem;  border-radius: 50%;">
                 <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
                   <img src="@/assets/images/companies/img-1.png" alt height="30" />
                 </span>
@@ -44,9 +44,9 @@
 
               <div class="flex-grow-1 overflow-hidden">
                 <h5 class="text-truncate font-size-15">
-                  <BLink href="javascript: void(0);" class="text-dark">Les indicateurs liés à la création</BLink>
+                  <BLink href="javascript: void(0);" class="text-dark">{{ indicateur.Description }}</BLink>
                 </h5>
-                <p class="text-muted mb-4">It will be as simple as Occidental Lorem ipsum dolor sit amet.</p>
+                <p class="text-muted mb-4"></p>
                 <div class="avatar-group">
                  
                  
@@ -59,15 +59,15 @@
             <ul class="list-inline mb-0 d-flex justify-content-around align-items-center">
               
               <li v-b-tooltip.hover.top class="list-inline-item me-3" >
-                code: 01
+                code: {{ indicateur.CodeIndicateur }}
               </li>
               <ul class="list-unstyled hstack gap-1 mb-0">
                       
                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                        <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                        <Blink href="#"  @click="UpdateUser(indicateur.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
                       </li>
                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                        <Blink href="#" @click="confirmDelete(region.CodeSousecteur)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                        <Blink href="#" @click="confirmDelete(indicateur.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
                       </li>
                       
                     </ul>
@@ -75,132 +75,8 @@
             </ul>
           </div>
         </div>
-        <div class="" style="width: 370px; border:1px solid #dedfe1; margin:0 10px 10px 0">
-          <BCardBody>
-            <div class="d-flex">
-              <div class="avatar-md me-4" style="border:1px solid #dedfe1; width: 4.5rem; height: 3.5rem;  border-radius: 50%;">
-                <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
-                  <img src="@/assets/images/companies/img-1.png" alt height="30" />
-                </span>
-              </div>
-
-              <div class="flex-grow-1 overflow-hidden">
-                <h5 class="text-truncate font-size-15">
-                  <BLink href="javascript: void(0);" class="text-dark">Les indicateurs liés à la création</BLink>
-                </h5>
-                <p class="text-muted mb-4">It will be as simple as Occidental Lorem ipsum dolor sit amet.</p>
-                <div class="avatar-group">
-                 
-                 
-                  
-                </div>
-              </div>
-            </div>
-          </BCardBody>
-          <div class="px-4 py-3 border-top">
-            <ul class="list-inline mb-0 d-flex justify-content-around align-items-center">
-              
-              <li v-b-tooltip.hover.top class="list-inline-item me-3" >
-                code: 01
-              </li>
-              <ul class="list-unstyled hstack gap-1 mb-0">
-                      
-                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                        <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
-                      </li>
-                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                        <Blink href="#" @click="confirmDelete(region.CodeSousecteur)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
-                      </li>
-                      
-                    </ul>
-
-            </ul>
-          </div>
-        </div>
-        <div class="" style="width: 370px; border:1px solid #dedfe1; margin:0 10px 10px 0">
-          <BCardBody>
-            <div class="d-flex">
-              <div class="avatar-md me-4" style="border:1px solid #dedfe1; width: 4.5rem; height: 3.5rem;  border-radius: 50%;">
-                <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
-                  <img src="@/assets/images/companies/img-1.png" alt height="30" />
-                </span>
-              </div>
-
-              <div class="flex-grow-1 overflow-hidden">
-                <h5 class="text-truncate font-size-15">
-                  <BLink href="javascript: void(0);" class="text-dark">Les indicateurs liés à la création</BLink>
-                </h5>
-                <p class="text-muted mb-4">It will be as simple as Occidental Lorem ipsum dolor sit amet.</p>
-                <div class="avatar-group">
-                 
-                 
-                  
-                </div>
-              </div>
-            </div>
-          </BCardBody>
-          <div class="px-4 py-3 border-top">
-            <ul class="list-inline mb-0 d-flex justify-content-around align-items-center">
-              
-              <li v-b-tooltip.hover.top class="list-inline-item me-3" >
-                code: 01
-              </li>
-              <ul class="list-unstyled hstack gap-1 mb-0">
-                      
-                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                        <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
-                      </li>
-                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                        <Blink href="#" @click="confirmDelete(region.CodeSousecteur)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
-                      </li>
-                      
-                    </ul>
-
-            </ul>
-          </div>
-        </div>
-        <div class="" style="width: 370px; border:1px solid #dedfe1; margin:0 10px 10px 0">
-          <BCardBody>
-            <div class="d-flex">
-              <div class="avatar-md me-4" style="border:1px solid #dedfe1; width: 4.5rem; height: 3.5rem;  border-radius: 50%;">
-                <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
-                  <img src="@/assets/images/companies/img-1.png" alt height="30" />
-                </span>
-              </div>
-
-              <div class="flex-grow-1 overflow-hidden">
-                <h5 class="text-truncate font-size-15">
-                  <BLink href="javascript: void(0);" class="text-dark">Les indicateurs liés à la création</BLink>
-                </h5>
-                <p class="text-muted mb-4">It will be as simple as Occidental Lorem ipsum dolor sit amet.</p>
-                <div class="avatar-group">
-                 
-                 
-                  
-                </div>
-              </div>
-            </div>
-          </BCardBody>
-          <div class="px-4 py-3 border-top">
-            <ul class="list-inline mb-0 d-flex justify-content-around align-items-center">
-              
-              <li v-b-tooltip.hover.top class="list-inline-item me-3" >
-                code: 01
-              </li>
-              <ul class="list-unstyled hstack gap-1 mb-0">
-                      
-                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                        <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
-                      </li>
-                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                        <Blink href="#" @click="confirmDelete(region.CodeSousecteur)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
-                      </li>
-                      
-                    </ul>
-
-            </ul>
-          </div>
-        </div>
+        
+       
       
         
         
@@ -257,13 +133,13 @@
                        <label for="userpassword">Code</label>
                      <MazInput v-model="step1.code"  no-radius type="text" name="code"   color="info" placeholder="001" />
                       <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+                      <small v-if="resultError['CodeIndicateur']"> {{ resultError["CodeIndicateur"] }} </small>
 
                      </div>
                   </BCol>
                    </BRow>
                   
-                   <BRow>
+                   <!-- <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Nom</label>
@@ -273,11 +149,11 @@
 
                      </div>
                   </BCol>
-                </BRow>
+                </BRow> -->
                 <BRow>
                   <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Description</label>
+                       <label for="userpassword"> Nom ou Description</label>
                        <MazTextarea v-model="step1.description"  no-radius type="text" name="description"   color="info" placeholder="exemple" />
                       <small v-if="v$.step1.description.$error">{{v$.step1.description.$errors[0].$message}}</small> 
                       <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
@@ -343,13 +219,13 @@
                        <label for="userpassword">Code</label>
                      <MazInput v-model="step2.code"  no-radius type="text" name="code"   color="info" placeholder="001" />
                       <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+                      <small v-if="resultError['CodeIndicateur']"> {{ resultError["CodeIndicateur"] }} </small>
 
                      </div>
                   </BCol>
                    </BRow>
                   
-                   <BRow>
+                   <!-- <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Nom</label>
@@ -359,17 +235,24 @@
 
                      </div>
                   </BCol>
-                </BRow>
+                </BRow> -->
                 <BRow>
                   <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Description</label>
+                       <label for="userpassword">Nom ou Description</label>
                        <MazTextarea v-model="step2.description"  no-radius type="text" name="description"   color="info" placeholder="exemple" />
                       <small v-if="v$.step2.description.$error">{{v$.step2.description.$errors[0].$message}}</small> 
                       <small v-if="resultError['Description']"> {{ resultError["Description"] }} </small>
 
                      </div>
                   </BCol>
+                   </BRow>
+                   <BRow class="mb-0">
+                     <BCol cols="12" class="text-end">
+                       <div class="boutton">
+                       <button class="" @click="submitUpdate()">Modifier</button>
+                      </div>
+                     </BCol>
                    </BRow>
                  </BForm>
                </div>
@@ -412,7 +295,7 @@ export default {
      AddUser:false,
      UpdateUser1:false,
      ToId:'',
-     regionOptions:[],
+     IndicateursOptions:[],
      currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
@@ -421,7 +304,6 @@ export default {
        error:'',
      step1:{
            
-            nom:'',
             code:'',
             description:'',
   
@@ -429,7 +311,6 @@ export default {
 
             step2:{
             
-            nom:'',
             code:'',
             description:'',
            
@@ -442,14 +323,12 @@ export default {
      require
      
    },
-   nom: {
+   description: {
      require,
      lgmin: lgmin(2),
      lgmax: lgmax(20),
    },
-   description:{
-    require
-   }
+   
   
    },
    step2:{
@@ -457,14 +336,12 @@ export default {
      require
      
    },
-   nom: {
+   description: {
      require,
      lgmin: lgmin(2),
      lgmax: lgmax(20),
    },
-   description:{
-    require
-   }
+   
   
            
        },
@@ -477,40 +354,42 @@ export default {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
    totalPages() {
-   return Math.ceil(this.regionOptions.length / this.itemsPerPage);
+   return Math.ceil(this.IndicateursOptions.length / this.itemsPerPage);
    },
    paginatedItems() {
      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
      const endIndex = startIndex + this.itemsPerPage;
-     return this.regionOptions.slice(startIndex, endIndex);
+     return this.IndicateursOptions.slice(startIndex, endIndex);
    },
  },
 async mounted() {
    console.log("uusers",this.loggedInUser);
-  await this.fetchRegionOptions()
+  await this.fetchIndicateursOptions()
  },
  methods: {
-   validatePasswordsMatch() {
-    return this.step1.password === this.step1.confirm_password;
-   },
+   
    successmsg:successmsg,
-   async fetchRegionOptions() {
-      // Renommez la méthode pour refléter qu'elle récupère les options de pays
-      try {
-        await this.$store.dispatch("fetchRegionOptions");
-        const options = JSON.parse(
-          JSON.stringify(this.$store.getters["getRegionOptions2"])
-         
-        ); // Accéder aux options des pays via le getter
-        console.log(options);
-        this.regionOptions = options; // Affecter les options à votre propriété sortedCountryOptions
-        this.loading = false
-      } catch (error) {
-        console.error(
-          "Erreur lors de la récupération des options des pays :",
-          error.message
-        );
-      }
+   async fetchIndicateursOptions() {
+    try {
+              const response = await axios.get('/indicateurs', {
+              headers: {
+                Authorization: `Bearer ${this.loggedInUser.token}`,
+                
+              },
+    
+            });
+               console.log(response.data.data);
+                this.IndicateursOptions = response.data.data;
+               this.loading = false;
+            
+            } catch (error) {
+              console.error('errorqqqqq',error);
+            
+              if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+            }
     },
    async HamdleAddUser(){
      this.error = '',
@@ -519,13 +398,14 @@ async mounted() {
     if (this.v$.$errors.length == 0 ) {
        this.loading = true
          let DataUser = {
-           CodeRegion:this.step1.code,
-           NomRegion:this.step1.nom,
+          CodeIndicateur:this.step1.code,
+          Description:this.step1.description,
+          Direction:this.loggedInUser.direction
          }
          console.log("eeeee",DataUser);
          try {
         
-         const response = await axios.post('/regions' , DataUser, {
+         const response = await axios.post('/indicateurs' , DataUser, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
              },
@@ -536,8 +416,8 @@ async mounted() {
          if (response.data.status === "success") { 
            this.AddUser = false
            this.loading = false
-           this.successmsg("Création de region",'Votre region a été crée avec succès !')
-           await this.fetchRegionOptions()
+           this.successmsg("Création d'indicateur",'Votre indicateur a été crée avec succès !')
+           await this.fetchIndicateursOptions()
 
          } else {
 
@@ -584,7 +464,7 @@ async mounted() {
          
          try {
            // Faites une requête pour supprimer l'élément avec l'ID itemId
-           const response = await axios.delete(`/regions/${id}`, {
+           const response = await axios.delete(`/indicateurs/${id}`, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
                
@@ -596,8 +476,8 @@ async mounted() {
            console.log('Réponse de suppression:', response);
            if (response.data.status === 'success') {
              this.loading = false
-            this.successmsg('Supprimé!', 'Votre region a été supprimée.')
-            await this.fetchRegionOptions()
+            this.successmsg('Supprimé!', 'Votre indicateur a été supprimé.')
+            await this.fetchIndicateursOptions()
    
            } else {
              console.log('error', response.data)
@@ -619,15 +499,15 @@ async mounted() {
 
          try {
              // Recherchez l'objet correspondant dans le tableau regionOptions en fonction de l'ID
-             const user = this.regionOptions.find(user => user.id === id);
+             const user = this.IndicateursOptions.find(user => user.id === id);
 
              if (user) {
                  // Utilisez les informations récupérées de l'objet user
                  console.log('Informations de l\'utilisateur:', user);
 
-            this.step2.code = user.CodeRegion,
-            this.step2.nom = user.NomRegion,
-            this.ToId = user.CodeRegion
+            this.step2.code = user.CodeIndicateur,
+            this.step2.description = user.Description,
+            this.ToId = id
              } else {
                  console.log('Utilisateur non trouvé avec l\'ID', id);
              }
@@ -650,14 +530,15 @@ async mounted() {
       
                const dataCath = {
    
-           CodeRegion:this.step2.code,
-           NomRegion:this.step2.nom,
-           Statut:1
+                CodeIndicateur:this.step2.code,
+                Description:this.step2.description,
+                Direction:this.loggedInUser.direction,
+                id:this.ToId
              }
              console.log('dataCath',dataCath);
    
         try {
-          const response = await axios.put(`regions/${this.ToId}`,dataCath, {
+          const response = await axios.post(`indicateurs/${this.ToId}/update`,dataCath, {
             headers: {
              
               Authorization: `Bearer ${this.loggedInUser.token}`,
@@ -665,10 +546,10 @@ async mounted() {
           });
           console.log("Réponse du téléversement :", response);
           if (response.data.status === "success") {
-            await this.fetchRegionOptions()
+            await this.fetchIndicateursOptions()
             this.UpdateUser1 = false
            this.loading = false
-           this.successmsg("Modification de",'Votre region a été modifiée avec succès !')
+           this.successmsg("Modification d'indicateur",'Votre indicateur a été modifiée avec succès !')
            
             
           } 
@@ -696,7 +577,7 @@ async mounted() {
          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         
          const endIndex = startIndex + this.itemsPerPage;
-         return  this.regionOptions.slice(startIndex, endIndex);
+         return  this.IndicateursOptions.slice(startIndex, endIndex);
        },
 
        async formatValidationErrors(errors) {

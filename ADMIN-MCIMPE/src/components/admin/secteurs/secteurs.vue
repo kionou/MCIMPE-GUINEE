@@ -1,25 +1,19 @@
 <template >
-    <Layout>
-     <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Documents" pageTitle="Tableau de bord" />
+   <div>
+    <Loading v-if="loading" style="z-index: 99999;"></Loading>
+   
    <BRow>
      <BCol lg="12">
        <BCard no-body>
          <BCardBody class="border-bottom">
            <div class="d-flex align-items-center justify-content-between">
-             <BCardTitle class="mb-0 ">Liste des sous-categoris</BCardTitle>
+             <BCardTitle class="mb-0 ">Liste des secteurs</BCardTitle>
 
-             <div class="d-flex justify-content-evenly" style="width: 400px;">
-                
-                <div @click="$router.push({ path: '/documents/categories' })"  class="btn btn-primary">Categorie</div>
-               <div @click="$router.push({ path: '/documents/fichier' })"  class="btn btn-primary">Fichier</div>
              
-               
-             </div>
 
              <div class="flex-shrink-0 d-flex">
                 <BCol xxl="4" lg="9" class=" me-3">
-               <MazInput v-model="searchQuery"   no-radius type="email"  color="info" size="sm" placeholder="Recherchez ..." />
+               <MazInput v-model="searchQuery"   no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
              </BCol>
                <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
                
@@ -29,7 +23,7 @@
 
          <BCardBody v-if="paginatedItems.length === 0" class="noresul">
            <div >
-         <span> Vous n'avez pas encore de sous-categorie, vous pouvez également en ajouter un !! </span>
+         <span> Vous n'avez pas encore de personnel, vous pouvez également en ajouter un !! </span>
           </div>
          </BCardBody>
         
@@ -43,7 +37,6 @@
                    <BTh scope="col" ></BTh>
                    <BTh scope="col">Code</BTh>
                    <BTh scope="col">Nom</BTh>
-                   <BTh scope="col">Categorie</BTh>
                    <BTh scope="col">Action</BTh>
                  </BTr>
                </BThead>
@@ -53,7 +46,7 @@
                      <div  class="avatar-xs">
 
                        <span class="avatar-title rounded-circle">
-                        <img src="../../assets/img/fichier.png" alt="" class="w-50 h-50 rounded-circle">
+                         <img src="@/assets/img/entreprise.png" alt="" class="w-100 h-100 rounded-circle">
                          
                        </span>
                      </div>
@@ -61,10 +54,12 @@
                    </BTd>
                    <BTd>
                     
-                    {{ region.CodePrefecture }}
+                    {{ region.CodeSecteurActivite }}
                    </BTd>
-                   <BTd>{{ region.NomPrefecture }}</BTd>
-                   <BTd>{{ NameRegion(region.CodeRegion)  }}</BTd>
+                   <BTd>{{ region.NomSecteurActivite }}</BTd>
+                   
+                  
+                  
                    <BTd>
                      <ul class="list-unstyled hstack gap-1 mb-0">
                       
@@ -72,11 +67,9 @@
                          <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(region.CodePrefecture)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                         <Blink href="#" @click="confirmDelete(region.CodeSecteurActivite)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
                        </li>
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                         <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
-                       </li>
+                      
                      </ul>
                    </BTd>
                  </BTr>
@@ -109,7 +102,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Ajouter une sous categorie</h5>
+                     <h5 class="text-primary">Ajouter une Region</h5>
                      
                    </div>
                  </BCol>
@@ -128,24 +121,13 @@
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                    <BRow>
-                  <BCol md="12">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Categorie</label>
-                      <MazSelect label="Sélectionner la catégorie" v-model="step1.categorie" color="info" :options="SelectPrefecture" search />
-                      <small v-if="v$.step1.categorie.$error">{{v$.step1.categorie.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
-
-                     </div>
-                  </BCol>
-                   </BRow>
                    <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">code sous-categorie</label>
-                     <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="0001" />
+                       <label for="userpassword">code</label>
+                     <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
                       <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodePrefecture']"> {{ resultError["CodePrefecture"] }} </small>
+                      <small v-if="resultError['CodeSecteurActivite']"> {{ resultError["CodeSecteurActivite"] }} </small>
 
                      </div>
                   </BCol>
@@ -153,14 +135,16 @@
                 <BRow>
                   <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom sous-categorie</label>
+                       <label for="userpassword">Nom</label>
                      <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
                       <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['NomPrefecture']"> {{ resultError["NomPrefecture"] }} </small>
+                      <small v-if="resultError['NomSecteurActivite']"> {{ resultError["NomSecteurActivite"] }} </small>
 
                      </div>
                   </BCol>
                    </BRow>
+                  
+
 
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
@@ -194,7 +178,7 @@
                <BRow>
                  <BCol cols="12 text-center">
                    <div class="modalheader p-4">
-                     <h5 class="text-primary">Modifier une sous-categorie</h5>
+                     <h5 class="text-primary">Modifier un secteur</h5>
                      
                    </div>
                  </BCol>
@@ -213,39 +197,32 @@
                </div>
                <div class="p-2">
                  <BForm class="form-horizontal">
-                    <BRow>
-                  <BCol md="12">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Catégorie</label>
-                      <MazSelect label="Sélectionner la catégorie" v-model="step2.categorie" color="info" :options="SelectPrefecture" search />
-                      <small v-if="v$.step2.categorie.$error">{{v$.step2.categorie.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
-
-                     </div>
-                  </BCol>
-                   </BRow>
-                    <BRow>
+                   <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
-                       <label for="userpassword">code sous-categorie</label>
-                     <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="0001" />
+                       <label for="userpassword">Code</label>
+                     <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
                       <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodePrefecture']"> {{ resultError["CodePrefecture"] }} </small>
+                      <small v-if="resultError['CodeSecteurActivite']"> {{ resultError["CodeSecteurActivite"] }} </small>
 
                      </div>
                   </BCol>
-                </BRow>
-                <BRow>
-                  <BCol md="12">
-                     <div class="mb-3 position-relative">
-                       <label for="userpassword">Nom sous-categorie</label>
-                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
-                      <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['NomPrefecture']"> {{ resultError["NomPrefecture"] }} </small>
 
-                     </div>
-                  </BCol>
+                 
                    </BRow>
+                   <BCol md="12">
+                     <div class="mb-3 position-relative">
+                       <label for="userpassword">Nom</label>
+                     <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="Conakry" />
+                      <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
+                      <small v-if="resultError['NomSecteurActivite']"> {{ resultError["NomSecteurActivite"] }} </small>
+
+                     </div>
+                  </BCol>
+                   <BRow>
+                    
+                   </BRow>
+
                    <BRow class="mb-0">
                      <BCol cols="12" class="text-end">
                        <div class="boutton">
@@ -264,14 +241,16 @@
    </div>
  </div>
    </BModal>
+   </div>
+    
    
 
- </Layout>
+
 </template>
 <script>
-import Layout from "../../layouts/main.vue";
+
 import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput';
-import PageHeader from "@/components/page-header.vue";
+
 import Pag from '@/components/others/pagination.vue'
 import axios from '@/lib/axiosConfig.js'
 import Loading from '@/components/others/loading.vue';
@@ -282,8 +261,8 @@ import Swal from 'sweetalert2'
 
 export default {
    components: {
-   Layout,
-   PageHeader,
+ 
+
    Loading ,
    Pag,
    MazPhoneNumberInput,
@@ -294,9 +273,7 @@ export default {
      AddUser:false,
      UpdateUser1:false,
      ToId:'',
-     regionOptions:[],
-     prefectureOptions:[],
-     SelectPrefecture:[],
+     SecteurActiviteOptions:[],
      currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
@@ -306,14 +283,12 @@ export default {
      step1:{
             code:'',
             nom:'',
-            categorie:'',
   
           },
 
             step2:{
              code:'',
             nom:'',
-            categorie:'',
            
        },
    }
@@ -329,10 +304,6 @@ export default {
      lgmin: lgmin(2),
      lgmax: lgmax(20),
    },
-   categorie: {
-     require
-     
-   }
   
    },
    step2:{
@@ -345,10 +316,6 @@ export default {
      lgmin: lgmin(2),
      lgmax: lgmax(20),
    },
-   categorie: {
-     require
-     
-   }
   
            
        },
@@ -361,59 +328,65 @@ export default {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
    totalPages() {
-   return Math.ceil(this.prefectureOptions.length / this.itemsPerPage);
+   return Math.ceil(this.SecteurActiviteOptions.length / this.itemsPerPage);
    },
    paginatedItems() {
      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
      const endIndex = startIndex + this.itemsPerPage;
-     return this.prefectureOptions.slice(startIndex, endIndex);
+     return this.SecteurActiviteOptions.slice(startIndex, endIndex);
    },
  },
 async mounted() {
    console.log("uusers",this.loggedInUser);
-   await this.fetchPrefectureOptions()
-  await this.fetchRegionOptions()
+  await this.fetchSecteurActiviteOptions()
+  await this.fetchData()
+ 
  },
  methods: {
-   validatePasswordsMatch() {
-    return this.step1.password === this.step1.confirm_password;
-   },
+
+async  fetchData() {
+  const apiUrl = "https://cors-proxy.fringe.zone/https://bd-mcipme.org/bd-services/public/api/secteurs-activites";
+
+  try {
+      // Construction de l'URL avec les paramètres
+      const apiUrlWithParams = new URL(apiUrl);
+      apiUrlWithParams.searchParams.append('Direction', 'DNCIC');
+       apiUrlWithParams.searchParams.append('sous', true);
+
+      // Utilisation de fetch avec l'URL complète
+      const response = await fetch(apiUrlWithParams);
+      const data = await response.json();
+      console.log('response', data);
+      return data.data.data; // Retourne uniquement la partie 'data' de la réponse
+  } catch (error) {
+      console.error("Erreur lors de la récupération des données :", error);
+  }
+},
+  
    successmsg:successmsg,
-   async fetchRegionOptions() {
-      // Renommez la méthode pour refléter qu'elle récupère les options de pays
-      try {
-        await this.$store.dispatch("fetchRegionOptions");
-        const options = JSON.parse(
-          JSON.stringify(this.$store.getters["getRegionOptions2"])
-         
-        ); // Accéder aux options des pays via le getter
-        console.log(options);
-        this.regionOptions = options;
-        this.SelectPrefecture = this.regionOptions.map(prefecture => ({
-        label: prefecture.NomRegion,
-        value: prefecture.CodeRegion,
-        code:  prefecture.CodeRegion
-      })); // Affecter les options à votre propriété sortedCountryOptions
-        this.loading = false
-      } catch (error) {
-        console.error(
-          "Erreur lors de la récupération des options des pays :",
-          error.message
-        );
-      }
+   async fetchSecteurActiviteOptions() {
+    try {
+              const response = await axios.get('/secteurs-activites', {
+              headers: { Authorization: `Bearer ${this.loggedInUser.token}`,},
+              params: {Direction: this.loggedInUser.direction,},
+    
+            });
+               console.log(response.data.data);
+               this.SecteurActiviteOptions =response.data.data.data
+               
+               this.loading = false;
+            
+            } catch (error) {
+              console.error('errorqqqqq',error);
+            
+              if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+            }
     },
-    async fetchPrefectureOptions() { // Renommez la méthode pour refléter qu'elle récupère les options de pays
-      try {
-        await this.$store.dispatch('fetchPrefectureOptions');
-        const options = JSON.parse(JSON.stringify(this.$store.getters['getprefectureOptions'])); // Accéder aux options des pays via le getter
-        console.log('Options des Prefecture:', options);
-         this.prefectureOptions = options; 
-        
-        // Affecter les options à votre propriété sortedCountryOptions
-      } catch (error) {
-        console.error('Erreur lors de la récupération des options des prefecture :', error);
-      }
-    },
+
+
    async HamdleAddUser(){
      this.error = '',
      this.resultError= '',
@@ -421,14 +394,14 @@ async mounted() {
     if (this.v$.$errors.length == 0 ) {
        this.loading = true
          let DataUser = {
-           CodePrefecture:this.step1.code,
-           NomPrefecture:this.step1.nom,
-           CodeRegion:this.step1.region
+            CodeSecteurActivite:this.step1.code,
+            NomSecteurActivite:this.step1.nom,
+            Direction:this.loggedInUser.direction
          }
          console.log("eeeee",DataUser);
          try {
         
-         const response = await axios.post('/prefectures' , DataUser, {
+         const response = await axios.post('/secteurs-activites' , DataUser, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
              },
@@ -439,8 +412,8 @@ async mounted() {
          if (response.data.status === "success") { 
            this.AddUser = false
            this.loading = false
-           this.successmsg("Création de prefecture",'Votre prefecture a été crée avec succès !')
-          await this.fetchPrefectureOptions()
+           this.successmsg("Création du secteur d'activité","Votre  secteur d'activité a été crée avec succès !")
+          await this.fetchSecteurActiviteOptions()
 
          } else {
 
@@ -487,7 +460,7 @@ async mounted() {
          
          try {
            // Faites une requête pour supprimer l'élément avec l'ID itemId
-           const response = await axios.delete(`/prefectures/${id}`, {
+           const response = await axios.delete(`/secteurs-activites/${id}`, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
                
@@ -499,8 +472,8 @@ async mounted() {
            console.log('Réponse de suppression:', response);
            if (response.data.status === 'success') {
              this.loading = false
-            this.successmsg('Supprimé!', 'Votre prefecture a été supprimée.')
-           await this.fetchPrefectureOptions()
+            this.successmsg('Supprimé!', 'Votre region a été supprimée.')
+           await this.fetchSecteurActiviteOptions()
    
            } else {
              console.log('error', response.data)
@@ -522,16 +495,15 @@ async mounted() {
 
          try {
              // Recherchez l'objet correspondant dans le tableau regionOptions en fonction de l'ID
-             const user = this.prefectureOptions.find(user => user.id === id);
+             const user = this.SecteurActiviteOptions.find(user => user.id === id);
 
              if (user) {
                  // Utilisez les informations récupérées de l'objet user
                  console.log('Informations de l\'utilisateur:', user);
 
-            this.step2.code = user.CodePrefecture,
-            this.step2.nom = user.NomPrefecture,
-            this.step2.region = user.CodeRegion,
-            this.ToId = user.CodePrefecture
+                this.step2.code = user.CodeSecteurActivite,
+                this.step2.nom = user.NomSecteurActivite,
+                this.ToId = user.CodeSecteurActivite
              } else {
                  console.log('Utilisateur non trouvé avec l\'ID', id);
              }
@@ -554,15 +526,16 @@ async mounted() {
       
                const dataCath = {
    
-           CodeRegion:this.step2.region,
-           NomPrefecture:this.step2.nom,
-           CodePrefecture:this.step2.code,
-           StatutPrefecture:1
+            CodeSecteurActivite:this.step2.code,
+            NomSecteurActivite:this.step2.nom,
+            StatutSecteurActivite:1,
+            Direction:this.loggedInUser.direction
+           
              }
      console.log('dataCath',dataCath);
    
         try {
-          const response = await axios.put(`prefectures/${this.ToId}`,dataCath, {
+          const response = await axios.put(`/secteurs-activites/${this.ToId}`,dataCath, {
             headers: {
              
               Authorization: `Bearer ${this.loggedInUser.token}`,
@@ -570,10 +543,11 @@ async mounted() {
           });
           console.log("Réponse du téléversement :", response);
           if (response.data.status === "success") {
-            await this.fetchPrefectureOptions()
+           
             this.UpdateUser1 = false
            this.loading = false
-           this.successmsg("Modification de",'Votre region a été modifiée avec succès !')
+           this.successmsg("Modification du secteur d'activité","Votre secteur d'activité a été modifiée avec succès !")
+           await this.fetchSecteurActiviteOptions()
             
           } 
         } catch (error) {
@@ -600,7 +574,7 @@ async mounted() {
          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         
          const endIndex = startIndex + this.itemsPerPage;
-         return  this.prefectureOptions.slice(startIndex, endIndex);
+         return  this.SecteurActiviteOptions.slice(startIndex, endIndex);
        },
 
        async formatValidationErrors(errors) {
@@ -621,16 +595,6 @@ async mounted() {
      // Maintenant, this.resultError est un objet où les clés sont les noms des champs
      console.log("resultError", this.resultError);
    },
-
-   NameRegion(id){
-    const selectedRegion = this.regionOptions.find(region => region.CodeRegion === id);    
-            console.log('selectedRegion',selectedRegion);
-            if (selectedRegion) {
-            return  selectedRegion.NomRegion;         
-            } else {
-                console.error('Région non trouvée dans les options.');
-            }
-   }
  },
 }
 </script>

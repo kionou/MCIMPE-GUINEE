@@ -32,12 +32,12 @@
 
             <BForm class="p-2" >
               <BFormGroup class="mb-3" id="input-group-1" label="Adresse Email" label-for="input-1">
-              <MazInput v-model="step1.email"  no-radius type="email"  color="info" placeholder="exemple@gmail.com" />
+              <MazInput v-model="step1.email"  no-radius type="email" name="email" color="info" placeholder="exemple@gmail.com" />
               <small v-if="v$.step1.email.$error">{{v$.step1.email.$errors[0].$message}}</small> 
               </BFormGroup>
 
               <BFormGroup class="mb-3" id="input-group-2" label="Mot de passe" label-for="input-2">
-                <MazInput v-model="step1.password"  no-radius type="password" color="info" placeholder="abc123@&" />
+                <MazInput v-model="step1.password"  no-radius type="password" color="info" placeholder="Abc123@&" />
                 <small v-if="v$.step1.password.$error">{{v$.step1.password.$errors[0].$message}}</small> 
               </BFormGroup>
           

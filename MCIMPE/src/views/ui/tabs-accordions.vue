@@ -75,6 +75,8 @@ export default {
           </BCardBody>
         </BCard>
       </BCol>
+
+      
       <BCol lg="6">
         <BCard no-body>
           <BCardBody>

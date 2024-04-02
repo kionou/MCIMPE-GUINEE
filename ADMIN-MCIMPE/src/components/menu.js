@@ -1,4 +1,7 @@
-export const menuItems = [
+import store from '@/store'
+const authenticatedUser = store.getters['auth/myAuthenticatedUser'];
+console.log('menu',authenticatedUser);
+let menuItems = [
     {
         id: 1,
         label: "menuitems.menu.text",
@@ -12,7 +15,7 @@ export const menuItems = [
             {
                 id: 30,
                 label: "menuitems.email.list.inbox",
-                link: "/personnels",
+                link: "/utilisateurs",
                 parentId: 29
             },
             {
@@ -39,6 +42,26 @@ export const menuItems = [
         ]
     },
     {
+        id: 56,
+        label: "menuitems.dncic.text",
+        icon: "bx-buildings",
+        subItems: [
+            {
+                id: 57,
+                label: "menuitems.dncic.list.importatrice",
+                link: "/importatrice",
+                parentId: 56
+            },
+            {
+                id: 57,
+                label: "menuitems.dncic.list.distributrice",
+                link: "/distributrice",
+                parentId: 56
+            },
+            
+        ]
+    },
+    {
         id: 37,
         label: "menuitems.projects.text",
         icon: "bx-cog",
@@ -46,13 +69,13 @@ export const menuItems = [
             {
                 id: 38,
                 label: "menuitems.projects.list.grid",
-                link: "/documents/categories",
+                link: "/documents",
                 parentId: 37
             },
             {
                 id: 39,
                 label: "menuitems.projects.list.projectlist",
-                link: "/localite/regions",
+                link: "/localites",
                 parentId: 37
             },
             {
@@ -162,3 +185,22 @@ export const menuItems = [
   
     
 ];
+
+
+const isDNIDepartment = authenticatedUser.direction === 'DNI';
+
+// Si l'utilisateur appartient à la direction "DNI", filtrez les éléments du menu
+if (isDNIDepartment) {
+    // Filtrer le menu pour exclure l'élément avec l'id 56 (menuitems.dncic.text)
+    menuItems = menuItems.filter(item => item.id !== 56);
+} else{
+    menuItems = menuItems.filter(item => item.id !== 34);
+    const parent37 = menuItems.find(item => item.id === 37);
+    if (parent37) {
+        parent37.subItems = parent37.subItems.filter(subItem => subItem.id !== 53);
+    }
+
+}
+console.log('menuItems',menuItems);
+
+export { menuItems };

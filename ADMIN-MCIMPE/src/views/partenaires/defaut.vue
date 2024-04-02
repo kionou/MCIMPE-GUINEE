@@ -49,9 +49,9 @@
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
                          <div @click="confirmDelete(partenaire.CodePartenaire)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></div>
                        </li>
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
+                       <!-- <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
                          <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
-                       </li>
+                       </li> -->
                      </ul>
     </div>
             </div>
