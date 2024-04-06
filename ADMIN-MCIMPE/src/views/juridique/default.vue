@@ -44,18 +44,12 @@
                <BTbody>
                  <BTr v-for="region in paginatedItems" :key="region.id">
                    <BTd>
-                     <div  class="avatar-xs">
-
-                       <span class="avatar-title rounded-circle">
-                         <img src="../../assets/img/fichier.png" alt="" class="w-50 h-50 rounded-circle">
-                         
-                       </span>
-                     </div>
+                   
                      
                    </BTd>
-                   <BTd> {{ region.CodeRegion }}</BTd>
-                   <BTd>{{ region.NomRegion }}</BTd>
-                   <BTd>{{ region.NomRegion }}</BTd>
+                   <BTd> {{ region.CodeStatutJuridique }}</BTd>
+                   <BTd>{{ region.NomStatutJuridique }}</BTd>
+                   <BTd>{{ region.SigleStatutJuridique }}</BTd>
                    <BTd>
                      <ul class="list-unstyled hstack gap-1 mb-0">
                       
@@ -63,10 +57,7 @@
                          <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(region.CodeRegion)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
-                       </li>
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                         <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
+                         <Blink href="#" @click="confirmDelete(region.CodeStatutJuridique)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
                        </li>
                      </ul>
                    </BTd>
@@ -293,7 +284,7 @@ export default {
      AddUser:false,
      UpdateUser1:false,
      ToId:'',
-     regionOptions:[],
+     StatutJuridiqueOptions:[],
      currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
@@ -356,37 +347,36 @@ export default {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
    totalPages() {
-   return Math.ceil(this.regionOptions.length / this.itemsPerPage);
+   return Math.ceil(this.StatutJuridiqueOptions.length / this.itemsPerPage);
    },
    paginatedItems() {
      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
      const endIndex = startIndex + this.itemsPerPage;
-     return this.regionOptions.slice(startIndex, endIndex);
+     return this.StatutJuridiqueOptions.slice(startIndex, endIndex);
    },
  },
 async mounted() {
    console.log("uusers",this.loggedInUser);
-  await this.fetchRegionOptions()
+  await this.fetchStatutJuridiqueOptions()
  },
  methods: {
-   validatePasswordsMatch() {
-    return this.step1.password === this.step1.confirm_password;
-   },
+   
    successmsg:successmsg,
-   async fetchRegionOptions() {
-      // Renommez la méthode pour refléter qu'elle récupère les options de pays
+   async fetchStatutJuridiqueOptions() {
       try {
-        await this.$store.dispatch("fetchRegionOptions");
+        await this.$store.dispatch("fetchStatutJuridiqueOptions"); // Action spécifique aux statuts juridiques
         const options = JSON.parse(
-          JSON.stringify(this.$store.getters["getRegionOptions2"])
-         
-        ); // Accéder aux options des pays via le getter
-        console.log(options);
-        this.regionOptions = options; // Affecter les options à votre propriété sortedCountryOptions
+          JSON.stringify(this.$store.getters["getStatutJuridiqueOptions"])
+        );
+        console.log('Code de la préfecture :', options);
+
+        this.StatutJuridiqueOptions = options
+        console.log('Code de la préfecture :', this.StatutJuridiqueOptions );
         this.loading = false
+
       } catch (error) {
         console.error(
-          "Erreur lors de la récupération des options des pays :",
+          "Erreur lors de la récupération des options des statuts juridiques:",
           error.message
         );
       }
@@ -398,13 +388,14 @@ async mounted() {
     if (this.v$.$errors.length == 0 ) {
        this.loading = true
          let DataUser = {
-           CodeRegion:this.step1.code,
-           NomRegion:this.step1.nom,
+          CodeStatutJuridique:this.step1.code,
+           NomStatutJuridique:this.step1.nom,
+           SigleStatutJuridique:this.step1.sigle,
          }
          console.log("eeeee",DataUser);
          try {
         
-         const response = await axios.post('/regions' , DataUser, {
+         const response = await axios.post('/statut-juridiques' , DataUser, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
              },
@@ -415,7 +406,7 @@ async mounted() {
          if (response.data.status === "success") { 
            this.AddUser = false
            this.loading = false
-           this.successmsg("Création de region",'Votre region a été crée avec succès !')
+           this.successmsg("Création du statut juridique",'Votre statut juridique a été crée avec succès !')
            await this.fetchRegionOptions()
 
          } else {
@@ -497,8 +488,8 @@ async mounted() {
          this.loading = true;
 
          try {
-             // Recherchez l'objet correspondant dans le tableau regionOptions en fonction de l'ID
-             const user = this.regionOptions.find(user => user.id === id);
+             // Recherchez l'objet correspondant dans le tableau StatutJuridiqueOptions en fonction de l'ID
+             const user = this.StatutJuridiqueOptions.find(user => user.id === id);
 
              if (user) {
                  // Utilisez les informations récupérées de l'objet user
@@ -575,7 +566,7 @@ async mounted() {
          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         
          const endIndex = startIndex + this.itemsPerPage;
-         return  this.regionOptions.slice(startIndex, endIndex);
+         return  this.StatutJuridiqueOptions.slice(startIndex, endIndex);
        },
 
        async formatValidationErrors(errors) {

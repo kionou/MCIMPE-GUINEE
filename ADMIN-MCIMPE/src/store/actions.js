@@ -181,7 +181,7 @@ async fetchDataFromAPI({ commit }) {
         value: statutJuridique.CodeStatutJuridique,
       }));
 
-      commit('SET_STATUT_JURIDIQUE_OPTIONS', options); // Appeler la mutation pour mettre à jour les options de statuts juridiques
+      commit('SET_STATUT_JURIDIQUE_OPTIONS', statutJuridiqueFromAPI); // Appeler la mutation pour mettre à jour les options de statuts juridiques
     } catch (error) {
       console.error('Erreur lors de la récupération des statuts juridiques:', error);
     }

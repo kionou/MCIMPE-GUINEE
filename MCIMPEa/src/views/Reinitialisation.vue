@@ -65,7 +65,7 @@
 
        
         <div class="boutton">
-            <button class="" style="padding: 10px 30px;" @click="$router.push({ path: '/login' })" >OK</button>
+            <button class="" style="padding: 10px 30px;" @click="$router.push({ path: '/' })" >OK</button>
             </div>
       </v-card-actions>
     </v-sheet>
@@ -183,7 +183,7 @@ if (resetPasswordInfo) {
                 console.log('data user :',DataUser);
            
           try {
-            const response = await axios.post('/mpme-password/password/reset', DataUser);
+            const response = await axios.post('/mcipme-password/password/reset', DataUser);
             console.log('response.Code', response);
             if (response.data.status === 'success') {
               localStorage.removeItem('resetPasswordInfo');

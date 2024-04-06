@@ -292,7 +292,7 @@ export default {
         value:this.step1.email
       }
         try {
-            const response = await axios.post('/mpme/send-otp', DataSend);
+            const response = await axios.post('/mcipme/send-otp', DataSend);
            console.log(response);
           } catch (error) {
             console.error('Erreur postlogin:', error);
@@ -322,11 +322,11 @@ export default {
    
      
       try {
-      const response = await axios.post('/mpme/verification-otp' , DataUser);
+      const response = await axios.post('/mcipme/verification-otp' , DataUser);
       console.log('response.login', response.data); 
       if(response.data.status === 'success'){
        
-              if (this.InfoUser.user.FirstConnexion<= 1) {
+              if (response.data.data.FirstConnexion<= 1) {
                 localStorage.setItem('resetPasswordInfo', JSON.stringify({
                   email: this.step1.email,
                   code: this.step2.code,// Assurez-vous de récupérer le code correctement
@@ -380,7 +380,7 @@ export default {
 
         try {
           // Effectuez une demande pour renvoyer un nouveau code par e-mail
-          const response = await axios.post('/mpme/send-otp', requestData);
+          const response = await axios.post('/mcipme/send-otp', requestData);
           if (response.data.status === 'success') {
             alert('Un nouveau code a été envoyé à votre e-mail.');
            
@@ -415,7 +415,7 @@ export default {
           }
           console.log("eee",CodeUserEmail);
           try {
-         const response = await axios.post('/mpme/send-otp', CodeUserEmail);
+         const response = await axios.post('/mcipme/send-otp', CodeUserEmail);
          
          console.log('response.Code', response); 
          if (response.data.status === 'success') {
@@ -460,7 +460,7 @@ export default {
    
      
       try {
-      const response = await axios.post('/mpme/verification-otp' , DataUser);
+      const response = await axios.post('/mcipme/verification-otp' , DataUser);
       console.log('response.login', response.data); 
       if(response.data.status === 'success'){
         localStorage.setItem('resetPasswordInfo', JSON.stringify({

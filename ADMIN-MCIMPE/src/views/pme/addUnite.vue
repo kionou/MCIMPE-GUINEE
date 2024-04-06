@@ -1808,6 +1808,7 @@ import axios from "@/lib/axiosConfig.js";
 import MazPhoneNumberInput from "maz-ui/components/MazPhoneNumberInput";
 import useVuelidate from "@vuelidate/core";
 import { require, lgmin, lgmax, ValidNumeri } from "@/functions/rules";
+import {successmsg} from "@/lib/modal.js"
 
 
 export default {
@@ -2342,7 +2343,7 @@ async mounted() {
       }
     },
 
-
+    successmsg:successmsg,
 
     // appeel apî
     async enregistrerMpmeDonnees(mpmeData) {
@@ -2359,6 +2360,8 @@ async mounted() {
         if (response.status === 200) {
           console.log("Données MPME mises à jour avec succès !");
           localStorage.removeItem('tempMpmeData')
+          this.successmsg("Création d'une Entreprise",'Votre partenaire a été crée avec succès !')
+          router.go(-1)
           return true;
         } else {
           console.error("Erreur lors de la mise à ", response.data);
@@ -2569,7 +2572,10 @@ async mounted() {
         );
         console.log('Code de la préfecture :', options);
 
-        this.StatutJuridiqueOptions = options;
+        this.StatutJuridiqueOptions = options.map(statutJuridique => ({
+        label: statutJuridique.NomStatutJuridique,
+        value: statutJuridique.CodeStatutJuridique,
+      }));;
         console.log('Code de la préfecture :', this.StatutJuridiqueOptions );
 
       } catch (error) {
