@@ -80,6 +80,38 @@ const router = createRouter({
     meta: { requiresAuth: true },
     component: () => import("../views/pme/default.vue")
   },
+  {
+    path: "/importatrices",
+    name: "importatrices",
+    meta: { requiresAuth: true },
+    component: () => import("../views/pme/importatrice.vue")
+  },
+    {
+    path: "/distributrices",
+    name: "distributrices",
+    meta: { requiresAuth: true },
+    component: () => import("../views/pme/distributrice.vue")
+  },
+  {
+    path: "/add-unite",
+    name: "add-unite",
+    meta: { requiresAuth: true },
+    component: () => import("../views/pme/addUnite.vue")
+  },
+  {
+    path: "/detail-importatrice/:id",
+    name: "detail-importatrice",
+    meta: { requiresAuth: true },
+    props:true,
+    component: () => import("../views/pme/detailUnite.vue")
+  },
+  {
+    path: "/detail-distributrice/:id",
+    name: "detail-distributrice",
+    meta: { requiresAuth: true },
+    props:true,
+    component: () => import("../views/pme/detailDistri.vue")
+  },
   // {
   //   path: "/pme/ajouter",
   //   name: "partenaire-add",
@@ -167,6 +199,15 @@ const router = createRouter({
     meta: { requiresAuth: true },
     component: () => import("../views/indicateurs/default.vue")
   },
+
+    // To start produits
+  
+    {
+      path: "/produits",
+      name: "produits",
+      meta: { requiresAuth: true },
+      component: () => import("../views/produit/default.vue")
+    },
      
   
   ],

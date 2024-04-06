@@ -431,9 +431,10 @@ async mounted() {
     if (this.v$.$errors.length == 0 ) {
        this.loading = true
          let DataUser = {
-          CodeSousCategorie:this.step1.code,
+           CodeSousCategorie:this.step1.code,
            NomSousCategorie:this.step1.nom,
-           CodeCategorie:this.step1.categorie
+           CodeCategorie:this.step1.categorie,
+           Direction:this.loggedInUser.direction
          }
          console.log("eeeee",DataUser);
          try {

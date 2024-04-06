@@ -3,6 +3,9 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from "./router";
 import store from "./store"
+import './assets/page-profile.css'
+import './assets/demo.css'
+import './assets/core.css'
 import VueApexCharts from "vue3-apexcharts";
 import vClickOutside from "click-outside-vue3";
 import { registerScrollSpy } from 'vue3-scroll-spy';

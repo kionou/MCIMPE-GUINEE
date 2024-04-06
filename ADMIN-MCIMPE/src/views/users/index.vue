@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <Loading v-if="loading" style="z-index: 99999;"></Loading>
-    <PageHeader title="Utilisateurs" pageTitle="Tableau de bord" />
+    <PageHeader title="Utilisateurs" pageTitle="Tableau de bord"  :statistic="statistic"/>
     <BRow>
       <BCol lg="12">
         <BTabs class="default-tabs" content-class="p-3 text-muted">
@@ -35,8 +35,8 @@ import PageHeader from "@/components/page-header.vue";
 import Loading from '@/components/others/loading.vue';
 import Personnel from '../../components/admin/users/defaut.vue';
 import Entreprise from '../../components/admin/users/entreprise.vue';
-import axios from 'axios';
-import axiosInstance from "@/lib/axiosConfig";
+
+import axios from "@/lib/axiosConfig";
 
 export default {
   components: {
@@ -49,12 +49,16 @@ export default {
   data() {
     return {
       loading: false,
+      UserOptions:'',
      
     }
   },
   computed: {
     loggedInUser() {
       return this.$store.getters['auth/myAuthenticatedUser'];
+    },
+    statistic() {
+      return `Total des Utilisateurs: ${this.UserOptions}`;
     }
   },
   async mounted() {
@@ -62,25 +66,32 @@ export default {
     //  await this.fetchData();
   },
   methods: {
-    async fetchData() {
-    const apiUrl = "https://cors-proxy.fringe.zone/https://bd-mcipme.org/bd-services/public/api/secteurs-activites";
-
-    try {
-      // Utilisation d'axios pour effectuer la requête HTTP
-      const response = await axiosInstance.get('/secteurs-activites', {
-        params: {
-          Direction: 'DNCIC',
-          sous: true
-        }
-      });
-      
-      console.log('response', response.data);
-      return response.data.data; // Retourne uniquement la partie 'data' de la réponse
-    } catch (error) {
-      console.error("Erreur lors de la récupération des données :", error);
-    }
-  },
+    async fetchUsers() {
+           try {
+             const response = await axios.get('/users', {
+             headers: {
+               Authorization: `Bearer ${this.loggedInUser.token}`,
+               
+             },
    
+           });
+                   console.log(response.data.data);
+                 // Filtrer les utilisateurs dont Identifiant est null
+                
+                 this.UserOptions = response.data.data.
+length
+;
+              this.loading = false;
+           
+           } catch (error) {
+             console.error('errorqqqqq',error);
+           
+             if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+               await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+             this.$router.push("/");  //a revoir
+           }
+           }
+         },
   }
 }
 </script>

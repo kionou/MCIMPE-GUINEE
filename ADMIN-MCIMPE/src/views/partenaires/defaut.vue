@@ -53,7 +53,7 @@
                          <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-lock-outline"></i></router-link>
                        </li> -->
                      </ul>
-    </div>
+                   </div>
             </div>
            </div>
            <BRow>

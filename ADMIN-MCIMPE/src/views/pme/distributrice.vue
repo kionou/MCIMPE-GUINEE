@@ -1,13 +1,13 @@
 <template >
     <Layout>
       <Loading v-if="loading" style="z-index: 99999;"></Loading>
-   <PageHeader title="Unité Industrielle" pageTitle="Tableau de bord" />
+   <PageHeader title="Entreprises Distributrices" pageTitle="Tableau de bord" />
    <BRow>
      <BCol lg="12">
        <BCard no-body>
          <BCardBody class="border-bottom">
            <div class="d-flex align-items-center">
-             <BCardTitle class="mb-0 flex-grow-1">Liste des Unités industrielles</BCardTitle>
+             <BCardTitle class="mb-0 flex-grow-1">Liste des Entreprises distributrices</BCardTitle>
 
              <div class="flex-shrink-0 d-flex">
                <div @click="$router.push({ path: '/add-unite' })"  class="btn btn-primary me-1">Ajouter</div>
@@ -43,7 +43,7 @@
           <div class="w-100 d-flex justify-content-center" style="border: 3px solid #eff2f7; background-color: white; padding: 5px;">
             <ul class="list-unstyled hstack gap-1 mb-0">
               <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
-                         <router-link to="/jobs/job-details" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-eye-circle-outline"></i></router-link>
+                         <router-link :to="{ name: 'detail-distributrice', params: { id: pme.CodeMpme }}" class="btn btn-sm btn-soft-primary"><i class="mdi mdi-eye-circle-outline"></i></router-link>
                        </li>
                        
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
@@ -151,7 +151,9 @@ async  mounted() {
     
             });
                console.log(response.data.data);
-                this.pmeOptions = response.data.data;
+               const filteredUsers = response.data.data.filter(user => user.ParentPme !== null);
+                 console.log(filteredUsers); 
+                this.pmeOptions = filteredUsers;
                this.loading = false;
             
             } catch (error) {

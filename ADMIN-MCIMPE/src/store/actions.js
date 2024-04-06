@@ -1,5 +1,5 @@
 import axios from '@/lib/axiosConfig.js'
- 
+
  export default{
 async fetchDataFromAPI({ commit }) {
   let endpoints = [
@@ -24,10 +24,15 @@ async fetchDataFromAPI({ commit }) {
       console.log(error);
     }
   },
-  async fetchMpmeData({ commit }) {
+  async fetchMpmeData({ commit } ,authenticatedUser) {
+    console.log(authenticatedUser);
     try {
-      const response = await axios.get('/mpme');
-      const data = response.data.data;
+      const response = await axios.get('/mcipmes',{
+        headers: {
+          Authorization: `Bearer ${authenticatedUser.token}`,
+        },
+      });
+      const data = response.data.data.data;
       console.log('Données récupérées de mpme :', data);
 
       commit('SET_MPME_DATA', data); // Appel de la mutation pour mettre à jour le state
@@ -119,13 +124,16 @@ async fetchDataFromAPI({ commit }) {
     }
   },
 
-  async fetchSecteurActiviteOptions({ commit }) {
+  async fetchSecteurActiviteOptions({ commit } , authenticatedUser) {
+    console.log(authenticatedUser);
     try {
       const response = await axios.get('/secteurs-activites', {
         
         headers: {
-          Authorization: `Bearer ${this.loggedInUser.token}`,
+          Authorization: `Bearer ${authenticatedUser.token}`,
         },
+        params: {Direction: authenticatedUser.direction,},
+
       }); // Remplacez l'URL par l'URL de votre API
       console.log('activite',response.data.data.data);
 

@@ -32,7 +32,7 @@
 
       &::after {
         content: "";
-        background: $primary;
+        background: #F9D310;
         height: 2px;
         position: absolute;
         width: 100%;
@@ -91,7 +91,7 @@
   &.nav-justified {
     .nav-item {
       .nav-link {
-        color: var(--#{$prefix}body-color) !important;
+        color: var(--#{$prefix}body-color) ;
         font-weight: 500 !important;
 
         &:hover {

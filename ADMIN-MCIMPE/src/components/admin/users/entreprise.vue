@@ -12,7 +12,7 @@
               <BCol xxl="4" lg="9" class=" me-3">
              <MazInput v-model="searchQuery"   no-radius type="text"  color="info" size="sm" placeholder="Recherchez ..." />
            </BCol>
-             <div @click="AddUser = true" class="btn btn-primary">Ajouter</div>
+             <!-- <div @click="AddUser = true" class="btn btn-primary">Ajouter</div> -->
              
            </div>
          </div>
