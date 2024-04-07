@@ -32,6 +32,7 @@ export default{
     getSousSecteursOptions: (state) =>state.sousSecteurs,
     getAccompagnementData: (state) => state.accompagnementData,
     getPersonnelData: (state) => state.personnelData,
+    getdirections: (state) => state.directions,
       
 
 

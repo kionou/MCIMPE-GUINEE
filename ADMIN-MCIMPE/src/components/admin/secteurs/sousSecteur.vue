@@ -44,13 +44,7 @@
               <BTbody>
                 <BTr v-for="region in paginatedItems" :key="region.id">
                   <BTd>
-                    <div  class="avatar-xs">
-
-                      <span class="avatar-title rounded-circle">
-                        <img src="@/assets/img/entreprise.png" alt="" class="w-100 h-100 rounded-circle">
-                        
-                      </span>
-                    </div>
+                   
                     
                   </BTd>
                   <BTd>
@@ -533,10 +527,11 @@ async mounted() {
            }
          } catch (error) {
            console.error('Erreur lors de la suppression:', error);
+          
            if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-           await this.$store.dispatch('user/clearLoggedInUser');
-         this.$router.push("/");  //a revoir
-       }
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
            
          }
    
@@ -605,10 +600,12 @@ async mounted() {
           } 
         } catch (error) {
           console.error("Erreur lors du téléversement :", error);
+          
           if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-           await this.$store.dispatch('user/clearLoggedInUser');
-         this.$router.push("/");  //a revoir
-       }else{
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+       else{
          this.formatValidationErrors(error.response.data.errors);
        }
         }

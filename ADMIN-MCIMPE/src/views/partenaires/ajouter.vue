@@ -88,6 +88,26 @@
                     <BRow>
                       <BCol md="12">
                       <div class="mb-3 position-relative">
+                        <label for="userpassword">Directions</label>
+                        <MazSelect label="Sélectionner la direction" v-model="direction" color="info" :options="directionOptions" multiple search />
+                       <small v-if="v$.direction.$error">{{v$.direction.$errors[0].$message}}</small> 
+                       <small v-if="resultError['Direction']"> {{ resultError["Direction"] }} </small>
+                      </div>
+                   </BCol>
+
+                   <!-- <BCol md="6">
+                      <div class="mb-3 position-relative">
+                        <label for="userpassword">Type de partenaire</label>
+                        <MazSelect label="Sélectionner le type de partenaire" v-model="type" color="info" :options="sousCategoriesData" search />
+                       <small v-if="v$.type.$error">{{v$.type.$errors[0].$message}}</small> 
+                       <small v-if="resultError['NomPartenaire']"> {{ resultError["NomPartenaire"] }} </small>
+                      </div>
+                   </BCol> -->
+                    </BRow>
+
+                    <BRow>
+                      <BCol md="12">
+                      <div class="mb-3 position-relative">
                         <label for="userpassword">Description </label>
                         <div class="form-ckeditor">
                         <ckeditor v-model="description" :editor="editor"></ckeditor>
@@ -162,6 +182,9 @@ export default {
         url:'',
         selectedFile:'',
         description:'',
+        direction:[],
+        type:'',
+        directionOptions:[],
        editor: ClassicEditor,
       
        
@@ -210,6 +233,14 @@ export default {
      
       
     },
+    direction: {
+     
+      require
+    },
+    type: {
+     
+      
+    },
    
      
   },
@@ -219,8 +250,9 @@ export default {
     },
     
   },
-  mounted() {
+ async mounted() {
     console.log("uusers",this.loggedInUser);
+    await this.fetchDirections()
   },
  
    methods: {
@@ -230,6 +262,22 @@ export default {
       const file = event.target.files[0];
       console.log("Selected file:", file);
       this.selectedFile = file;
+    },
+    async fetchDirections() { // Renommez la méthode pour refléter qu'elle récupère les options de pays
+      try {
+        await this.$store.dispatch('fetchDirections');
+        const options = JSON.parse(JSON.stringify(this.$store.getters['getdirections'])); // Accéder aux options des pays via le getter
+        console.log('Options des Prefecture:', options);
+         this.directionOptions = options.map(sousprefecture => ({
+        label: sousprefecture.CodeDirection,
+        value: sousprefecture.CodeDirection,
+       
+      }));;; 
+        
+        // Affecter les options à votre propriété sortedCountryOptions
+      } catch (error) {
+        console.error('Erreur lors de la récupération des options des prefecture :', error);
+      }
     },
     async SubmitPartenaire() {
       this.v$.$touch();
@@ -245,11 +293,11 @@ export default {
         formData.append("StatutPartenaire", 1);
         formData.append("CodePartenaire", this.code);
         formData.append("SiteWeb", this.url);
-        formData.append( "Direction",this.loggedInUser.direction )
+        formData.append( "Directions[]",this.direction )
          
         console.log(formData);
         console.log(
-          this.nom,
+          this.nom,this.direction,
           this.description, 
           this.selectedFile, this.code , this.url
         );
@@ -270,10 +318,13 @@ export default {
           } 
         } catch (error) {
           console.error("Erreur lors du téléversement :", error);
+          
           if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-            await this.$store.dispatch('user/clearLoggedInUser');
-          this.$router.push("/");  //a revoir
-        }else {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+        else {
+          this.loading = false
       this.formatValidationErrors(error.response.data.errors);
     }
         }

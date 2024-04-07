@@ -116,7 +116,7 @@
                        <label for="userpassword">Code </label>
                      <MazInput v-model="step1.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
                       <small v-if="v$.step1.code.$error">{{v$.step1.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+                      <small v-if="resultError['CodeStatutJuridique']"> {{ resultError["CodeStatutJuridique"] }} </small>
 
                      </div>
                   </BCol>
@@ -127,7 +127,7 @@
                        <label for="userpassword">Nom </label>
                      <MazInput v-model="step1.nom"  no-radius type="text" name="nom"   color="info" placeholder="exemple" />
                       <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+                      <small v-if="resultError['NomStatutJuridique']"> {{ resultError["NomStatutJuridique"] }} </small>
 
                      </div>
                   </BCol>
@@ -139,7 +139,7 @@
                        <label for="userpassword">Sigle </label>
                      <MazInput v-model="step1.sigle"  no-radius type="text" name="sigle"   color="info" placeholder="exemple" />
                       <small v-if="v$.step1.sigle.$error">{{v$.step1.sigle.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+                      <small v-if="resultError['SigleStatutJuridique']"> {{ resultError["SigleStatutJuridique"] }} </small>
 
                      </div>
                   </BCol>
@@ -204,7 +204,7 @@
                        <label for="userpassword">Code</label>
                      <MazInput v-model="step2.code"  no-radius type="text" name="code"  color="info" placeholder="001" />
                       <small v-if="v$.step2.code.$error">{{v$.step2.code.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeRegion']"> {{ resultError["CodeRegion"] }} </small>
+                      <small v-if="resultError['CodeStatutJuridique']"> {{ resultError["CodeStatutJuridique"] }} </small>
 
                      </div>
                   </BCol>
@@ -218,7 +218,7 @@
                        <label for="userpassword">Nom</label>
                      <MazInput v-model="step2.nom"  no-radius type="text" name="nom"   color="info" placeholder="Conakry" />
                       <small v-if="v$.step2.nom.$error">{{v$.step2.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['NomRegion']"> {{ resultError["NomRegion"] }} </small>
+                      <small v-if="resultError['NomStatutJuridique']"> {{ resultError["NomStatutJuridique"] }} </small>
 
                      </div>
                   </BCol>
@@ -230,7 +230,7 @@
                        <label for="userpassword">Sigle</label>
                      <MazInput v-model="step2.sigle"  no-radius type="text" name="sigle"   color="info" placeholder="Conakry" />
                       <small v-if="v$.step2.sigle.$error">{{v$.step2.sigle.$errors[0].$message}}</small> 
-                      <small v-if="resultError['NomRegion']"> {{ resultError["NomRegion"] }} </small>
+                      <small v-if="resultError['SigleStatutJuridique']"> {{ resultError["SigleStatutJuridique"] }} </small>
 
                      </div>
                   </BCol>
@@ -407,7 +407,7 @@ async mounted() {
            this.AddUser = false
            this.loading = false
            this.successmsg("Création du statut juridique",'Votre statut juridique a été crée avec succès !')
-           await this.fetchRegionOptions()
+           await this.fetchStatutJuridiqueOptions()
 
          } else {
 
@@ -454,7 +454,7 @@ async mounted() {
          
          try {
            // Faites une requête pour supprimer l'élément avec l'ID itemId
-           const response = await axios.delete(`/regions/${id}`, {
+           const response = await axios.delete(`/statut-juridiques/${id}`, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
                
@@ -466,8 +466,8 @@ async mounted() {
            console.log('Réponse de suppression:', response);
            if (response.data.status === 'success') {
              this.loading = false
-            this.successmsg('Supprimé!', 'Votre region a été supprimée.')
-            await this.fetchRegionOptions()
+            await this.fetchStatutJuridiqueOptions()
+            this.successmsg('Supprimé!', 'Votre statut juridique a été supprimée.')
    
            } else {
              console.log('error', response.data)
@@ -475,10 +475,11 @@ async mounted() {
            }
          } catch (error) {
            console.error('Erreur lors de la suppression:', error);
+          
            if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-           await this.$store.dispatch('user/clearLoggedInUser');
-         this.$router.push("/");  //a revoir
-       }
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
            
          }
    
@@ -495,9 +496,11 @@ async mounted() {
                  // Utilisez les informations récupérées de l'objet user
                  console.log('Informations de l\'utilisateur:', user);
 
-            this.step2.code = user.CodeRegion,
-            this.step2.nom = user.NomRegion,
-            this.ToId = user.CodeRegion
+             this.step2.code = user.CodeStatutJuridique,
+              this.step2.nom = user.NomStatutJuridique,
+            this.step2.sigle = user.SigleStatutJuridique,
+            this.ToId = user.CodeStatutJuridique
+
              } else {
                  console.log('Utilisateur non trouvé avec l\'ID', id);
              }
@@ -520,14 +523,15 @@ async mounted() {
       
                const dataCath = {
    
-           CodeRegion:this.step2.code,
-           NomRegion:this.step2.nom,
-           Statut:1
+                CodeStatutJuridique:(this.step2.code).toString(),
+                NomStatutJuridique:this.step2.nom,
+                SigleStatutJuridique:this.step2.sigle,
+                StautStatutJuridique:1
              }
              console.log('dataCath',dataCath);
    
         try {
-          const response = await axios.put(`regions/${this.ToId}`,dataCath, {
+          const response = await axios.put(`statut-juridiques/${this.ToId}`,dataCath, {
             headers: {
              
               Authorization: `Bearer ${this.loggedInUser.token}`,
@@ -535,19 +539,21 @@ async mounted() {
           });
           console.log("Réponse du téléversement :", response);
           if (response.data.status === "success") {
-            await this.fetchRegionOptions()
+            await this.fetchStatutJuridiqueOptions()
             this.UpdateUser1 = false
            this.loading = false
-           this.successmsg("Modification de",'Votre region a été modifiée avec succès !')
+           this.successmsg("Modification du statut juridique",'Votre statut juridique a été modifié avec succès !')
            
             
           } 
         } catch (error) {
           console.error("Erreur lors du téléversement :", error);
+          
           if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-           await this.$store.dispatch('user/clearLoggedInUser');
-         this.$router.push("/");  //a revoir
-       }else{
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+       else{
          this.formatValidationErrors(error.response.data.errors);
        }
         }

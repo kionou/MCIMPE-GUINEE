@@ -485,10 +485,11 @@ async mounted() {
            }
          } catch (error) {
            console.error('Erreur lors de la suppression:', error);
+          
            if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-           await this.$store.dispatch('user/clearLoggedInUser');
-         this.$router.push("/");  //a revoir
-       }
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
            
          }
    
@@ -555,10 +556,12 @@ async mounted() {
           } 
         } catch (error) {
           console.error("Erreur lors du téléversement :", error);
+         
           if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-           await this.$store.dispatch('user/clearLoggedInUser');
-         this.$router.push("/");  //a revoir
-       }else{
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+       else{
          this.formatValidationErrors(error.response.data.errors);
        }
         }

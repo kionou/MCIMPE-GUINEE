@@ -769,6 +769,75 @@
                     <div class="content">
                         <p class="titre">INFORMATIONS SUR LES PERSONNELS</p>
                         <div class="row mb-3 mt-3 content-group">
+              
+                          <div class="col">
+                <div class="input-groupe">
+                  <label for="PersonnelPermanentFemme">Personnel Permanent Femme </label>
+                  <input
+                    type="text"
+                    name="PersonnelPermanentFemme"
+                    id="PersonnelPermanentFemme"
+                    placeholder="21"
+                    v-model="step3.pers_per_femm"
+                    :class="{ 'error-border': resultError['PersonnelPermanentFemme'] }"
+                    @input="resultError['PersonnelPermanentFemme'] = false"
+                    option-value-key="value" option-label-key="label" option-input-value-key="value"
+                  />
+                </div>
+                <small v-if="v$.step3.pers_per_femm.$error">{{
+                  v$.step3.pers_per_femm.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['PersonnelPermanentFemme']">
+                  {{ resultError["PersonnelPermanentFemme"] }}
+                </small>
+              </div>
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="PersonnelPermanentHomme">Personnel Permanent Homme </label>
+                  <input
+                    type="text"
+                    name="PersonnelPermanentHomme"
+                    id="PersonnelPermanentHomme"
+                    placeholder="11"
+                    v-model="step3.pers_per_homm"
+                    :class="{ 'error-border': resultError['PersonnelPermanentHomme'] }"
+                    @input="resultError['PersonnelPermanentHomme'] = false"
+                  />
+                </div>
+                <small v-if="v$.step3.pers_per_homm.$error">{{
+                  v$.step3.pers_per_homm.$errors[0].$message
+                }}</small>
+
+                <small v-if="resultError['PersonnelPermanentHomme']">
+                  {{ resultError["PersonnelPermanentHomme"] }}
+                </small>
+              </div>
+              <div class="col">
+                <div class="input-groupe">
+                  <label for="NbreEmploye"
+                    >Nombre d'employés Guinéens<span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    name="NbreEmploye"
+                    id="NbreEmploye"
+                    placeholder="33"
+                    v-model="step3.NbreEmploye"
+                    :class="{ 'error-border': resultError['NbreEmploye'] }"
+                    @input="resultError['NbreEmploye'] = false"
+                  />
+                </div>
+                <small v-if="v$.step3.NbreEmploye.$error">{{
+                  v$.step3.NbreEmploye.$errors[0].$message
+                }}</small>
+                <small v-if="resultError['NbreEmploye']">
+                  {{ resultError["NbreEmploye"] }}
+                </small>
+              </div>
+                         </div>
+                        <div class="row mb-3 mt-3 content-group">
+              
+
               <div class="col">
                 <div class="input-groupe">
                   <label for="NbreEmployeGuinneF"
@@ -811,72 +880,6 @@
                 }}</small>
                 <small v-if="resultError['NbreEmployeGuinneH']">
                   {{ resultError["NbreEmployeGuinneH"] }}
-                </small>
-              </div>
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="NbreEmploye"
-                    >Nombre d'employés Guinéens<span class="text-danger">*</span></label
-                  >
-                  <input
-                    type="text"
-                    name="NbreEmploye"
-                    id="NbreEmploye"
-                    placeholder="33"
-                    v-model="step3.NbreEmploye"
-                    :class="{ 'error-border': resultError['NbreEmploye'] }"
-                    @input="resultError['NbreEmploye'] = false"
-                  />
-                </div>
-                <small v-if="v$.step3.NbreEmploye.$error">{{
-                  v$.step3.NbreEmploye.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['NbreEmploye']">
-                  {{ resultError["NbreEmploye"] }}
-                </small>
-              </div>
-                         </div>
-                        <div class="row mb-3 mt-3 content-group">
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="PersonnelPermanentFemme">Personnel Permanent Femme </label>
-                  <input
-                    type="text"
-                    name="PersonnelPermanentFemme"
-                    id="PersonnelPermanentFemme"
-                    placeholder="21"
-                    v-model="step3.pers_per_femm"
-                    :class="{ 'error-border': resultError['PersonnelPermanentFemme'] }"
-                    @input="resultError['PersonnelPermanentFemme'] = false"
-                    option-value-key="value" option-label-key="label" option-input-value-key="value"
-                  />
-                </div>
-                <small v-if="v$.step3.pers_per_femm.$error">{{
-                  v$.step3.pers_per_femm.$errors[0].$message
-                }}</small>
-                <small v-if="resultError['PersonnelPermanentFemme']">
-                  {{ resultError["PersonnelPermanentFemme"] }}
-                </small>
-              </div>
-              <div class="col">
-                <div class="input-groupe">
-                  <label for="PersonnelPermanentHomme">Personnel Permanent Homme </label>
-                  <input
-                    type="text"
-                    name="PersonnelPermanentHomme"
-                    id="PersonnelPermanentHomme"
-                    placeholder="11"
-                    v-model="step3.pers_per_homm"
-                    :class="{ 'error-border': resultError['PersonnelPermanentHomme'] }"
-                    @input="resultError['PersonnelPermanentHomme'] = false"
-                  />
-                </div>
-                <small v-if="v$.step3.pers_per_homm.$error">{{
-                  v$.step3.pers_per_homm.$errors[0].$message
-                }}</small>
-
-                <small v-if="resultError['PersonnelPermanentHomme']">
-                  {{ resultError["PersonnelPermanentHomme"] }}
                 </small>
               </div>
                         </div>
@@ -1923,9 +1926,9 @@ export default {
       },
         // etapes 3
         step3:{
-        NbreEmployeGuinneF:0,
-        NbreEmployeGuinneH:0,
-        NbreEmploye:0,
+        NbreEmployeGuinneF:'',
+        NbreEmployeGuinneH:'',
+        NbreEmploye:'',
 
         pers_per_femm: 0,
         pers_per_homm: 0,
@@ -2076,6 +2079,7 @@ export default {
 
 
 async mounted() {
+
    console.log("uusers",this.loggedInUser);
    const localStorageUserData = localStorage.getItem('tempMpmeData') || null;
    if(localStorageUserData !== null){
@@ -2148,9 +2152,9 @@ async mounted() {
         NumeroTva: this.step2.NumeroTva,
 
         // step3
-        NbreEmployeGuinneF: this.step3.NbreEmployeGuinneF,
-        NbreEmployeGuinneH: this.step3.NbreEmployeGuinneH,
-        NbreEmploye: this.step3.NbreEmploye,
+        NbreEmployeGuinneF: parseInt(this.step3.NbreEmployeGuinneF) ,
+        NbreEmployeGuinneH: parseInt(this.step3.NbreEmployeGuinneH) ,
+        NbreEmploye:  parseInt(this.step3.NbreEmploye) ,
         PersonnelPermanentFemme: this.step3.pers_per_femm || 0,
         PersonnelPermanentHomme: this.step3.pers_per_homm || 0,
         PersonnelTemporaireFemme: this.step3.pers_temp_femm || 0,
@@ -2360,7 +2364,9 @@ async mounted() {
         if (response.status === 200) {
           console.log("Données MPME mises à jour avec succès !");
           localStorage.removeItem('tempMpmeData')
-          this.successmsg("Création d'une Entreprise",'Votre partenaire a été crée avec succès !')
+  setTimeout(()=>{
+    this.successmsg("Création d'une Entreprise","L'entreprise a été créée avec succès ! Le propriétaire va recevoir un email contenant ces informations pour se connecter à son portail.")
+  }, 5000);
           router.go(-1)
           return true;
         } else {
@@ -2375,8 +2381,11 @@ async mounted() {
           error.response.data.status === "error"
         ) {
           console.log("aut", error.response.data.status === "error");
-          await this.$store.dispatch("user/clearLoggedInUser");
-          this.$router.push("/");
+          
+          if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
         } else {
           this.formatValidationErrors(error.response.data.errors);
           this.loading = false;

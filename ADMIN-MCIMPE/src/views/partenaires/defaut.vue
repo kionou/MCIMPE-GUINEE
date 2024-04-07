@@ -149,9 +149,8 @@ methods: {
     try {
               const response = await axios.get('/partenaires', {
               headers: {
-                Authorization: `Bearer ${this.loggedInUser.token}`,
-                
-              },
+                Authorization: `Bearer ${this.loggedInUser.token}`, },
+                params:{Direction:this.loggedInUser.direction}
     
             });
                console.log(response.data.data);
@@ -209,10 +208,11 @@ async confirmDelete(id) {
             }
           } catch (error) {
             console.error('Erreur lors de la suppression:', error);
+           
             if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-            await this.$store.dispatch('user/clearLoggedInUser');
-          this.$router.push("/");  //a revoir
-        }
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
             
           }
     

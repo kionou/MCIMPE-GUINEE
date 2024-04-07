@@ -84,7 +84,25 @@
                      <small v-if="resultError['image']"> {{ resultError["image"] }} </small>
                   </BCol>
                    </BRow>
+                   <BRow>
+                      <BCol md="12">
+                      <div class="mb-3 position-relative">
+                        <label for="userpassword">Directions</label>
+                        <MazSelect label="Sélectionner la direction" v-model="direction" color="info" :options="directionOptions" multiple search />
+                       <small v-if="v$.direction.$error">{{v$.direction.$errors[0].$message}}</small> 
+                       <small v-if="resultError['Direction']"> {{ resultError["Direction"] }} </small>
+                      </div>
+                   </BCol>
 
+                   <!-- <BCol md="6">
+                      <div class="mb-3 position-relative">
+                        <label for="userpassword">Type de partenaire</label>
+                        <MazSelect label="Sélectionner le type de partenaire" v-model="type" color="info" :options="sousCategoriesData" search />
+                       <small v-if="v$.type.$error">{{v$.type.$errors[0].$message}}</small> 
+                       <small v-if="resultError['NomPartenaire']"> {{ resultError["NomPartenaire"] }} </small>
+                      </div>
+                   </BCol> -->
+                    </BRow>
                    <BRow>
                      <BCol md="12">
                      <div class="mb-3 position-relative">
@@ -165,6 +183,9 @@ export default {
        description:'',
        StatutPartenaire:'',
        ToId:'',
+       direction:[],
+        type:'',
+        directionOptions:[],
       editor: ClassicEditor,
      
       
@@ -213,6 +234,14 @@ export default {
     
      
    },
+   direction: {
+     
+     require
+   },
+   type: {
+    
+     
+   },
   
     
  },
@@ -226,6 +255,7 @@ async mounted() {
    console.log("uusers",this.loggedInUser);
    console.log('idd',this.id);
    await this.UpdatePartenaire()
+   await this.fetchDirections()
  },
 
   methods: {
@@ -236,6 +266,22 @@ async mounted() {
      console.log("Selected file:", file);
      this.selectedFile = file;
    },
+   async fetchDirections() { // Renommez la méthode pour refléter qu'elle récupère les options de pays
+      try {
+        await this.$store.dispatch('fetchDirections');
+        const options = JSON.parse(JSON.stringify(this.$store.getters['getdirections'])); // Accéder aux options des pays via le getter
+        console.log('Options des Prefecture:', options);
+         this.directionOptions = options.map(sousprefecture => ({
+        label: sousprefecture.Sigle,
+        value: sousprefecture.CodeDirection,
+       
+      }));;; 
+        
+        // Affecter les options à votre propriété sortedCountryOptions
+      } catch (error) {
+        console.error('Erreur lors de la récupération des options des prefecture :', error);
+      }
+    },
    async UpdatePartenaire() {
           this.loading = true;
           const response = await axios.get(`/partenaires/${this.id}`,{
@@ -254,11 +300,12 @@ async mounted() {
 
             this.code = partenaire.CodePartenaire,
             this.nom = partenaire.NomPartenaire,
-            this.description = partenaire.Nom,
+            this.description = partenaire.Description,
             this.selectedFile = partenaire.image,
             this.url = partenaire.SiteWeb,
             this.ToId = partenaire.id,
-            this.StatutPartenaire = partenaire.StatutPartenaire
+            this.StatutPartenaire = partenaire.StatutPartenaire,
+            this.direction = partenaire.Direction
            
          }  else {
                   console.log('Utilisateur non trouvé avec l\'ID', this.id);
@@ -284,7 +331,7 @@ async mounted() {
        formData.append("StatutPartenaire", this.StatutPartenaire);
        formData.append("CodePartenaire", this.code);
        formData.append("SiteWeb", this.url);
-       formData.append( "Direction",this.loggedInUser.direction )
+       formData.append( "Directions[]",this.direction )
         
        console.log(formData);
        console.log(
@@ -309,10 +356,12 @@ async mounted() {
          } 
        } catch (error) {
          console.error("Erreur lors du téléversement :", error);
+        
          if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-           await this.$store.dispatch('user/clearLoggedInUser');
-         this.$router.push("/");  //a revoir
-       }else {
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
+       else {
      this.formatValidationErrors(error.response.data.errors);
    }
        }

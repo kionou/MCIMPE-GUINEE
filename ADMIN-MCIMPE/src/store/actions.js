@@ -443,6 +443,20 @@ async fetchPersonnel({ commit }, page) {
     console.error('Erreur lors de la récupération du personnel :', error);
   }
 },
+async fetchDirections({ commit }) {
+  try {
+    const response = await axios.get('/directions');
+    console.log('response.directions', response.data.data); 
+    const directionsFromAPI = response.data.data;
+
+    // Formatez les données de l'API selon vos besoins
+
+    commit('SET_DIRECTIONS', directionsFromAPI); 
+    // Appeler la mutation pour mettre à jour les options de directions
+  } catch (error) {
+    console.error('Erreur lors de la récupération des directions:', error);
+  }
+}
 
 
 

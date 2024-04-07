@@ -99,6 +99,9 @@ export default {
   SET_PERSONNEL(state, personnelData) {
     state.personnelData = personnelData;
   },
+  SET_DIRECTIONS(state, directions) {
+    state.directions = directions;
+  }
   
   
 }

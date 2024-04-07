@@ -50,21 +50,21 @@
                          
                        </span>
                      </div>
-                     
+                 
                    </BTd>
-                   <BTd>{{ region.NomQuartier }}</BTd>
-                   <BTd> {{ region.CodeQuartier }} </BTd>
-                   <BTd>{{ NameSousPrefecture(region.CodeSousPrefecture)  }}</BTd>
-                   <BTd>{{ NamePrefecture(region.CodeSousPrefecture.slice(0, 4))  }}</BTd>
+                   <BTd>{{ region.NomDocument }}</BTd>
+                   <BTd> {{ region.SousCategorieDocument }} </BTd>
+                   <BTd>{{ region.OrigineDocument }}</BTd>
+                   <BTd>{{ region.user  }}</BTd>
                   
                    <BTd>
                      <ul class="list-unstyled hstack gap-1 mb-0">
                       
-                       <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Edit">
-                         <Blink href="#"  @click="UpdateUser(region.id)" class="btn btn-sm btn-soft-info"><i class="mdi mdi-pencil-outline"></i></Blink>
+                      <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="View">
+                         <a  :href="region.LienDocument" download class="btn btn-sm btn-soft-primary"><i class="mdi mdi-download-outline"></i></a>
                        </li>
                        <li data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete">
-                         <Blink href="#" @click="confirmDelete(region.CodeQuartier)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
+                         <Blink href="#" @click="confirmDelete(region.id)" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger"><i class="mdi mdi-delete-outline"></i></Blink>
                        </li>
                        
                      </ul>
@@ -122,9 +122,9 @@
                   <BCol md="6">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Nom dossier</label>
-                      <MazSelect label="Sélectionner le dossier" v-model="step1.dossier" color="info" :options="SelectPrefecture" search />
+                      <MazSelect label="Sélectionner le dossier" v-model="step1.dossier" color="info" :options="sousCategoriesData" search />
                       <small v-if="v$.step1.dossier.$error">{{v$.step1.dossier.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeSousPrefecture']"> {{ resultError["CodeSousPrefecture"] }} </small>
+                      <small v-if="resultError['SousCategorieDocument']"> {{ resultError["SousCategorieDocument"] }} </small>
 
                      </div>
                   </BCol>
@@ -132,9 +132,9 @@
                   <BCol md="6">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Nom fichier</label>
-                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"  color="info" placeholder="0001" />
+                     <MazInput v-model="step1.nom"  no-radius type="text" name="nom"  color="info" placeholder="fichier" />
                       <small v-if="v$.step1.nom.$error">{{v$.step1.nom.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeQuartier']"> {{ resultError["CodeQuartier"] }} </small>
+                      <small v-if="resultError['NomDocument']"> {{ resultError["NomDocument"] }} </small>
 
                      </div>
                   </BCol>
@@ -146,7 +146,7 @@
                        <label for="userpassword">Origine</label>
                      <MazInput v-model="step1.origine"  no-radius type="text" name="origine"   color="info" placeholder="exemple" />
                       <small v-if="v$.step1.origine.$error">{{v$.step1.origine.$errors[0].$message}}</small> 
-                      <small v-if="resultError['NomQuartier']"> {{ resultError["NomQuartier"] }} </small>
+                      <small v-if="resultError['OrigineDocument']"> {{ resultError["OrigineDocument"] }} </small>
 
                      </div>
                   </BCol>
@@ -154,7 +154,7 @@
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Fichier</label>
                        <input type="file" name="file" id="file" class="inputfile"  ref="fileInput"
-                        accept="image/*"
+                       accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
                         @change="handleFileChange" />
                       <label for="file">
                         <i class="dripicons-cloud-download"></i>
@@ -223,9 +223,9 @@
                   <BCol md="6">
                      <div class="mb-3 position-relative">
                        <label for="userpassword">Nom dossier</label>
-                      <MazSelect label="Sélectionner le dossier" v-model="step2.dossier" color="info" :options="SelectPrefecture" search />
+                      <MazSelect label="Sélectionner le dossier" v-model="step2.dossier" color="info" :options="sousCategoriesData" search />
                       <small v-if="v$.step2.dossier.$error">{{v$.step2.dossier.$errors[0].$message}}</small> 
-                      <small v-if="resultError['CodeSousPrefecture']"> {{ resultError["CodeSousPrefecture"] }} </small>
+                      <small v-if="resultError['SousCategorieDocument']"> {{ resultError["SousCategorieDocument"] }} </small>
 
                      </div>
                   </BCol>
@@ -316,11 +316,10 @@ export default {
      AddUser:false,
      UpdateUser1:false,
      ToId:'',
-     regionOptions:[],
-     prefectureOptions:[],
+     sousCategoriesData:[],
+     FichierData:[],
      SelectPrefecture:[],
-     sous_prefectureOptions:[],
-     QuartierOptions:[],
+    
      currentPage: 1,
      itemsPerPage: 8,
      totalPageArray: [],
@@ -360,7 +359,7 @@ export default {
      
    },
    fichier:{
-    require
+   
    }
   
    },
@@ -379,7 +378,7 @@ export default {
      
    },
    fichier:{
-    require
+   
    }    
        },   
  },
@@ -388,44 +387,77 @@ export default {
      return this.$store.getters['auth/myAuthenticatedUser'];
    },
    totalPages() {
-   return Math.ceil(this.QuartierOptions.length / this.itemsPerPage);
+   return Math.ceil(this.FichierData.length / this.itemsPerPage);
    },
    paginatedItems() {
      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
      const endIndex = startIndex + this.itemsPerPage;
-     return this.QuartierOptions.slice(startIndex, endIndex);
+     return this.FichierData.slice(startIndex, endIndex);
    },
  },
 async mounted() {
    console.log("uusers",this.loggedInUser);
-   await this.fetchSousPrefectureOptions()
-  await this.fetchRegionOptions()
-   await this.fetchPrefectureOptions()
-   await this.fetchQuartierOptions()
+   await this.fetchFichierData()
+  await this.fetchSousCategoriesData()
+ 
  
  },
  methods: {
   
    successmsg:successmsg,
-   async fetchRegionOptions() {
-      // Renommez la méthode pour refléter qu'elle récupère les options de pays
-      try {
-        await this.$store.dispatch("fetchRegionOptions");
-        const options = JSON.parse(
-          JSON.stringify(this.$store.getters["getRegionOptions2"])
+   async fetchFichierData() {
+ 
+ try {
+           const response = await axios.get('/documents-administrative', {
+           headers: {
+             Authorization: `Bearer ${this.loggedInUser.token}`,
+             
+           },
+ 
+         });
+            console.log(response.data.data);
+             this.FichierData = response.data.data.data
+       
+            this.loading = false;
          
-        ); // Accéder aux options des pays via le getter
-        console.log(options);
-        this.regionOptions = options;
-        // Affecter les options à votre propriété sortedCountryOptions
-        this.loading = false
-      } catch (error) {
-        console.error(
-          "Erreur lors de la récupération des options des pays :",
-          error.message
-        );
-      }
-    },
+         } catch (error) {
+           console.error('errorqqqqq',error);
+         
+           if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+             await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+           this.$router.push("/");  //a revoir
+         }
+         }
+    
+ },
+   async fetchSousCategoriesData() {
+ 
+ try {
+           const response = await axios.get('/sous-categories-document', {
+           headers: {
+             Authorization: `Bearer ${this.loggedInUser.token}`,
+             
+           },
+ 
+         });
+            console.log(response.data.data);
+             this.sousCategoriesData = response.data.data.data.map(sousprefecture => ({
+              label: sousprefecture.NomSousCategorie,
+              value: sousprefecture.CodeSousCategorie,
+       
+      }));;
+            this.loading = false;
+         
+         } catch (error) {
+           console.error('errorqqqqq',error);
+         
+           if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
+             await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+           this.$router.push("/");  //a revoir
+         }
+         }
+    
+ },
     async fetchPrefectureOptions() { // Renommez la méthode pour refléter qu'elle récupère les options de pays
       try {
         await this.$store.dispatch('fetchPrefectureOptions');
@@ -439,59 +471,30 @@ async mounted() {
         console.error('Erreur lors de la récupération des options des prefecture :', error);
       }
     },
-    async fetchSousPrefectureOptions() {
-  try {
-    await this.$store.dispatch("fetchSous_PrefectureOptions");
-    const options = JSON.parse(JSON.stringify(this.$store.getters["getSousprefectureOptions"]));
-    this.sous_prefectureOptions = options;
-    this.SelectPrefecture = this.sous_prefectureOptions.map(sousprefecture => ({
-        label: sousprefecture.NomSousPrefecture,
-        value: sousprefecture.CodeSousPrefecture,
-        code:sousprefecture.CodePrefecture
-      }));
-     console.log('Sous-préfecture :', options);
-   
-
-    
-   
-  } catch (error) {
-    console.error(
-      "Erreur lors de la récupération des options des sous-préfectures :",
-      error.message
-    );
-  }
-},
-async fetchQuartierOptions() {
-      // Renommez la méthode pour refléter qu'elle récupère les options de pays
-      try {
-        await this.$store.dispatch("fetchQuartierOptions");
-        const options = JSON.parse(
-          JSON.stringify(this.$store.getters["getQuartierOptions"])); // Accéder aux options des pays via le getter
-        this.QuartierOptions = options;
-       console.log('Sous-préfecture :', options);
-         // Affecter les options à votre propriété sortedCountryOptions
-      } catch (error) {
-        console.error(
-          "Erreur lors de la récupération des options des prefecture :",
-          error.message
-        );
-      }
-    },
    async HamdleAddUser(){
      this.error = '',
      this.resultError= '',
     this.v$.step1.$touch()
     if (this.v$.$errors.length == 0 ) {
        this.loading = true
-         let DataUser = {
-            CodeQuartier:this.step1.code,
-            NomQuartier:this.step1.nom,
-            CodeSousPrefecture:this.step1.sousprefecture
-         }
-         console.log("eeeee",DataUser);
+       const formData = new FormData();
+        formData.append("document", "");
+        formData.append("NomDocument", this. step1.nom);
+        formData.append("user", this.loggedInUser.id_doc);
+        formData.append("OrigineDocument", this. step1.origine);
+        formData.append("SousCategorieDocument", this. step1.dossier);
+        formData.append("LienDocument", this. step1.fichier);
+        formData.append( "Direction",this.loggedInUser.direction )
+         
+        console.log(formData);
+        console.log(
+          this. step1.nom,this.loggedInUser.id_doc,this. step1.origine,
+          this. step1.dossier, 
+          this. step1.fichier,
+        );
          try {
         
-         const response = await axios.post('/quartiers' , DataUser, {
+         const response = await axios.post('/documents-administrative' , formData, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
              },
@@ -502,8 +505,8 @@ async fetchQuartierOptions() {
          if (response.data.status === "success") { 
            this.AddUser = false
            this.loading = false
-           this.successmsg("Création du quartier",'Votre quartier a été crée avec succès !')
-          await this.fetchQuartierOptions()
+           this.successmsg("Création du fichier",'Votre fichier a été crée avec succès !')
+          await this.fetchFichierData()
 
          } else {
 
@@ -550,7 +553,7 @@ async fetchQuartierOptions() {
          
          try {
            // Faites une requête pour supprimer l'élément avec l'ID itemId
-           const response = await axios.delete(`/quartiers/${id}`, {
+           const response = await axios.delete(`/documents-administrative/${id}`, {
              headers: {
                Authorization: `Bearer ${this.loggedInUser.token}`,
                
@@ -562,8 +565,8 @@ async fetchQuartierOptions() {
            console.log('Réponse de suppression:', response);
            if (response.data.status === 'success') {
              this.loading = false
-           await this.fetchQuartierOptions()
-            this.successmsg('Supprimé!', 'Votre quartier a été supprimé.')
+           await this.fetchFichierData()
+            this.successmsg('Supprimé!', 'Votre fichier a été supprimé.')
    
            } else {
              console.log('error', response.data)
@@ -571,10 +574,11 @@ async fetchQuartierOptions() {
            }
          } catch (error) {
            console.error('Erreur lors de la suppression:', error);
+          
            if (error.response.data.message==="Vous n'êtes pas autorisé." || error.response.status === 401) {
-           await this.$store.dispatch('user/clearLoggedInUser');
-         this.$router.push("/");  //a revoir
-       }
+                await this.$store.dispatch('auth/clearMyAuthenticatedUser');
+              this.$router.push("/");  //a revoir
+            }
            
          }
    
@@ -585,7 +589,7 @@ async fetchQuartierOptions() {
 
          try {
              // Recherchez l'objet correspondant dans le tableau regionOptions en fonction de l'ID
-             const user = this.QuartierOptions.find(user => user.id === id);
+             const user = this.FichierData.find(user => user.id === id);
 
              if (user) {
                  // Utilisez les informations récupérées de l'objet user
@@ -633,7 +637,7 @@ async fetchQuartierOptions() {
           });
           console.log("Réponse du téléversement :", response);
           if (response.data.status === "success") {
-            await this.fetchQuartierOptions()
+            await this.fetchFichierData()
             this.UpdateUser1 = false
            this.loading = false
            this.successmsg("Modification du quartier",'Votre quartier a été modifié avec succès !')
@@ -663,9 +667,15 @@ async fetchQuartierOptions() {
          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         
          const endIndex = startIndex + this.itemsPerPage;
-         return  this.QuartierOptions.slice(startIndex, endIndex);
+         return  this.FichierData.slice(startIndex, endIndex);
        },
 
+       handleFileChange(event) {
+      console.log("File input change");
+      const file = event.target.files[0];
+      console.log("Selected file:", file);
+      this. step1.fichier = file;
+    },
        async formatValidationErrors(errors) {
      const formattedErrors = {};
 
@@ -685,41 +695,7 @@ async fetchQuartierOptions() {
      console.log("resultError", this.resultError);
    },
 
-   NameRegion(id){
-    const selectedRegion = this.regionOptions.find(region => region.CodeRegion === id);    
-            console.log('selectedRegion',selectedRegion);
-            if (selectedRegion) {
-            return  selectedRegion.NomRegion;         
-            } else {
-                console.error('Région non trouvée dans les options.');
-            }
-   },
-
-   NamePrefecture(id){
-    const selectedRegion = this.prefectureOptions.find(region => region.CodePrefecture === id);    
-            console.log('selectedRegion',selectedRegion);
-            if (selectedRegion) {
-            this.NameRegion(selectedRegion.CodeRegion) 
-            return  selectedRegion.NomPrefecture;         
-            } else {
-                console.error('Région non trouvée dans les options.');
-            }
-   },
-   NameSousPrefecture(id){
-    const selectedRegion = this.sous_prefectureOptions.find(region => region.CodeSousPrefecture === id);    
-            console.log('selectedRegion',selectedRegion);
-            if (selectedRegion) {
-    
-            return  selectedRegion.NomSousPrefecture;         
-            } else {
-                console.error('Région non trouvée dans les options.');
-            }
-   },
-   getNameRegion(codePrefecture) {
-      const regionCode = codePrefecture.slice(0, 2);
-      const region = this.regionOptions.find(r => r.CodeRegion === regionCode);
-      return region ? region.NomRegion : "Région inconnue";
-    }
+ 
  },
 }
 </script>
